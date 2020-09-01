@@ -107,6 +107,10 @@ MonoBehaviour:
   collidingLens: {fileID: 0}
   collidingMirror: {fileID: 0}
   collisionList: []
+  faceList: []
+  moveGuide: {fileID: 0}
+  render: {fileID: 0}
+  routeList: []
 --- !u!58 &4153025561349347907
 CircleCollider2D:
   m_ObjectHideFlags: 0

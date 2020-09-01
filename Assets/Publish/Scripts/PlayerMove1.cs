@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -90,176 +89,164 @@ public class PlayerMove1 : MonoBehaviour
         faceRenderer.transform.localPosition = facePos;
     }
 
-    public IEnumerator Move(int _dir)
+    public IEnumerator Move()
     {
         faceRenderer.sprite = faceList[1];
-        ChangeDirection(_dir);
+        bool isFlipped = faceRenderer.flipX;
+        Vector3 facePos = faceRenderer.transform.localPosition;
 
-        int tempDir=_dir;
+        for (int i = 0; i < routeList.Count; i++)
+        {
+            Vector3 nextPos = routeList[i];
+
+            if(!isFlipped)
+            {
+                Debug.Log(nextPos.x - transform.position.x);
+                if(nextPos.x - transform.position.x < 0)
+                {
+                    isFlipped = true; 
+                    facePos.x *= -1;
+                    faceRenderer.transform.localPosition = facePos;
+                }
+            }
+            else
+            {
+                if (nextPos.x - transform.position.x > 0)
+                {
+                    isFlipped = false; 
+                    facePos.x *= -1;
+                    faceRenderer.transform.localPosition = facePos;
+                }
+            }
+            render.flipX = isFlipped;
+            faceRenderer.flipX = isFlipped;
+
+            transform.DOMove(nextPos, delay).SetEase(easeMode);
+            SoundManager.instance.Play("Move");
+            yield return new WaitForSeconds(delay * 1.5f);
+        }
+
+        faceRenderer.sprite = faceList[0];
+        CheckCollide(); //색의 합병은 이동이 다 끝난 이후 체크
+        GameManager.instance.CheckMoveOver();
+    }
+
+    public List<Vector3> routeList = new List<Vector3>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
+
+    public void CalculateRoute(int _dir)
+    {
+        Vector3 lastPos = transform.position;
+        routeList = new List<Vector3>();
+        int layer = 1;
+        int tempDir = 0;
+
+        layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
 
         moveDir = _dir;
         for (int i = 0; i < moveCount; i++)
         {
-            if (gameObject.activeSelf == false) //StopAllCoroutine 이후에도 실행되는 코루틴이 있음
-                yield break;
+            Vector3 dir;
 
-            Vector2 dir=new Vector2();
-            switch (moveDir)
+            if (tempDir == 0)
             {
-                case 1: //위
-                    dir = new Vector2(0,1);
-                    break;
-                case 2: //오른쪽위
-                    dir = new Vector2(1,1);
-                    break;
-                case 3: //오른쪽
-                    dir = new Vector2(1,0);
-                    break;
-                case 4: //오른쪽아래
-                    dir = new Vector2(1,-1);
-                    break;
-                case 5: //아래
-                    dir = new Vector2(0,-1);
-                    break;
-                case 6: //왼쪽아래
-                    dir = new Vector2(-1,-1);
-                    break;
-                case 7: //왼쪽
-                    dir = new Vector2(-1,0);
-                    break;
-                case 8: //왼쪽위
-                    dir = new Vector2(-1,1);
-                    break;
-                default:
-                    yield break;
+                dir = GetDirectionFromInt(_dir);
             }
-        
-            Vector3 goal = transform.position + new Vector3(dir.x * moveValue, dir.y * moveValue, 0);
-            transform.DOMove(goal, delay).SetEase(easeMode);
-            yield return new WaitForSeconds(delay);
-            transform.position = goal;
-            if (GetComponent<Collider2D>().enabled == false) //첫 이동 이후 충돌체크 진행
-                GetComponent<Collider2D>().enabled = true;
-            SoundManager.instance.Play("Move");
-            yield return new WaitForSeconds(0.5f);
-            while (collidingPrism != false || collidingMirror != null || collidingLens != null)
+            else //렌즈에 의한 굴절은 한 번만 사용되어서 tempDir을 사용해서 임시로 방향을 구해준다.
             {
-                CheckCollidePrism(moveDir, i + 1);
-                if (CheckCollideLens(moveDir) == 0) //렌즈 측면으로 접근할 경우
-                {
-                    break; //이동 중지
-                }
+                dir = GetDirectionFromInt(tempDir);
+                tempDir = 0;
+            }
 
-                int reflectDir = CheckCollideMirror(moveDir); //거울의 경우 반사된 방향으로 나머지 이동경로를 바꾼다.
-                if (reflectDir == 0)
-                {
-                    break; //이동 중지
-                }
-                else if (reflectDir > 0)
-                {
-                    moveDir = reflectDir;
-                    tempDir = moveDir;
-                }
-                yield return new WaitForSeconds(delay + 0.2f);
-            }
-            while (movePause) //이동 중 렌즈를 통과하는 경우 기존 이동을 일시 중지시키기 위해서 사용
+            Collider2D hit = Physics2D.OverlapCircle(lastPos + dir * moveValue, 0.1f, layer);
+
+            if (hit != null)
             {
-                yield return null;
+                string collideObjTag = hit.gameObject.tag; //레이캐스트에 충돌한 오브젝트의 태그
+
+                lastPos = hit.transform.position;
+                lastPos.z = -1;
+                routeList.Add(lastPos);
+
+                if (collideObjTag.Equals("Wall"))
+                {
+                    break; //죽을 예정이므로 그 위치까지만 이동하면 됨
+                }
+                else if (collideObjTag.Equals("Objective"))
+                {
+                    break; //색상 상자에 도착해도 더 이상 이동할 필요 없음
+                }
+                else if (collideObjTag.Equals("Prism"))
+                {
+                    if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
+                    { //단색인 경우 프리즘을 통과하는게 좋다.
+                        continue;
+                    }
+                    break; //프리즘에 도착한 혼합색일 경우 멈추고 분열 시도
+                }
+                else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
+                {
+                    tempDir = (int)(hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection(_dir));
+                    if (tempDir == 0)
+                    {
+                        routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
+                        break;
+                    }
+                    i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                }
+                else if (collideObjTag.Equals("Mirror"))
+                {
+                    _dir = (int)(hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection(_dir)); //거울은 방향이 영구적으로 바뀌게 된다.
+                    if (_dir == 0)
+                    {
+                        routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
+                        break;
+                    }
+                    i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                }
+                else //흰색 타일
+                {
+
+                }
             }
-            moveDir = tempDir;
+            else
+            {
+                return;
+            }
         }
-        GameManager.instance.CheckMoveOver();
-        faceRenderer.sprite = faceList[0];
-        while (GameManager.instance.movingChars > 0)
-        {
-            yield return null;
-        }
-        CheckCollide(); //색의 합병은 이동이 다 끝난 이후 체크
+        StartCoroutine("Move");
     }
 
-    /// <summary>
-    /// 분열/굴절 이후 이동할 때 사용
-    /// </summary>
-    /// <param name="_dir">분열시 이동하는 방향</param>
-    /// <param name="nextDir">굴절되어 1칸이동한 다음 이동할 방향</param>
-    /// <param name="noPrismEffect">프리즘 효과를 받은 오브젝트인가?(합성색인 경우 true)</param>
-    /// <returns></returns>
-    public IEnumerator Move(int _dir, int nextDir=0, bool noPrismEffect = false)
+    private Vector3 GetDirectionFromInt(int _dir)
     {
-        ChangeDirection(_dir);
-
-        moveDir = _dir;
-        for (int j = 0; j < 1; j++)
+        Vector3 dir = new Vector3();
+        switch (_dir)
         {
-            if (gameObject.activeSelf == false) //StopAllCoroutine 이후에도 실행되는 코루틴이 있음
-                yield break;
-
-            Vector2 dir = new Vector2();
-            switch (_dir)
-            {
-                case 1: //위
-                    dir = new Vector2(0, 1);
-                    break;
-                case 2: //오른쪽위
-                    dir = new Vector2(1, 1);
-                    break;
-                case 3: //오른쪽
-                    dir = new Vector2(1, 0);
-                    break;
-                case 4: //오른쪽아래
-                    dir = new Vector2(1, -1);
-                    break;
-                case 5: //아래
-                    dir = new Vector2(0, -1);
-                    break;
-                case 6: //왼쪽아래
-                    dir = new Vector2(-1, -1);
-                    break;
-                case 7: //왼쪽
-                    dir = new Vector2(-1, 0);
-                    break;
-                case 8: //왼쪽위
-                    dir = new Vector2(-1, 1);
-                    break;
-            }
-
-            Vector3 goal = transform.position + new Vector3(dir.x * moveValue, dir.y * moveValue, 0);
-            transform.DOMove(goal, delay).SetEase(easeMode);
-            yield return new WaitForSeconds(delay);
-            transform.position = goal;
-            if (GetComponent<Collider2D>().enabled == false) //첫 이동 이후 충돌체크 진행
-                GetComponent<Collider2D>().enabled = true;
-            SoundManager.instance.Play("Move");
-            yield return new WaitForSeconds(0.5f);
-
-            while (collidingPrism != false || collidingMirror != null || collidingLens != null)
-            {
-                CheckCollidePrism(moveDir, j + 1);
-                if (CheckCollideLens(moveDir) == 0) //렌즈 측면으로 접근할 경우
-                {
-                    break; //이동 중지
-                }
-
-                int reflectDir = CheckCollideMirror(moveDir); //거울의 경우 반사된 방향으로 나머지 이동경로를 바꾼다.
-                if (reflectDir == 0)
-                {
-                    break; //이동 중지
-                }
-                else if (reflectDir > 0)
-                {
-                    moveDir = reflectDir;
-                }
-                yield return new WaitForSeconds(delay + 0.2f);
-            }
+            case 1: //위
+                dir = new Vector3(0, 1);
+                break;
+            case 2: //오른쪽위
+                dir = new Vector3(1, 1);
+                break;
+            case 3: //오른쪽
+                dir = new Vector3(1, 0);
+                break;
+            case 4: //오른쪽아래
+                dir = new Vector3(1, -1);
+                break;
+            case 5: //아래
+                dir = new Vector3(0, -1);
+                break;
+            case 6: //왼쪽아래
+                dir = new Vector3(-1, -1);
+                break;
+            case 7: //왼쪽
+                dir = new Vector3(-1, 0);
+                break;
+            case 8: //왼쪽위
+                dir = new Vector3(-1, 1);
+                break;
         }
-        if (!noPrismEffect) //프리즘에 의해 분열된 색상들은 새로 이동명령을 내려야한다.
-        {
-            StartCoroutine(Move(nextDir));
-        }
-        else //3원색은 그냥 통과하므로 기존의 이동을 속행시킨다.
-        {
-            movePause = false;
-        }
+        return dir;
     }
 
     /// <summary>
@@ -297,58 +284,6 @@ public class PlayerMove1 : MonoBehaviour
         {
             GameManager.instance.CheckSplit(gameObject, _dir, count);
         }
-    }
-
-    /// <summary>
-    /// 현재 접촉해있는 렌즈가 있는지 체크
-    /// </summary>
-    /// <param name="_dir"></param>
-    /// <returns>이동 기능 중지(렌즈에 수직으로 접근하여 튕겨나옴)</returns>
-    private int CheckCollideLens(int _dir)
-    {
-        if(collidingLens != null)
-        {
-            movePause = true;
-            Direction refract = collidingLens.GetConcaveRefractDirection(_dir);
-            if(refract == Direction.RETURN)
-            {
-                int reverseDir = _dir > 4 ? _dir - 4 : _dir + 4; //역방향
-                StartCoroutine(Move(reverseDir,0,true)); //직전에 모든 코루틴을 종료했기 때문에 한칸만 이동하고 이동이 종료된다.
-                return 0;
-            }
-            else
-            {
-                StartCoroutine(Move((int)refract,0,true));
-                return 1;
-            }
-        }
-        return 1; //충돌한 렌즈가 없는 경우 정상 진행
-    }
-
-    /// <summary>
-    /// 현재 접촉해있는 대각 거울이 있는지 체크
-    /// </summary>
-    /// <param name="_dir"></param>
-    /// <returns>이후 움직일 방향</returns>
-    private int CheckCollideMirror(int _dir)
-    {
-        if (collidingMirror != null)
-        {
-            movePause = true;
-            Direction reflect = collidingMirror.GetMirrorReflectDirection(_dir);
-            if (reflect == Direction.RETURN)
-            {
-                int reverseDir = _dir > 4 ? _dir - 4 : _dir + 4; //역방향
-                StartCoroutine(Move(reverseDir, 0, true)); //직전에 모든 코루틴을 종료했기 때문에 한칸만 이동하고 이동이 종료된다.
-                return 0;
-            }
-            else
-            {
-                StartCoroutine(Move((int)reflect, 0, true));
-                return (int)reflect;
-            }
-        }
-        return -1; //충돌한 렌즈가 없는 경우 정상 진행
     }
 
     /// <summary>
@@ -412,67 +347,11 @@ public class PlayerMove1 : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Wall"))
-        {
-            EffectDie();
-        }
-        else if (collision.gameObject.tag.Equals("Objective"))
-        {
-            CheckCollideObjective(collision.GetComponent<Objective>());
-        }
-        else if (collision.gameObject.tag.Equals("Colors"))
-        {
-            collisionList.Add(collision.gameObject);
-        }
-        else if (collision.gameObject.tag.Equals("Prism")) //프리즘과 충돌한 경우
-        {
-            EffectManger.instance.PrismEffect(new Vector3(collision.gameObject.transform.position.x,collision.gameObject.transform.position.y,0), "White");
-            SoundManager.instance.Play("Division");
-            collidingPrism = collision.gameObject;
-        }
-        else if (collision.gameObject.tag.Contains("Concave") || collision.gameObject.tag.Contains("Convex")) //렌즈와 충돌한 경우
-        {
-            collidingLens = collision.gameObject.GetComponent<Lens>();
-        }
-        else if (collision.gameObject.tag.Equals("Mirror"))
-        {
-            collidingMirror = collision.gameObject.GetComponent<Mirror>();
-        }
+
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Colors"))
-        {
-            collisionList.Remove(collision.gameObject);
-        }
-        if (collision.gameObject.tag.Equals("Prism") &&collidingPrism == collision.gameObject)
-        {
-            collidingPrism = null;
-        }
-        if ((collision.gameObject.tag.Contains("Concave") || collision.gameObject.tag.Contains("Convex"))&&collidingLens.gameObject==collision.gameObject) //연속 렌즈 접근시 새로운 렌즈로 갱신된 이후 이전 렌즈의 exit이 실행되서 null로 되버리는 경우 발생 
-        {
-            collidingLens = null;
-        }
-        if (collision.gameObject.tag.Equals("Mirror") && collidingMirror.gameObject == collision.gameObject)
-        {
-            collidingMirror = null;
-        }
+      
     }
-
-    #region 수정중인 함수
-
-    public List<Vector3> routeList = new List<Vector3>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
-
-    public void CalculateRoute(int _dir)
-    {
-        moveDir = _dir;
-
-        for(int i=0; i<moveCount; i++)
-        {
-
-        }
-    }
-
-    #endregion
 
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7419352366533594889}
   - component: {fileID: 7419352366533594890}
   - component: {fileID: 2007572597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Objective
   m_TagString: Objective
   m_Icon: {fileID: 0}
@@ -123,3 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorNow: Blue
   completeSprite: {fileID: 21300000, guid: 30616477eb280b04cace69e7a9647638, type: 3}
+  colorCombination: []

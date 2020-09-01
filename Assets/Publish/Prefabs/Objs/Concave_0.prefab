@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3897815894734018368}
   - component: {fileID: 3897815894734018371}
   - component: {fileID: 2256945087225517955}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right
   m_TagString: Concave_R
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3897815895296929905}
   - component: {fileID: 3897815895296929910}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Concave_0
   m_TagString: Concave
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 3897815895330588024}
   - component: {fileID: 3897815895330588027}
   - component: {fileID: 4539647904569166173}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left
   m_TagString: Concave_L
   m_Icon: {fileID: 0}

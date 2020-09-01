@@ -46,23 +46,23 @@ public class GameManager : MonoBehaviour
 
     public void MoveBtn(int _dir)
     {
-        if (!isGameOver)
-        {
-            if (canMove)
-            {
-                int dir = _dir;
-                canMove = false;
+    //    if (!isGameOver)
+    //    {
+    //        if (canMove)
+    //        {
+    //            int dir = _dir;
+    //            canMove = false;
 
-                List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
-                foreach (GameObject obj in activeObj)
-                {
-                    StartCoroutine(obj.GetComponent<PlayerMove1>().Move(dir));
-                }
-                movingChars = activeObj.Count;
-                StartCoroutine("CheckCharactersMove");
-                moveCount++;
-            }
-        }
+    //            List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
+    //            foreach (GameObject obj in activeObj)
+    //            {
+    //                StartCoroutine(obj.GetComponent<PlayerMove1>().Move(dir));
+    //            }
+    //            movingChars = activeObj.Count;
+    //            StartCoroutine("CheckCharactersMove");
+    //            moveCount++;
+    //        }
+    //    }
     }
     private void Update()
     {
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
                     List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
                     foreach (GameObject obj in activeObj)
                     {
-                        StartCoroutine(obj.GetComponent<PlayerMove1>().Move(dir));
+                        obj.GetComponent<PlayerMove1>().CalculateRoute(dir);
                     }
                     movingChars = activeObj.Count;
                     StartCoroutine("CheckCharactersMove");
@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0.2f); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
+        yield return new WaitForSeconds(0.1f); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
         canMove = true;
     }
 
@@ -334,8 +334,6 @@ public class GameManager : MonoBehaviour
 
         if(colorName.Equals("Red")|| colorName.Equals("Green")||colorName.Equals("Blue"))
         { //3원색은 불리가 불가능
-            color.GetComponent<PlayerMove1>().movePause = true;
-            StartCoroutine(color.GetComponent<PlayerMove1>().Move(_dir, 0, true));
             return;
         }
 
@@ -375,16 +373,16 @@ public class GameManager : MonoBehaviour
         List<int> diagonals = GetRefractDirections(_dir);
         if (splitedChars.Count == 3)
         {
-            StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
-            StartCoroutine(splitedChars[1].Move(_dir, _dir));
-            StartCoroutine(splitedChars[2].Move(diagonals[1], _dir));
+            //StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
+           // StartCoroutine(splitedChars[1].Move(_dir, _dir));
+            //StartCoroutine(splitedChars[2].Move(diagonals[1], _dir));
             movingChars += 2;
             character_Count += 2;
         }
         else
         {
-            StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
-            StartCoroutine(splitedChars[1].Move(diagonals[1],  _dir));
+            //StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
+            //StartCoroutine(splitedChars[1].Move(diagonals[1],  _dir));
             movingChars += 1;
             character_Count += 1;
         }

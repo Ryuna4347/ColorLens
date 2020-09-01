@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3988237438160903962}
   - component: {fileID: 6620202784061119924}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CyanFace
   m_TagString: Colors
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4153025561349347904}
   - component: {fileID: 4153025561349347907}
   - component: {fileID: 4153025561349347905}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cyan
   m_TagString: Colors
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4153025561349347910}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.445, y: -0.74, z: -1}
+  m_LocalPosition: {x: -0.445, y: -0.74, z: -2}
   m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children:
   - {fileID: 3988237438160903962}
@@ -182,7 +182,7 @@ MonoBehaviour:
   moveCount: 2
   movePause: 0
   easeMode: 1
-  moveValue: 0.77
+  moveValue: 0.75
   delay: 0.2
   moveDir: 0
   collisionChecked: 0
@@ -194,6 +194,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1a059733b83783148946989b2c905fb3, type: 3}
   - {fileID: 21300000, guid: f9fac450a78cf8245960e9e9f7e3b552, type: 3}
   moveGuide: {fileID: 6325587074104034089}
+  render: {fileID: 0}
+  routeList: []
 --- !u!58 &4153025561349347907
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -343,10 +345,25 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4124526709544130562, guid: 44cadd89761bede4883c96c4cd7ff460,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8126929482209632740, guid: 44cadd89761bede4883c96c4cd7ff460,
         type: 3}
       propertyPath: m_Name
       value: UITalkBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 8126929482209632740, guid: 44cadd89761bede4883c96c4cd7ff460,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8445486708371830084, guid: 44cadd89761bede4883c96c4cd7ff460,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44cadd89761bede4883c96c4cd7ff460, type: 3}

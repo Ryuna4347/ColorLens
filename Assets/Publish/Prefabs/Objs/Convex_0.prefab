@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9163601110411467596}
   - component: {fileID: 9163601110411467594}
   - component: {fileID: 9152045341305336695}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left
   m_TagString: Convex_R
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9163601110717983357}
   - component: {fileID: 9163601110717983356}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Convex_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 9163601111466105254}
   - component: {fileID: 9163601111466105252}
   - component: {fileID: 8349560416417996398}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right
   m_TagString: Convex_L
   m_Icon: {fileID: 0}

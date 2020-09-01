@@ -38,7 +38,7 @@ public class GameManager2 : MonoBehaviour
         baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
         level = GameObject.Find("Map").GetComponent<Map>().GetLevel();
         moveCount = 0;
-        StartCoroutine("CheckGameOver");
+        //StartCoroutine("CheckGameOver");
         canMove = true;
     }
 
@@ -64,10 +64,9 @@ public class GameManager2 : MonoBehaviour
                     List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
                     foreach (GameObject obj in activeObj)
                     {
-                        StartCoroutine(obj.GetComponent<PlayerMove1>().Move(dir));
                     }
                     movingChars = activeObj.Count;
-                    StartCoroutine("CheckCharactersMove");
+                    //StartCoroutine("CheckCharactersMove");
                     moveCount++;
                 }
             }
@@ -291,7 +290,7 @@ public class GameManager2 : MonoBehaviour
         if(colorName.Equals("Red")|| colorName.Equals("Green")||colorName.Equals("Blue"))
         { //3원색은 불리가 불가능
             color.GetComponent<PlayerMove1>().movePause = true;
-            StartCoroutine(color.GetComponent<PlayerMove1>().Move(_dir, 0, true));
+            ////StartCoroutine(color.GetComponent<PlayerMove1>().Move(_dir, 0, true));
             return;
         }
 
@@ -329,16 +328,16 @@ public class GameManager2 : MonoBehaviour
         List<int> diagonals = GetRefractDirections(_dir);
         if (splitedChars.Count == 3)
         {
-            StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
-            StartCoroutine(splitedChars[1].Move(_dir, _dir));
-            StartCoroutine(splitedChars[2].Move(diagonals[1], _dir));
+            //StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
+            //StartCoroutine(splitedChars[1].Move(_dir, _dir));
+            //StartCoroutine(splitedChars[2].Move(diagonals[1], _dir));
             movingChars += 2;
             character_Count += 2;
         }
         else
         {
-            StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
-            StartCoroutine(splitedChars[1].Move(diagonals[1],  _dir));
+            //StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
+            //StartCoroutine(splitedChars[1].Move(diagonals[1],  _dir));
             movingChars += 1;
             character_Count += 1;
         }
