@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
                     List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
                     foreach (GameObject obj in activeObj)
                     {
-                        obj.GetComponent<PlayerMove1>().CalculateRoute(dir);
+                        obj.GetComponent<PlayerMove1>().CalculateRoute((Direction)dir);
                     }
                     movingChars = activeObj.Count;
                     StartCoroutine("CheckCharactersMove");
@@ -326,7 +326,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CheckSplit(GameObject color, int _dir, int count)
+    public void CheckSplit(GameObject color, int _dir)
     {
         List<PlayerMove1> splitedChars = new List<PlayerMove1>(); //분리될 색상들의 리스트
         Vector3 splitPos = color.transform.position;

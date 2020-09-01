@@ -226,7 +226,7 @@ public class PlayerMove2 : MonoBehaviour
     {
         if (collidingPrism!=null)
         {
-            GameManager.instance.CheckSplit(gameObject, _dir, count);
+            GameManager.instance.CheckSplit(gameObject, _dir);
         }
     }
 

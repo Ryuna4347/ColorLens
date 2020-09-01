@@ -182,9 +182,8 @@ MonoBehaviour:
   moveCount: 2
   movePause: 0
   easeMode: 1
-  moveValue: 0.75
+  moveValue: 0.76
   delay: 0.2
-  moveDir: 0
   collisionChecked: 0
   collidingPrism: {fileID: 0}
   collidingLens: {fileID: 0}
@@ -195,7 +194,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 88d18dffc84e62a489a07c4b2c7a07bc, type: 3}
   moveGuide: {fileID: 0}
   render: {fileID: 0}
-  routeList: []
+  routeList: 
 --- !u!58 &1189683522531677618
 CircleCollider2D:
   m_ObjectHideFlags: 0

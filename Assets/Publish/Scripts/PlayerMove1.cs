@@ -12,8 +12,6 @@ public class PlayerMove1 : MonoBehaviour
     public float moveValue;
     public float delay;
 
-    public int moveDir;
-
     public bool collisionChecked; //충돌을 하면 a,b 모두에서 collisionStay가 발생해서 2번 함수를 실행하기 때문에 한쪽에서만 실행하도록 하기 위한 트리거
     public GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
     public Lens collidingLens=null; 
@@ -97,12 +95,11 @@ public class PlayerMove1 : MonoBehaviour
 
         for (int i = 0; i < routeList.Count; i++)
         {
-            Vector3 nextPos = routeList[i];
+            Vector2 nextPos = GetVectorFromDirection(routeList[i]);
 
             if(!isFlipped)
             {
-                Debug.Log(nextPos.x - transform.position.x);
-                if(nextPos.x - transform.position.x < 0)
+                if(nextPos.x<0)
                 {
                     isFlipped = true; 
                     facePos.x *= -1;
@@ -111,7 +108,7 @@ public class PlayerMove1 : MonoBehaviour
             }
             else
             {
-                if (nextPos.x - transform.position.x > 0)
+                if (nextPos.x>0)
                 {
                     isFlipped = false; 
                     facePos.x *= -1;
@@ -121,40 +118,39 @@ public class PlayerMove1 : MonoBehaviour
             render.flipX = isFlipped;
             faceRenderer.flipX = isFlipped;
 
-            transform.DOMove(nextPos, delay).SetEase(easeMode);
+            transform.DOMove(transform.position+(Vector3)nextPos*moveValue, delay).SetEase(easeMode);
             SoundManager.instance.Play("Move");
             yield return new WaitForSeconds(delay * 1.5f);
         }
 
         faceRenderer.sprite = faceList[0];
-        CheckCollide(); //색의 합병은 이동이 다 끝난 이후 체크
+        CheckCollideColors(); //색의 합병은 이동이 다 끝난 이후 체크
         GameManager.instance.CheckMoveOver();
     }
 
-    public List<Vector3> routeList = new List<Vector3>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
+    public List<Direction> routeList = new List<Direction>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
 
-    public void CalculateRoute(int _dir)
+    public void CalculateRoute(Direction _dir)
     {
         Vector3 lastPos = transform.position;
-        routeList = new List<Vector3>();
+        routeList = new List<Direction>();
         int layer = 1;
-        int tempDir = 0;
+        Direction tempDir = 0;
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
 
-        moveDir = _dir;
         for (int i = 0; i < moveCount; i++)
         {
             Vector3 dir;
 
-            if (tempDir == 0)
+            if (tempDir != (Direction)0)
             {
-                dir = GetDirectionFromInt(_dir);
-            }
-            else //렌즈에 의한 굴절은 한 번만 사용되어서 tempDir을 사용해서 임시로 방향을 구해준다.
-            {
-                dir = GetDirectionFromInt(tempDir);
+                dir = GetVectorFromDirection(tempDir);
                 tempDir = 0;
+            }
+            else
+            {
+                dir = GetVectorFromDirection(_dir);
             }
 
             Collider2D hit = Physics2D.OverlapCircle(lastPos + dir * moveValue, 0.1f, layer);
@@ -163,9 +159,10 @@ public class PlayerMove1 : MonoBehaviour
             {
                 string collideObjTag = hit.gameObject.tag; //레이캐스트에 충돌한 오브젝트의 태그
 
-                lastPos = hit.transform.position;
-                lastPos.z = -1;
-                routeList.Add(lastPos);
+                Direction dirNow = GetDirectionFromVector(dir);
+                lastPos= lastPos + dir * moveValue;
+
+                routeList.Add(dirNow);
 
                 if (collideObjTag.Equals("Wall"))
                 {
@@ -185,7 +182,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    tempDir = (int)(hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection(_dir));
+                    tempDir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
                     if (tempDir == 0)
                     {
                         routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
@@ -195,7 +192,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Mirror"))
                 {
-                    _dir = (int)(hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection(_dir)); //거울은 방향이 영구적으로 바뀌게 된다.
+                    _dir = hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection((int)dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
                     if (_dir == 0)
                     {
                         routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
@@ -216,33 +213,38 @@ public class PlayerMove1 : MonoBehaviour
         StartCoroutine("Move");
     }
 
-    private Vector3 GetDirectionFromInt(int _dir)
+    /// <summary>
+    /// Direction형을 통해 방위 벡터로 변환
+    /// </summary>
+    /// <param name="_dir"></param>
+    /// <returns></returns>
+    private Vector3 GetVectorFromDirection(Direction _dir)
     {
         Vector3 dir = new Vector3();
         switch (_dir)
         {
-            case 1: //위
+            case (Direction)1: //위
                 dir = new Vector3(0, 1);
                 break;
-            case 2: //오른쪽위
+            case (Direction)2: //오른쪽위
                 dir = new Vector3(1, 1);
                 break;
-            case 3: //오른쪽
+            case (Direction)3: //오른쪽
                 dir = new Vector3(1, 0);
                 break;
-            case 4: //오른쪽아래
+            case (Direction)4: //오른쪽아래
                 dir = new Vector3(1, -1);
                 break;
-            case 5: //아래
+            case (Direction)5: //아래
                 dir = new Vector3(0, -1);
                 break;
-            case 6: //왼쪽아래
+            case (Direction)6: //왼쪽아래
                 dir = new Vector3(-1, -1);
                 break;
-            case 7: //왼쪽
+            case (Direction)7: //왼쪽
                 dir = new Vector3(-1, 0);
                 break;
-            case 8: //왼쪽위
+            case (Direction)8: //왼쪽위
                 dir = new Vector3(-1, 1);
                 break;
         }
@@ -250,9 +252,33 @@ public class PlayerMove1 : MonoBehaviour
     }
 
     /// <summary>
+    /// 방위를 통해 Direction형으로 변환
+    /// </summary>
+    /// <param name="vec"></param>
+    /// <returns></returns>
+    private Direction GetDirectionFromVector(Vector2 vec)
+    {
+        Direction dir;
+
+        if(vec.x>0)
+        {
+            dir = (Direction)(3 - vec.y);
+        }
+        else if(vec.x<0)
+        {
+            dir = (Direction)(7 + vec.y);
+        }
+        else
+        {
+            dir = vec.y > 0 ? (Direction)1 : (Direction)5;
+        }
+        return dir;
+    }
+
+    /// <summary>
     /// 다른 색상과 충돌을 체크하여 색을 합친다.
     /// </summary>
-    private void CheckCollide()
+    private void CheckCollideColors()
     {
         if (!collisionChecked)
         {
@@ -270,7 +296,6 @@ public class PlayerMove1 : MonoBehaviour
                 GameManager.instance.CheckMerge(collisionList);
             }
         }
-        
     }
 
     /// <summary>
@@ -278,11 +303,11 @@ public class PlayerMove1 : MonoBehaviour
     /// </summary>
     /// <param name="_dir"></param>
     /// <param name="count"></param>
-    private void CheckCollidePrism(int _dir, int count)
+    private void CheckCollidePrism(int _dir)
     {
         if (collidingPrism!=null)
         {
-            GameManager.instance.CheckSplit(gameObject, _dir, count);
+            GameManager.instance.CheckSplit(gameObject, _dir);
         }
     }
 
@@ -347,11 +372,17 @@ public class PlayerMove1 : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
+        if (collision.gameObject.CompareTag("Prism"))
+        {
+            collidingPrism = collision.gameObject;
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-      
+        if (collision.gameObject.CompareTag("Prism"))
+        {
+            collidingPrism = null;
+        }
     }
 
 }
