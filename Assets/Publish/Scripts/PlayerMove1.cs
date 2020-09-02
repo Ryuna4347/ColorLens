@@ -13,10 +13,11 @@ public class PlayerMove1 : MonoBehaviour
     public float delay;
 
     public bool collisionChecked; //충돌을 하면 a,b 모두에서 collisionStay가 발생해서 2번 함수를 실행하기 때문에 한쪽에서만 실행하도록 하기 위한 트리거
-    public GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
-    public Lens collidingLens=null; 
-    public Mirror collidingMirror=null;
-    public List<GameObject> collisionList; //현재 충돌중인 색상들의 리스트(충돌한 모든 오브젝트에서 체크하고, 한 오브젝트만 게임매니저에 요청하는 걸로)
+    [SerializeField] private GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
+    [SerializeField]private Lens collidingLens=null;
+    [SerializeField] private Mirror collidingMirror=null;
+    [SerializeField] private Objective collidingObjective = null;
+    [SerializeField] public List<GameObject> collisionList; //현재 충돌중인 색상들의 리스트(충돌한 모든 오브젝트에서 체크하고, 한 오브젝트만 게임매니저에 요청하는 걸로)
 
     private SpriteRenderer faceRenderer;
     public List<Sprite> faceList = new List<Sprite>();
@@ -125,11 +126,19 @@ public class PlayerMove1 : MonoBehaviour
 
         faceRenderer.sprite = faceList[0];
         CheckCollideColors(); //색의 합병은 이동이 다 끝난 이후 체크
+        CheckCollidePrism(routeList[routeList.Count - 1]);
+        CheckCollideObjective();
+
         GameManager.instance.CheckMoveOver();
     }
 
     public List<Direction> routeList = new List<Direction>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_dir"></param>
+    /// <param name="objEffect">분열에 의한 한 칸 이동인가?</param>
     public void CalculateRoute(Direction _dir)
     {
         Vector3 lastPos = transform.position;
@@ -161,6 +170,96 @@ public class PlayerMove1 : MonoBehaviour
 
                 Direction dirNow = GetDirectionFromVector(dir);
                 lastPos= lastPos + dir * moveValue;
+
+                routeList.Add(dirNow);
+
+                if (collideObjTag.Equals("Wall"))
+                {
+                    break; //죽을 예정이므로 그 위치까지만 이동하면 됨
+                }
+                else if (collideObjTag.Equals("Objective"))
+                {
+                    break; //색상 상자에 도착해도 더 이상 이동할 필요 없음
+                }
+                else if (collideObjTag.Equals("Prism"))
+                {
+                    if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
+                    { //단색인 경우 프리즘을 통과하는게 좋다.
+                        continue;
+                    }
+                    break; //프리즘에 도착한 혼합색일 경우 멈추고 분열 시도
+                }
+                else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
+                {
+                    tempDir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    if (tempDir == 0)
+                    {
+                        routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
+                        break;
+                    }
+                    i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                }
+                else if (collideObjTag.Equals("Mirror"))
+                {
+                    _dir = hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection((int)dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
+                    if (_dir == 0)
+                    {
+                        routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
+                        break;
+                    }
+                    i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                }
+                else //흰색 타일
+                {
+
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+        StartCoroutine("Move");
+    }
+
+    public void CalculateRoute(Direction _dir, Direction splitDir)
+    {
+        Vector3 lastPos = transform.position;
+        routeList = new List<Direction>();
+        int layer = 1;
+        Direction tempDir = 0;
+
+        layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
+
+        for (int i = 0; i < moveCount+1; i++) //분열 이후 첫 한 칸은 이동횟수에 들어가지 않는다.
+        {
+            Vector3 dir;
+
+            if (i == 0) //맨 처음은 분열된 이후 대각선 이동
+            {
+                dir = GetVectorFromDirection(splitDir);
+            }
+            else
+            {
+                if (tempDir != (Direction)0)
+                {
+                    dir = GetVectorFromDirection(tempDir);
+                    tempDir = 0;
+                }
+                else
+                {
+                    dir = GetVectorFromDirection(_dir);
+                }
+            }
+
+            Collider2D hit = Physics2D.OverlapCircle(lastPos + dir * moveValue, 0.1f, layer);
+
+            if (hit != null)
+            {
+                string collideObjTag = hit.gameObject.tag; //레이캐스트에 충돌한 오브젝트의 태그
+
+                Direction dirNow = GetDirectionFromVector(dir);
+                lastPos = lastPos + dir * moveValue;
 
                 routeList.Add(dirNow);
 
@@ -303,10 +402,12 @@ public class PlayerMove1 : MonoBehaviour
     /// </summary>
     /// <param name="_dir"></param>
     /// <param name="count"></param>
-    private void CheckCollidePrism(int _dir)
+    private void CheckCollidePrism(Direction _dir)
     {
         if (collidingPrism!=null)
         {
+            EffectManger.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
+            SoundManager.instance.Play("Division");
             GameManager.instance.CheckSplit(gameObject, _dir);
         }
     }
@@ -321,16 +422,20 @@ public class PlayerMove1 : MonoBehaviour
         moveCount = -1; //위와 동일
         StartCoroutine("DisappearPlayer");
     }
-    private void CheckCollideObjective(Objective objective)
+
+    private void CheckCollideObjective()
     {
-        movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
-        if (objective.CheckColor(gameObject.name))
+        if (collidingObjective != null)
         {
-            objective.EraseColor(gameObject.name);
-            PlayerDead();
+            movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
+            if (collidingObjective.CheckColor(gameObject.name))
+            {
+                collidingObjective.EraseColor(gameObject.name);
+                PlayerDead();
+            }
+            else
+                EffectDie();
         }
-        else
-            EffectDie();
     }
 
     public void EffectDie()
@@ -376,12 +481,28 @@ public class PlayerMove1 : MonoBehaviour
         {
             collidingPrism = collision.gameObject;
         }
+        else if(collision.gameObject.tag.Equals("Wall"))
+        {
+            EffectDie();
+        }
+        else if (collision.gameObject.tag.Equals("Colors"))
+        {
+            collisionList.Add(collision.gameObject);
+        }
+        else if(collision.gameObject.tag.Equals("Objective"))
+        {
+            collidingObjective = collision.GetComponent<Objective>();
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Prism"))
         {
             collidingPrism = null;
+        }
+        else if (collision.gameObject.tag.Equals("Colors"))
+        {
+            collisionList.Remove(collision.gameObject);
         }
     }
 

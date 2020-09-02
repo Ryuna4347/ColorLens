@@ -326,7 +326,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CheckSplit(GameObject color, int _dir)
+    public void CheckSplit(GameObject color, Direction _dir)
     {
         List<PlayerMove1> splitedChars = new List<PlayerMove1>(); //분리될 색상들의 리스트
         Vector3 splitPos = color.transform.position;
@@ -343,21 +343,21 @@ public class GameManager : MonoBehaviour
         switch (colorName)
         {
             case "Yellow":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Red")).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Green")).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Red") && x.activeSelf==false).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Cyan":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Green")).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Blue")).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Magenta":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Red")).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Blue")).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "White":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Red")).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Green")).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Blue")).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(characters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             default:
                 return;
@@ -366,23 +366,23 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i<splitedChars.Count; i++)
         {
             splitedChars[i].gameObject.SetActive(true);
-            splitedChars[i].GetComponent<Collider2D>().enabled = false; //분열하는 경우 생성되면서 다른 색의 오브젝트와 충돌해서 첫 이동을 마치고 충돌체크하는 걸로
             splitedChars[i].transform.position = splitPos;
         }
        
-        List<int> diagonals = GetRefractDirections(_dir);
+        List<Direction> diagonals = GetRefractDirections(_dir);
         if (splitedChars.Count == 3)
         {
-            //StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
-           // StartCoroutine(splitedChars[1].Move(_dir, _dir));
-            //StartCoroutine(splitedChars[2].Move(diagonals[1], _dir));
+            splitedChars[0].CalculateRoute(_dir, diagonals[0]);
+            splitedChars[1].CalculateRoute(_dir, _dir);
+            splitedChars[2].CalculateRoute(_dir, diagonals[1]);
             movingChars += 2;
             character_Count += 2;
         }
         else
         {
-            //StartCoroutine(splitedChars[0].Move(diagonals[0], _dir));
-            //StartCoroutine(splitedChars[1].Move(diagonals[1],  _dir));
+
+            splitedChars[0].CalculateRoute(_dir, diagonals[0]);
+            splitedChars[1].CalculateRoute(_dir, diagonals[1]);
             movingChars += 1;
             character_Count += 1;
         }
@@ -391,44 +391,44 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 특정 방향으로 들어오는 벡터가 프리즘에 의해 분열될 경우의 벡터들의 리스트를 구한다.
     /// </summary>
-    /// <returns>진행방향을 제외한 좌/우측 대각 벡터의 리스트</returns>
-    private List<int> GetRefractDirections(int direction)
+    /// <returns>진행방향을 제외한 좌/우측 대각 방향의 리스트</returns>
+    private List<Direction> GetRefractDirections(Direction direction)
     {
-        List<int> diagonalVectors=new List<int>();
+        List<Direction> diagonalVectors=new List<Direction>();
 
         switch (direction)
         {
-            case 1: //위
-                diagonalVectors.Add(8);
-                diagonalVectors.Add(2);
+            case (Direction)1: //위
+                diagonalVectors.Add((Direction)8);
+                diagonalVectors.Add((Direction)2);
                 break;
-            case 2: //오른쪽위
-                diagonalVectors.Add(1);
-                diagonalVectors.Add(3);
+            case (Direction)2: //오른쪽위
+                diagonalVectors.Add((Direction)1);
+                diagonalVectors.Add((Direction)3);
                 break;
-            case 3: //오른쪽
-                diagonalVectors.Add(2);
-                diagonalVectors.Add(4);
+            case (Direction)3: //오른쪽
+                diagonalVectors.Add((Direction)2);
+                diagonalVectors.Add((Direction)4);
                 break;
-            case 4: //오른쪽아래
-                diagonalVectors.Add(3);
-                diagonalVectors.Add(5);
+            case (Direction)4: //오른쪽아래
+                diagonalVectors.Add((Direction)3);
+                diagonalVectors.Add((Direction)5);
                 break;
-            case 5: //아래
-                diagonalVectors.Add(4);
-                diagonalVectors.Add(6);
+            case (Direction)5: //아래
+                diagonalVectors.Add((Direction)4);
+                diagonalVectors.Add((Direction)6);
                 break;
-            case 6: //왼쪽아래
-                diagonalVectors.Add(5);
-                diagonalVectors.Add(7);
+            case (Direction)6: //왼쪽아래
+                diagonalVectors.Add((Direction)5);
+                diagonalVectors.Add((Direction)7);
                 break;
-            case 7: //왼쪽
-                diagonalVectors.Add(6);
-                diagonalVectors.Add(8);
+            case (Direction)7: //왼쪽
+                diagonalVectors.Add((Direction)6);
+                diagonalVectors.Add((Direction)8);
                 break;
-            case 8: //왼쪽위
-                diagonalVectors.Add(7);
-                diagonalVectors.Add(1);
+            case (Direction)8: //왼쪽위
+                diagonalVectors.Add((Direction)7);
+                diagonalVectors.Add((Direction)1);
                 break;
         }
         return diagonalVectors;
