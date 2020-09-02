@@ -106,11 +106,11 @@ public class PlayerMove2 : MonoBehaviour
             }
             moveDir = tempDir;
         }
-        GameManager.instance.CheckMoveOver();
-        while (GameManager.instance.movingChars > 0)
-        {
-            yield return null;
-        }
+        //GameManager.instance.CheckMoveOver();
+        //while (GameManager.instance.movingChars > 0)
+        //{
+        //    yield return null;
+        //}
         CheckCollide(); //색의 합병은 이동이 다 끝난 이후 체크
     }
 
@@ -314,7 +314,7 @@ public class PlayerMove2 : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
         }
-        GameManager.instance.ControlCharacterCount(); //캐릭터 사망에 따른 전체 캐릭터 갯수 감소
+        //GameManager.instance.ControlCharacterCount(); //캐릭터 사망에 따른 전체 캐릭터 갯수 감소
         gameObject.SetActive(false);
     }
     

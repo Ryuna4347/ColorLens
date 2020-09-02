@@ -11,10 +11,9 @@ public class GameManager : MonoBehaviour
     public GameObject colorBox;//색상박스 부모변수
     [SerializeField] private int colorBox_Child_Count;//색상 박스 수
     [SerializeField] private int arrive_count;//도착한 캐릭터 수
-    [SerializeField] private int character_Count;//현재 씬 내에 존재하는 캐릭터 수
 
     private int level; //현재 레벨
-    public int movingChars; //현재 움직이고 있는 캐릭터 수
+    public List<GameObject> movingChars; //현재 움직이고 있는 캐릭터 수
     public bool canMove=false;
     List<int> baseMoveCount; //각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
     int moveCount; //현재 맵에서 이동횟수
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Character_CountCheck();
         colorBox = GameObject.Find("ColorBox_Parent");
         colorBox_Child_Count = colorBox.transform.childCount;
         baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
@@ -90,12 +88,12 @@ public class GameManager : MonoBehaviour
                 {
                     canMove = false;
 
-                    List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
-                    foreach (GameObject obj in activeObj)
+                    List<GameObject> activeChars = characters.FindAll(x => x.activeSelf == true);
+                    foreach (GameObject obj in activeChars)
                     {
                         obj.GetComponent<PlayerMove1>().CalculateRoute((Direction)dir);
+                        AddMovingCharacter(obj);
                     }
-                    movingChars = activeObj.Count;
                     StartCoroutine("CheckCharactersMove");
                     moveCount++;
                 }
@@ -147,33 +145,17 @@ public class GameManager : MonoBehaviour
                 ClearEffect.instance.Clear(star, level, moveCount);
                 isGameOver = true;
             }
-            else if(character_Count<=0)
+            else
             {
-                GameOverEffect.instance.GameOver();
-                isGameOver = true;
+                List<GameObject> aliveChars = characters.FindAll(x => x.activeSelf == true);
+
+                if (aliveChars.Count == 0)
+                {
+                    GameOverEffect.instance.GameOver();
+                    isGameOver = true;
+                }
             }
             yield return null;
-        }
-    }
-
-    /// <summary>
-    /// 캐릭터 수 확인 함수 
-    /// </summary>
-    void Character_CountCheck()
-    {
-        List<GameObject> activeChars = characters.FindAll(x => x.activeSelf == true);
-        character_Count = activeChars.Count;
-    }
-
-    /// <summary>
-    /// 현재 살아 있는 색상 캐릭터의 숫자를 조절(기본적으로 검은칸에 들어가 죽거나 도착칸에서 사라지는 것)
-    /// </summary>
-    /// <param name="amount"></param>
-    public void ControlCharacterCount(int amount=-1)
-    {
-        if (character_Count > 0)
-        {
-            character_Count += amount;
         }
     }
 
@@ -198,7 +180,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator CheckCharactersMove()
     {
-        while(movingChars>0)
+        while(movingChars.Count>0)
         {
             yield return null;
         }
@@ -209,10 +191,23 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 각 캐릭터의 움직임이 끝나면 호출하는 함수(CheckCharactersMove에 사용됨)
     /// </summary>
-    public void CheckMoveOver()
+    public void CheckMoveOver(GameObject character)
     {
-        if(movingChars > 0)
-            movingChars--;
+        if(movingChars.Count > 0&&movingChars.Contains(character))
+        {
+            movingChars.Remove(character);
+        }
+    }
+    public void AddMovingCharacter(GameObject character)
+    {
+        if (!movingChars.Contains(character))
+        {
+            movingChars.Add(character);
+        }
+        else
+        {
+            Debug.Log("중복 추가 시도");
+        }
     }
 
     /// <summary>
@@ -239,9 +234,9 @@ public class GameManager : MonoBehaviour
             foreach (GameObject color in copy)
             {
                 color.transform.position = new Vector3(-180, 0, color.transform.position.z);
+                CheckMoveOver(color);
                 color.SetActive(false);
             }
-            character_Count -= 2;
             mergeChar = characters.Find(x => x.name.Equals("White")); //흰색 캐릭터를 켜고 충돌한 위치에 가져다 둔다.
             mergeChar.SetActive(true);
             mergeChar.transform.position = mergePos;
@@ -314,12 +309,12 @@ public class GameManager : MonoBehaviour
                     mergeChar = characters.Find(x => x.name.Equals("White"));
                 }
             }
-            character_Count -= 1;
             Vector3 mergePos = colors[0].transform.position; 
             List<GameObject> copy= new List<GameObject>(colors);
             for (int i=0; i<copy.Count; i++)
             {
-                copy[i].SetActive(false);
+                copy[i].SetActive(false); 
+                CheckMoveOver(copy[i]);
             }
             mergeChar.SetActive(true);
             mergeChar.transform.position = mergePos;        
@@ -338,6 +333,7 @@ public class GameManager : MonoBehaviour
         }
 
         color.transform.position = new Vector3(-180, 0, color.transform.position.z);
+        CheckMoveOver(color);
         color.SetActive(false);
 
         switch (colorName)
@@ -362,7 +358,9 @@ public class GameManager : MonoBehaviour
             default:
                 return;
         }
-        
+
+        Debug.Log("split");
+
         for (int i = 0; i<splitedChars.Count; i++)
         {
             splitedChars[i].gameObject.SetActive(true);
@@ -375,16 +373,17 @@ public class GameManager : MonoBehaviour
             splitedChars[0].CalculateRoute(_dir, diagonals[0]);
             splitedChars[1].CalculateRoute(_dir, _dir);
             splitedChars[2].CalculateRoute(_dir, diagonals[1]);
-            movingChars += 2;
-            character_Count += 2;
+            AddMovingCharacter(splitedChars[0].gameObject);
+            AddMovingCharacter(splitedChars[1].gameObject);
+            AddMovingCharacter(splitedChars[2].gameObject);
         }
         else
         {
 
             splitedChars[0].CalculateRoute(_dir, diagonals[0]);
             splitedChars[1].CalculateRoute(_dir, diagonals[1]);
-            movingChars += 1;
-            character_Count += 1;
+            AddMovingCharacter(splitedChars[0].gameObject);
+            AddMovingCharacter(splitedChars[1].gameObject);
         }
     }
 

@@ -125,11 +125,24 @@ public class PlayerMove1 : MonoBehaviour
         }
 
         faceRenderer.sprite = faceList[0];
-        CheckCollideColors(); //색의 합병은 이동이 다 끝난 이후 체크
-        CheckCollidePrism(routeList[routeList.Count - 1]);
-        CheckCollideObjective();
-
-        GameManager.instance.CheckMoveOver();
+        yield return null;
+        
+        if (!collisionChecked && collisionList.Count >= 1)
+        {
+            CheckCollideColors(); //색의 합병은 이동이 다 끝난 이후 체크
+            yield break;
+        }
+        if (collidingPrism != null)
+        {
+            CheckCollidePrism();
+            yield break;
+        }
+        if (collidingObjective != null)
+        {
+            CheckCollideObjective();
+            yield break;
+        }
+        GameManager.instance.CheckMoveOver(gameObject);
     }
 
     public List<Direction> routeList = new List<Direction>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
@@ -389,22 +402,16 @@ public class PlayerMove1 : MonoBehaviour
     /// </summary>
     private void CheckCollideColors()
     {
-        if (!collisionChecked)
+        collisionChecked = true;
+        foreach (GameObject collide in collisionList) //중복처리 방지하도록 제일 빠르게 도달한 오브젝트가 다른 오브젝트의 이 함수 진행을 막는다.
         {
-            if (collisionList.Count >= 1)
-            {
-                collisionChecked = true;
-                foreach (GameObject collide in collisionList) //중복처리 방지하도록 제일 빠르게 도달한 오브젝트가 다른 오브젝트의 이 함수 진행을 막는다.
-                {
-                    collide.GetComponent<PlayerMove1>().collisionChecked = true;
-                }
-                if (!collisionList.Contains(gameObject))
-                {
-                    collisionList.Add(this.gameObject);
-                }
-                GameManager.instance.CheckMerge(collisionList);
-            }
+            collide.GetComponent<PlayerMove1>().collisionChecked = true;
         }
+        if (!collisionList.Contains(gameObject))
+        {
+            collisionList.Add(this.gameObject);
+        }
+        GameManager.instance.CheckMerge(collisionList);
     }
 
     /// <summary>
@@ -412,14 +419,11 @@ public class PlayerMove1 : MonoBehaviour
     /// </summary>
     /// <param name="_dir"></param>
     /// <param name="count"></param>
-    private void CheckCollidePrism(Direction _dir)
+    private void CheckCollidePrism()
     {
-        if (collidingPrism!=null)
-        {
-            EffectManger.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
-            SoundManager.instance.Play("Division");
-            GameManager.instance.CheckSplit(gameObject, _dir);
-        }
+        EffectManger.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
+        SoundManager.instance.Play("Division");
+        GameManager.instance.CheckSplit(gameObject, routeList[routeList.Count - 1]);
     }
 
     /// <summary>
@@ -435,17 +439,14 @@ public class PlayerMove1 : MonoBehaviour
 
     private void CheckCollideObjective()
     {
-        if (collidingObjective != null)
+        movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
+        if (collidingObjective.CheckColor(gameObject.name))
         {
-            movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
-            if (collidingObjective.CheckColor(gameObject.name))
-            {
-                collidingObjective.EraseColor(gameObject.name);
-                PlayerDead();
-            }
-            else
-                EffectDie();
+            collidingObjective.EraseColor(gameObject.name);
+            PlayerDead();
         }
+        else
+            EffectDie();
     }
 
     public void EffectDie()
@@ -453,8 +454,7 @@ public class PlayerMove1 : MonoBehaviour
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
         moveCount = -1; //위와 동일
         SoundManager.instance.Play("Die");
-        GameManager.instance.CheckMoveOver();
-        GameManager.instance.ControlCharacterCount(); //캐릭터 사망에 따른 전체 캐릭터 갯수 감소
+        GameManager.instance.CheckMoveOver(gameObject);
         gameObject.SetActive(false);
         EffectManger.instance.circleEffect(transform.position, gameObject.name);
     }
@@ -471,8 +471,7 @@ public class PlayerMove1 : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
         }
-        GameManager.instance.CheckMoveOver();
-        GameManager.instance.ControlCharacterCount(); //캐릭터 사망에 따른 전체 캐릭터 갯수 감소
+        GameManager.instance.CheckMoveOver(gameObject);
         gameObject.SetActive(false);
     }
 
@@ -489,6 +488,7 @@ public class PlayerMove1 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Prism"))
         {
+            Debug.Log("check2");
             collidingPrism = collision.gameObject;
         }
         else if(collision.gameObject.tag.Equals("Wall"))
