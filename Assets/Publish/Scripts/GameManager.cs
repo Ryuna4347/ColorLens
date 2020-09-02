@@ -359,8 +359,6 @@ public class GameManager : MonoBehaviour
                 return;
         }
 
-        Debug.Log("split");
-
         for (int i = 0; i<splitedChars.Count; i++)
         {
             splitedChars[i].gameObject.SetActive(true);

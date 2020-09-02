@@ -488,7 +488,6 @@ public class PlayerMove1 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Prism"))
         {
-            Debug.Log("check2");
             collidingPrism = collision.gameObject;
         }
         else if(collision.gameObject.tag.Equals("Wall"))
