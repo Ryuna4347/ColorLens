@@ -194,7 +194,14 @@ public class PlayerMove1 : MonoBehaviour
                     tempDir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
                     if (tempDir == 0)
                     {
-                        routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
+                        if((int)dirNow<=4)
+                        {
+                            routeList.Add((Direction)((int)dirNow+4));
+                        }
+                        else
+                        {
+                            routeList.Add((Direction)((int)dirNow - 4));
+                        }
                         break;
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
@@ -202,10 +209,13 @@ public class PlayerMove1 : MonoBehaviour
                 else if (collideObjTag.Equals("Mirror"))
                 {
                     _dir = hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection((int)dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
-                    if (_dir == 0)
+                    if ((int)dirNow <= 4)
                     {
-                        routeList.Add(routeList[routeList.Count - 2]); //-1이 렌즈 위치이므로 되돌아가려면 -2 인덱스여야한다.
-                        break;
+                        routeList.Add((Direction)((int)dirNow + 4));
+                    }
+                    else
+                    {
+                        routeList.Add((Direction)((int)dirNow - 4));
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
                 }
