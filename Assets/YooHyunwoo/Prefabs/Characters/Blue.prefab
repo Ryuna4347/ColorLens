@@ -96,17 +96,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9140dad3a3d4c424ab56fdf5fa917c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveCount: 3
+  moveCount: 1
   movePause: 0
   easeMode: 1
   moveValue: 0.765
   delay: 0.2
-  moveDir: 0
   collisionChecked: 0
   collidingPrism: {fileID: 0}
   collidingLens: {fileID: 0}
   collidingMirror: {fileID: 0}
+  collidingObjective: {fileID: 0}
   collisionList: []
+  faceList: []
+  moveGuide: {fileID: 0}
+  render: {fileID: 0}
+  routeList: 
 --- !u!58 &8088749164312094250
 CircleCollider2D:
   m_ObjectHideFlags: 0

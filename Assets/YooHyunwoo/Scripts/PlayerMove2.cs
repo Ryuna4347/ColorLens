@@ -263,22 +263,22 @@ public class PlayerMove2 : MonoBehaviour
     /// <returns>이후 움직일 방향</returns>
     private int CheckCollideMirror(int _dir)
     {
-        if (collidingMirror != null)
-        {
-            movePause = true;
-            Direction reflect = collidingMirror.GetMirrorReflectDirection(_dir);
-            if (reflect == Direction.RETURN)
-            {
-                int reverseDir = _dir > 4 ? _dir - 4 : _dir + 4; //역방향
-                StartCoroutine(Move(reverseDir, 0, true)); //직전에 모든 코루틴을 종료했기 때문에 한칸만 이동하고 이동이 종료된다.
-                return 0;
-            }
-            else
-            {
-                StartCoroutine(Move((int)reflect, 0, true));
-                return (int)reflect;
-            }
-        }
+    //    if (collidingMirror != null)
+    //    {
+    //        movePause = true;
+    //        Direction reflect = collidingMirror.GetMirrorReflectDirection(_dir);
+    //        if (reflect == Direction.RETURN)
+    //        {
+    //            int reverseDir = _dir > 4 ? _dir - 4 : _dir + 4; //역방향
+    //            StartCoroutine(Move(reverseDir, 0, true)); //직전에 모든 코루틴을 종료했기 때문에 한칸만 이동하고 이동이 종료된다.
+    //            return 0;
+    //        }
+    //        else
+    //        {
+    //            StartCoroutine(Move((int)reflect, 0, true));
+    //            return (int)reflect;
+    //        }
+    //    }
         return -1; //충돌한 렌즈가 없는 경우 정상 진행
     }
 

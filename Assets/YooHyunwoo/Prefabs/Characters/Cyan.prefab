@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4153025561349348284
 Transform:
   m_ObjectHideFlags: 0
@@ -101,16 +101,16 @@ MonoBehaviour:
   easeMode: 1
   moveValue: 0.765
   delay: 0.2
-  moveDir: 0
   collisionChecked: 0
   collidingPrism: {fileID: 0}
   collidingLens: {fileID: 0}
   collidingMirror: {fileID: 0}
+  collidingObjective: {fileID: 0}
   collisionList: []
   faceList: []
   moveGuide: {fileID: 0}
   render: {fileID: 0}
-  routeList: []
+  routeList: 
 --- !u!58 &4153025561349347907
 CircleCollider2D:
   m_ObjectHideFlags: 0

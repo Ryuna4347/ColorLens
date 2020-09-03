@@ -1496,7 +1496,6 @@ GameObject:
   - component: {fileID: 3277344406099781712}
   - component: {fileID: 3277344406099781726}
   - component: {fileID: 3277344406099781713}
-  - component: {fileID: 3277344406099781719}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -1654,19 +1653,6 @@ MonoBehaviour:
   walkCountText: {fileID: 1772295791454209922}
   BG: {fileID: 7158495073973792249}
   clearPanel: {fileID: 7158495073674478505}
---- !u!114 &3277344406099781719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3277344406099781727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d35d7af02f1a9c34fa0fca35ae53fc79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pausePanel: {fileID: 7158495073613332791}
 --- !u!1 &3277344406232238553
 GameObject:
   m_ObjectHideFlags: 0
