@@ -1813,6 +1813,18 @@ MonoBehaviour:
   - stage10
   - stage11
   - stage12
+  - stage13
+  - stage14
+  - stage15
+  - stage16
+  - stage17
+  - stage18
+  - stage19
+  - stage20
+  - stage21
+  - stage22
+  - stage23
+  - stage24
 --- !u!4 &1998397607
 Transform:
   m_ObjectHideFlags: 0
