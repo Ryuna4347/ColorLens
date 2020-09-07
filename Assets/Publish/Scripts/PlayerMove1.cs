@@ -157,23 +157,13 @@ public class PlayerMove1 : MonoBehaviour
         Vector3 lastPos = transform.position;
         routeList = new List<Direction>();
         int layer = 1;
-        Direction tempDir = 0;
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
 
         for (int i = 0; i < moveCount; i++)
         {
-            Vector3 dir;
-
-            if (tempDir != (Direction)0)
-            {
-                dir = GetVectorFromDirection(tempDir);
-                tempDir = 0;
-            }
-            else
-            {
-                dir = GetVectorFromDirection(_dir);
-            }
+            Vector3 dir = GetVectorFromDirection(_dir);
+            
 
             Collider2D hit = Physics2D.OverlapCircle(lastPos + dir * moveValue, 0.1f, layer);
 
@@ -204,8 +194,8 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    tempDir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
-                    if (tempDir == 0)
+                    _dir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    if (_dir == 0)
                     {
                         if((int)dirNow<=4)
                         {
@@ -447,12 +437,12 @@ public class PlayerMove1 : MonoBehaviour
     /// <summary>
     /// 벽에 충돌해서 플레이어 사망
     /// </summary>
-    private void PlayerDead()
+    private void CharacterDisappear()
     {
         SoundManager.instance.Play("DisAppear");
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
         moveCount = -1; //위와 동일
-        StartCoroutine("DisappearPlayer");
+        StartCoroutine("DisappearCharacter");
     }
 
     private void CheckCollideObjective()
@@ -461,7 +451,7 @@ public class PlayerMove1 : MonoBehaviour
         if (collidingObjective.CheckColor(gameObject.name))
         {
             collidingObjective.EraseColor(gameObject.name);
-            PlayerDead();
+            CharacterDisappear();
         }
         else
             EffectDie();
@@ -476,7 +466,7 @@ public class PlayerMove1 : MonoBehaviour
         gameObject.SetActive(false);
         EffectManger.instance.circleEffect(transform.position, gameObject.name);
     }
-    private IEnumerator DisappearPlayer()
+    private IEnumerator DisappearCharacter()
     {
         float delay = 1.0f;
 

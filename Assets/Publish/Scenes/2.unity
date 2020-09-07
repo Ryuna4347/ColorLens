@@ -7293,7 +7293,7 @@ MonoBehaviour:
   movingChars: []
   canMove: 0
   tutorialCanvas: {fileID: 279383546}
-  pausePanel: {fileID: 0}
+  pausePanel: {fileID: 1551259028}
 --- !u!4 &1068309539
 Transform:
   m_ObjectHideFlags: 0
@@ -9396,8 +9396,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 366, y: -170}
-  m_SizeDelta: {x: 275, y: 300}
+  m_AnchoredPosition: {x: 366, y: -124.2}
+  m_SizeDelta: {x: 275, y: 208.37738}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1388314687
 MonoBehaviour:
@@ -10510,6 +10510,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3961874c6cb8379479de4f9c5ff90cb3, type: 3}
+--- !u!1 &1551259028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7158495073613332791, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1551259027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1569871582
 GameObject:
   m_ObjectHideFlags: 0
@@ -12170,8 +12176,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16, y: -170}
-  m_SizeDelta: {x: 275, y: 300}
+  m_AnchoredPosition: {x: 16, y: -124.2}
+  m_SizeDelta: {x: 275, y: 208.37738}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1755610121
 MonoBehaviour:

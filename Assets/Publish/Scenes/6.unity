@@ -7003,10 +7003,10 @@ MonoBehaviour:
   colorBox: {fileID: 796742203}
   colorBox_Child_Count: 0
   arrive_count: 0
-  character_Count: 0
-  movingChars: 0
+  movingChars: []
   canMove: 0
   tutorialCanvas: {fileID: 0}
+  pausePanel: {fileID: 1551259028}
 --- !u!4 &1068309539
 Transform:
   m_ObjectHideFlags: 0
@@ -9472,6 +9472,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3961874c6cb8379479de4f9c5ff90cb3, type: 3}
+--- !u!1 &1551259028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7158495073613332791, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1551259027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1576426554
 PrefabInstance:
   m_ObjectHideFlags: 0

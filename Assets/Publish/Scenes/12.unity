@@ -6739,10 +6739,10 @@ MonoBehaviour:
   colorBox: {fileID: 796742203}
   colorBox_Child_Count: 0
   arrive_count: 0
-  character_Count: 0
-  movingChars: 0
+  movingChars: []
   canMove: 0
   tutorialCanvas: {fileID: 0}
+  pausePanel: {fileID: 1916998955603131420}
 --- !u!4 &1068309539
 Transform:
   m_ObjectHideFlags: 0

@@ -46,6 +46,10 @@ public class Objective : MonoBehaviour
         {
             return true;
         }
+        else if(colorCombination.Count < compareColorList.Count) // 더 높은 단계의 합성색이 상자에 들어올 경우 처리 불가능
+        {
+            return false;
+        }
         else
         {
             foreach(string compareColor in compareColorList)
