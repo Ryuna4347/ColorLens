@@ -11229,6 +11229,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 937780829886853655, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: sceneImages.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 937780829886853655, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: sceneImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 74774e392c501ef49a303f5a5adfd506,
+        type: 3}
+    - target: {fileID: 937780829886853655, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: sceneImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: bd5e240471f7492438cefde3fc85cef0,
+        type: 3}
+    - target: {fileID: 937780829886853655, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: sceneImages.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 034cd495c6c1b414886743b60b802061,
+        type: 3}
     - target: {fileID: 3277344406099781724, guid: 3961874c6cb8379479de4f9c5ff90cb3,
         type: 3}
       propertyPath: m_LocalPosition.x
