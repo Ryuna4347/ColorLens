@@ -341,6 +341,7 @@
           <e p="BgmManager.cs" t="Include" />
           <e p="ClearEffect.cs" t="Include" />
           <e p="ClearSave.cs" t="Include" />
+          <e p="CutScene.cs" t="Include" />
           <e p="Effect.cs" t="Include" />
           <e p="EffectManger.cs" t="Include" />
           <e p="GameOverEffect.cs" t="Include" />

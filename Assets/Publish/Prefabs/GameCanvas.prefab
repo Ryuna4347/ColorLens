@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 1772295791269386172}
   - component: {fileID: 1772295791269386175}
   m_Layer: 5
-  m_Name: Title
+  m_Name: StageSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f146f6fb37492c9419c6771267de5ae8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 55361cb2ba315b44c854ae34c933068e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -768,7 +768,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Title
+          m_StringArgument: StageSelect
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!95 &1772295791269386175
@@ -1611,6 +1611,7 @@ GameObject:
   - component: {fileID: 3277344406099781712}
   - component: {fileID: 3277344406099781726}
   - component: {fileID: 3277344406099781713}
+  - component: {fileID: 937780829886853655}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -1768,6 +1769,20 @@ MonoBehaviour:
   walkCountText: {fileID: 1772295791454209922}
   BG: {fileID: 7158495073973792249}
   clearPanel: {fileID: 7158495073674478505}
+--- !u!114 &937780829886853655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3277344406099781727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a36360bbeb36984cac3fc530c8a4a4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene: {fileID: 838575288787482462, guid: 546d7361e02975f4785da7ec5a8516ba, type: 3}
+  sceneImages: []
 --- !u!1 &3277344406232238553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,7 +2115,7 @@ GameObject:
   - component: {fileID: 3277344406812553928}
   - component: {fileID: 3277344406812553931}
   m_Layer: 5
-  m_Name: Title
+  m_Name: StageSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2152,7 +2167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f146f6fb37492c9419c6771267de5ae8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 55361cb2ba315b44c854ae34c933068e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2213,7 +2228,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Title
+          m_StringArgument: StageSelect
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!95 &3277344406812553931
@@ -3332,7 +3347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7158495073713609549
 RectTransform:
   m_ObjectHideFlags: 0
