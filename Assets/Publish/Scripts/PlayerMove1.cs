@@ -11,6 +11,7 @@ public class PlayerMove1 : MonoBehaviour
     //enum Color {red,orange,yellow,green,blue,}
     public float moveValue;
     public float delay;
+    public float charMoveRatio;
 
     public bool collisionChecked; //충돌을 하면 a,b 모두에서 collisionStay가 발생해서 2번 함수를 실행하기 때문에 한쪽에서만 실행하도록 하기 위한 트리거
     [SerializeField] private GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
@@ -41,12 +42,16 @@ public class PlayerMove1 : MonoBehaviour
         collisionChecked = false;
         collisionList = new List<GameObject>();
 
+        GameManager.moveRatioChanged += moveRatioChanged;
+
         if (moveGuide != null)
             StartCoroutine("ShowMoveGuide");
     }
 
     private void OnDisable()
     {
+        GameManager.moveRatioChanged -= moveRatioChanged;
+
         if ( moveGuide != null )
             moveGuide.Rewind();
 
@@ -119,9 +124,9 @@ public class PlayerMove1 : MonoBehaviour
             render.flipX = isFlipped;
             faceRenderer.flipX = isFlipped;
 
-            transform.DOMove(transform.position+(Vector3)nextPos*moveValue, delay).SetEase(easeMode);
+            transform.DOMove(transform.position+(Vector3)nextPos*moveValue, delay/charMoveRatio).SetEase(easeMode);
             SoundManager.instance.Play("Move");
-            yield return new WaitForSeconds(delay * 1.5f);
+            yield return new WaitForSeconds(delay/ charMoveRatio * 1.5f);
         }
 
         faceRenderer.sprite = faceList[0];
@@ -245,6 +250,8 @@ public class PlayerMove1 : MonoBehaviour
         routeList = new List<Direction>();
         int layer = 1;
         Direction tempDir = 0;
+
+        Debug.Log(gameObject.name+" 계산시작");
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
 
@@ -491,7 +498,12 @@ public class PlayerMove1 : MonoBehaviour
         }
         moveGuide.Show(moveCount);
     }
-    
+
+    private void moveRatioChanged(float value)
+    {
+        charMoveRatio = value;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Prism"))

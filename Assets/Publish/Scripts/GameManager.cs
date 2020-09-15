@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
+
+    public static Action<float> moveRatioChanged;
 
     public List<GameObject> characters;
 
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     List<int> baseMoveCount; //각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
     int moveCount; //현재 맵에서 이동횟수
     private bool isGameOver;
+    public float moveRatio { get; private set; } //배속
 
     public GameObject tutorialCanvas;
     public GameObject pausePanel;
@@ -40,7 +44,16 @@ public class GameManager : MonoBehaviour
         baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
         level = GameObject.Find("Map").GetComponent<Map>().GetLevel();
         moveCount = 0;
-        StartCoroutine("CheckGameOver");
+        moveRatio = 1.0f;
+        //LoadCharacters();
+        if (moveRatioChanged != null)
+        {
+            moveRatioChanged(moveRatio);
+        }
+        Debug.Log("매니저");
+
+
+        StartCoroutine("CheckGameOver"); //캐릭터 로드가 완료된 이후 게임 종료여부를 체크한다.
         CheckTutorial();
     }
 
@@ -205,7 +218,7 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
+        yield return new WaitForSeconds(0.1f/moveRatio); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
         canMove = true;
     }
 
@@ -236,9 +249,36 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void LoadCharacters()
     {
-        
+        GameObject[] chars = Resources.LoadAll<GameObject>("Prefabs/Characters");
+        Transform charParent = GameObject.Find("Characters").transform;
+
+        foreach(GameObject charPrefab in chars)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                GameObject instCharacter = GameObject.Instantiate(charPrefab);
+                instCharacter.name=instCharacter.name.Replace("(Clone)", "_" + (i + 1));
+                instCharacter.transform.position = new Vector3(-100f, 0f, -1f);
+                instCharacter.transform.parent = charParent;
+                characters.Add(instCharacter);
+                instCharacter.SetActive(false);
+            }
+        }
+
+        if (moveRatioChanged != null)
+            moveRatioChanged(moveRatio);
+
+        StartCoroutine("CheckGameOver"); //캐릭터 로드가 완료된 이후 게임 종료여부를 체크한다.
     }
 
+    public void ChangeMoveRatio(float value)
+    {
+        moveRatio = value;
+        if(moveRatioChanged !=null)
+        {
+            moveRatioChanged(moveRatio);
+        }
+    }
 
     /// <summary>
     /// 충돌한 색상을 체크하고 알맞는 캐릭터를 해당 위치에 소환한다.
@@ -385,24 +425,26 @@ public class GameManager : MonoBehaviour
             splitedChars[i].gameObject.SetActive(true);
             splitedChars[i].transform.position = splitPos;
         }
+
+        Debug.Log("d");
+        moveRatioChanged(moveRatio);
        
         List<Direction> diagonals = GetRefractDirections(_dir);
         if (splitedChars.Count == 3)
         {
-            splitedChars[0].CalculateRoute(_dir, diagonals[0]);
-            splitedChars[1].CalculateRoute(_dir, _dir);
-            splitedChars[2].CalculateRoute(_dir, diagonals[1]);
             AddMovingCharacter(splitedChars[0].gameObject);
             AddMovingCharacter(splitedChars[1].gameObject);
             AddMovingCharacter(splitedChars[2].gameObject);
+            splitedChars[0].CalculateRoute(_dir, diagonals[0]);
+            splitedChars[1].CalculateRoute(_dir, _dir);
+            splitedChars[2].CalculateRoute(_dir, diagonals[1]);
         }
         else
         {
-
-            splitedChars[0].CalculateRoute(_dir, diagonals[0]);
-            splitedChars[1].CalculateRoute(_dir, diagonals[1]);
             AddMovingCharacter(splitedChars[0].gameObject);
             AddMovingCharacter(splitedChars[1].gameObject);
+            splitedChars[0].CalculateRoute(_dir, diagonals[0]);
+            splitedChars[1].CalculateRoute(_dir, diagonals[1]);
         }
     }
 
