@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        colorBox = GameObject.Find("ColorBox_Parent");
         colorBox_Child_Count = colorBox.transform.childCount;
         baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
         level = GameObject.Find("Map").GetComponent<Map>().GetLevel();
@@ -50,8 +49,6 @@ public class GameManager : MonoBehaviour
         {
             moveRatioChanged(moveRatio);
         }
-        Debug.Log("매니저");
-
 
         StartCoroutine("CheckGameOver"); //캐릭터 로드가 완료된 이후 게임 종료여부를 체크한다.
         CheckTutorial();
