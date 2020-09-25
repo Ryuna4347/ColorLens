@@ -60,6 +60,9 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/Chapter_1/1-9.unity
     guid: 27af3624ef6cceb49970242565db4b88
   - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-10.unity
+    guid: 3bd68392b68b0ff498b96c25e5ba079d
+  - enabled: 1
     path: Assets/Publish/Scenes/Chapter_1/1-11.unity
     guid: a82e524f1c698b4408e313fddb407489
   - enabled: 1
