@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             if (canMove)
             {
-                if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && tutorialCanvas.activeSelf==false)
+                if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && (tutorialCanvas == null || tutorialCanvas.activeSelf==false))
                 {
                     if (Time.timeScale == 0) //일시정지상태일때 
                     {
