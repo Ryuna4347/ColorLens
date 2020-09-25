@@ -6,15 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(SceneManager.GetActiveScene().name=="Title")
+            if (SceneManager.GetActiveScene().name == "Title")
                 Application.Quit();
             else if (SceneManager.GetActiveScene().name == "StageSelect")
                 SceneManager.LoadScene("Title");
-            else if (SceneManager.GetActiveScene().name == "chap1"||SceneManager.GetActiveScene().name == "chap2"||SceneManager.GetActiveScene().name == "chap3")
+            else if (SceneManager.GetActiveScene().name == "chap1" || SceneManager.GetActiveScene().name == "chap2" || SceneManager.GetActiveScene().name == "chap3")
                 SceneManager.LoadScene("StageSelect");
         }
     }
@@ -22,7 +23,7 @@ public class SceneChange : MonoBehaviour
     public void ChangeScene(string SceneName)
     {
         Time.timeScale = 1;
-        SoundManager.instance.Play("Btn",1,1);
+        SoundManager.instance.Play("Btn", 1, 1);
         SceneManager.LoadScene(SceneName);
     }
     public void Back(string SceneName)

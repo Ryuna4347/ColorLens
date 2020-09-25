@@ -33,42 +33,36 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/0(Test).unity
     guid: b4129db174f814e4dbc6aa3e651aeeeb
   - enabled: 1
-    path: Assets/Publish/Scenes/1.unity
-    guid: 8666a076cf71bf047850b82c31797689
-  - enabled: 1
-    path: Assets/Publish/Scenes/2.unity
-    guid: 7282deec61fd6de4e84db2509cca6e08
-  - enabled: 1
-    path: Assets/Publish/Scenes/3.unity
-    guid: 2e08436be93259a468717fc1d5c04bc4
-  - enabled: 1
-    path: Assets/Publish/Scenes/4.unity
-    guid: a44feadd6a5d0754f95f9b47e123ce45
-  - enabled: 1
-    path: Assets/Publish/Scenes/5.unity
-    guid: 3674e1c8e2e92644ebe3a26cfe2de7a0
-  - enabled: 1
-    path: Assets/Publish/Scenes/6.unity
-    guid: 7255f60a16bf5674ca22a38dcf8d2393
-  - enabled: 1
-    path: Assets/Publish/Scenes/7.unity
-    guid: bbce8736f5db02545b025bdba222c3e5
-  - enabled: 1
-    path: Assets/Publish/Scenes/8.unity
-    guid: 790302071ca9fe748aa4657f944af24d
-  - enabled: 1
-    path: Assets/Publish/Scenes/9.unity
-    guid: 31b100308bccfd54582ece677c944523
-  - enabled: 1
-    path: Assets/Publish/Scenes/10.unity
-    guid: 036a574aa0e4c4f43ac8db68611869a6
-  - enabled: 1
-    path: Assets/Publish/Scenes/11.unity
-    guid: 6377022e0031aab4ba9a604fdb013878
-  - enabled: 1
-    path: Assets/Publish/Scenes/12.unity
-    guid: 60a9e7b7a61552643832b7d55e966bf4
-  - enabled: 1
-    path: Assets/Publish/Scenes/TilemapTest.unity
+    path: Assets/Publish/Scenes/Chapter_1/1-1.unity
     guid: 3156c17fabeab1d4a822eb16ebdbaf20
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-2.unity
+    guid: 03eb74b2229dbdc4db1cc9de9aa68188
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-3.unity
+    guid: db4299a63f2c56246872382efb0af85d
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-4.unity
+    guid: 0098068e2036df246a521e857f0a8573
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-5.unity
+    guid: 3a295baccb971c641ba24d7826783664
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-6.unity
+    guid: d615382ef0a8df14b8554ee52f35b396
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-7.unity
+    guid: b388a95ad42337141b32f589dc69ad14
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-8.unity
+    guid: 5f32a31f3a8ce4640a74b5ebed0a5441
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-9.unity
+    guid: 27af3624ef6cceb49970242565db4b88
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-11.unity
+    guid: a82e524f1c698b4408e313fddb407489
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_1/1-12.unity
+    guid: 98f4f65320c28a44ca7ad32d0e273849
   m_configObjects: {}

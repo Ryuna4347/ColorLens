@@ -169,12 +169,22 @@ public class PlayerMove1 : MonoBehaviour
         {
             Vector3 dir = GetVectorFromDirection(_dir);
             
+            List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
 
-            Collider2D hit = Physics2D.OverlapCircle(lastPos + dir * moveValue, 0.1f, layer);
-
-            if (hit != null)
+            if (hit.Count>0)
             {
-                string collideObjTag = hit.gameObject.tag; //레이캐스트에 충돌한 오브젝트의 태그
+                GameObject hitObj;
+
+                if(hit.Count>1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
+                {
+                    hitObj = hit.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
+                }
+                else
+                {
+                    hitObj = hit[0].gameObject;
+                }
+
+                string collideObjTag = hitObj.tag; //레이캐스트에 충돌한 오브젝트의 태그
 
                 Direction dirNow = GetDirectionFromVector(dir);
                 lastPos= lastPos + dir * moveValue;
@@ -199,7 +209,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    _dir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    _dir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
                     if (_dir == 0)
                     {
                         if((int)dirNow<=4)
@@ -216,7 +226,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Mirror"))
                 {
-                    _dir = hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection(dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
+                    _dir = hitObj.GetComponent<Mirror>().GetMirrorReflectDirection(dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
                     if (_dir == 0)
                     {
                         if ((int)dirNow <= 4)
@@ -251,8 +261,6 @@ public class PlayerMove1 : MonoBehaviour
         int layer = 1;
         Direction tempDir = 0;
 
-        Debug.Log(gameObject.name+" 계산시작");
-
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
 
         for (int i = 0; i < moveCount+1; i++) //분열 이후 첫 한 칸은 이동횟수에 들어가지 않는다.
@@ -276,11 +284,22 @@ public class PlayerMove1 : MonoBehaviour
                 }
             }
 
-            Collider2D hit = Physics2D.OverlapCircle(lastPos + dir * moveValue, 0.1f, layer);
+            List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
 
             if (hit != null)
             {
-                string collideObjTag = hit.gameObject.tag; //레이캐스트에 충돌한 오브젝트의 태그
+                GameObject hitObj;
+
+                if (hit.Count > 1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
+                {
+                    hitObj = hit.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
+                }
+                else
+                {
+                    hitObj = hit[0].gameObject;
+                }
+
+                string collideObjTag = hitObj.tag; //레이캐스트에 충돌한 오브젝트의 태그
 
                 Direction dirNow = GetDirectionFromVector(dir);
                 lastPos = lastPos + dir * moveValue;
@@ -305,7 +324,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    tempDir = hit.gameObject.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
                     if (tempDir == 0)
                     {
                         if ((int)dirNow <= 4)
@@ -322,7 +341,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Mirror"))
                 {
-                    _dir = hit.gameObject.GetComponent<Mirror>().GetMirrorReflectDirection(dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
+                    _dir = hitObj.GetComponent<Mirror>().GetMirrorReflectDirection(dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
                     if (_dir == 0)
                     {
                         if ((int)dirNow <= 4)

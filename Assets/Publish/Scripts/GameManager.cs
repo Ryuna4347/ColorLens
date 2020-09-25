@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         level = GameObject.Find("Map").GetComponent<Map>().GetLevel();
         moveCount = 0;
         moveRatio = 1.0f;
-        //LoadCharacters();
+        LoadCharacters();
         if (moveRatioChanged != null)
         {
             moveRatioChanged(moveRatio);
@@ -246,26 +246,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void LoadCharacters()
     {
-        GameObject[] chars = Resources.LoadAll<GameObject>("Prefabs/Characters");
-        Transform charParent = GameObject.Find("Characters").transform;
+        characters = new List<GameObject>();
 
-        foreach(GameObject charPrefab in chars)
+        Transform characterParent = GameObject.Find("Characters").transform;
+
+        foreach(Transform character in characterParent)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                GameObject instCharacter = GameObject.Instantiate(charPrefab);
-                instCharacter.name=instCharacter.name.Replace("(Clone)", "_" + (i + 1));
-                instCharacter.transform.position = new Vector3(-100f, 0f, -1f);
-                instCharacter.transform.parent = charParent;
-                characters.Add(instCharacter);
-                instCharacter.SetActive(false);
-            }
+            characters.Add(character.gameObject);
         }
-
-        if (moveRatioChanged != null)
-            moveRatioChanged(moveRatio);
-
-        StartCoroutine("CheckGameOver"); //캐릭터 로드가 완료된 이후 게임 종료여부를 체크한다.
     }
 
     public void ChangeMoveRatio(float value)
@@ -423,7 +411,6 @@ public class GameManager : MonoBehaviour
             splitedChars[i].transform.position = splitPos;
         }
 
-        Debug.Log("d");
         moveRatioChanged(moveRatio);
        
         List<Direction> diagonals = GetRefractDirections(_dir);
@@ -460,7 +447,7 @@ public class GameManager : MonoBehaviour
                 diagonalVectors.Add((Direction)2);
                 break;
             case (Direction)2: //오른쪽위
-                diagonalVectors.Add((Direction)1);
+                diagonalVectors.Add((Direction)3);
                 diagonalVectors.Add((Direction)3);
                 break;
             case (Direction)3: //오른쪽
@@ -469,14 +456,14 @@ public class GameManager : MonoBehaviour
                 break;
             case (Direction)4: //오른쪽아래
                 diagonalVectors.Add((Direction)3);
-                diagonalVectors.Add((Direction)5);
+                diagonalVectors.Add((Direction)3);
                 break;
             case (Direction)5: //아래
                 diagonalVectors.Add((Direction)4);
                 diagonalVectors.Add((Direction)6);
                 break;
             case (Direction)6: //왼쪽아래
-                diagonalVectors.Add((Direction)5);
+                diagonalVectors.Add((Direction)7);
                 diagonalVectors.Add((Direction)7);
                 break;
             case (Direction)7: //왼쪽
@@ -485,7 +472,7 @@ public class GameManager : MonoBehaviour
                 break;
             case (Direction)8: //왼쪽위
                 diagonalVectors.Add((Direction)7);
-                diagonalVectors.Add((Direction)1);
+                diagonalVectors.Add((Direction)7);
                 break;
         }
         return diagonalVectors;
