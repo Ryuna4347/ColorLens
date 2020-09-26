@@ -363,8 +363,9 @@ public class GameManager : MonoBehaviour
                 CheckMoveOver(copy[i]);
             }
             mergeChar.SetActive(true);
-            mergeChar.transform.position = mergePos;        
+            mergeChar.transform.position = mergePos;
         }
+        moveRatioChanged(moveRatio);
     }
 
     public void CheckSplit(GameObject color, Direction _dir)
