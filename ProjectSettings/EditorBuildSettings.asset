@@ -68,4 +68,40 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Publish/Scenes/Chapter_1/1-12.unity
     guid: 98f4f65320c28a44ca7ad32d0e273849
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-1.unity
+    guid: 98de163c8b6b9ff45aa8416ac3a7866a
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-2.unity
+    guid: aaf67b253b59c314bb658486dbd61ccf
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-3.unity
+    guid: b51ccef7253181f45a35f4d1184eb243
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-4.unity
+    guid: aee20b0ba0fd4fd4b8fef37c4562c371
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-5.unity
+    guid: c41058e8257007c4391d5eda78b1a422
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-6.unity
+    guid: 56b690fad5c8c4548a3c20feb1963c00
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-7.unity
+    guid: fe8bbfb915cbb9b4f8a8d863c4ad7b61
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-8.unity
+    guid: 2c7fa6cf0960c7d4fbecd67ec3bdf092
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-9.unity
+    guid: 30cfd9df7a11f824797a37d0ece8df18
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-10.unity
+    guid: f9335f4965570c04b8ef03cf6149ca09
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-11.unity
+    guid: 48928a235f2766f42af81a9a73a50cc2
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_2/2-12.unity
+    guid: 8c44fdb97b86b5c4ca6541f04359c4ae
   m_configObjects: {}
