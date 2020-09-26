@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CutScene : MonoBehaviour
@@ -11,7 +12,11 @@ public class CutScene : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(cutSceneCor());
+        if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().name,0) == 0)
+        {
+            PlayerPrefs.SetInt(SceneManager.GetActiveScene().name,1);
+            StartCoroutine(cutSceneCor());
+        }
     }
 
     IEnumerator cutSceneCor()

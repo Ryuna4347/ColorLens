@@ -7,7 +7,7 @@ public class ClearSave : MonoBehaviour
 {
     public static ClearSave instance;
     public string[] stageKeys;
-
+    public string[] IsPlayedKeys; //스테이지 이름 적어주면 됩니다!
     private void Awake()
     {
         if (instance == null)
