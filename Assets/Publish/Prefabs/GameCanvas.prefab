@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 1772295791269386172}
   - component: {fileID: 1772295791269386175}
   m_Layer: 5
-  m_Name: StageSelect
+  m_Name: ChapterSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -768,7 +768,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: StageSelect
+          m_StringArgument: ChapterSelect
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!95 &1772295791269386175
@@ -2115,7 +2115,7 @@ GameObject:
   - component: {fileID: 3277344406812553928}
   - component: {fileID: 3277344406812553931}
   m_Layer: 5
-  m_Name: StageSelect
+  m_Name: ChapterSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2228,7 +2228,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: StageSelect
+          m_StringArgument: ChapterSelect
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!95 &3277344406812553931

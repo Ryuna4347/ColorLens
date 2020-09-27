@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
                 {
                     star = 2;
                 }
-                ClearEffect.instance.Clear(star, level, moveCount);
+                ClearEffect.instance.Clear(star, moveCount);
                 isGameOver = true;
             }
             else

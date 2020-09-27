@@ -5,26 +5,25 @@ using UnityEngine;
 public class IsClearManager : MonoBehaviour
 {
     public static IsClearManager instance;
-    
- 
-    public int[] stars;
+    public Dictionary<int,int> stars; //스테이지 번호, 해당 스테이지 별 수
+    [Tooltip("현재 구현된 최대 챕터")]public int maximumChapter;
+    [Tooltip("한 챕터 당 스테이지 수")]public int stagesPerChapter;
+
     void Awake()
     {
         instance = this;
-        for (int i = 0; i < ClearSave.instance.stageKeys.Length; i++)
+        stars = new Dictionary<int, int>();
+        for (int i = 1; i <= maximumChapter; i++)
         {
-            stars[i] = PlayerPrefs.GetInt(ClearSave.instance.stageKeys[i], 0);
+            for(int j = 1; j <= stagesPerChapter; j++)
+            {
+                stars.Add(12 * (i - 1) + j, PlayerPrefs.GetInt(i + "-" + j, 0));
+            }
         }
     }
 
     public int GetStar(int stageNum)
     {
-        stageNum--;
-        for (int i = 0; i < ClearSave.instance.stageKeys.Length; i++)
-        {
-            if (stageNum == i)
-                return stars[i];
-        }
-        return 0;
+        return stars[stageNum];
     }
 }

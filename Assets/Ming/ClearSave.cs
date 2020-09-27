@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ClearSave : MonoBehaviour
 {
@@ -29,9 +30,10 @@ public class ClearSave : MonoBehaviour
         }
     }
 
-    public void Save(int stageNum, int starNum)
+    public void Save(int starNum)
     {
-        if(PlayerPrefs.GetInt(stageKeys[stageNum-1],0)<=starNum) 
-            PlayerPrefs.SetInt(stageKeys[stageNum-1],starNum);
+        string sceneName= SceneManager.GetActiveScene().name;
+        if(PlayerPrefs.GetInt(sceneName, 0)<=starNum) 
+            PlayerPrefs.SetInt(sceneName,starNum);
     }
 }

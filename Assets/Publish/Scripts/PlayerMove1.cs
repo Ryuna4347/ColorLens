@@ -203,6 +203,7 @@ public class PlayerMove1 : MonoBehaviour
                 {
                     if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
                     { //단색인 경우 프리즘을 통과하는게 좋다.
+                        i--;
                         continue;
                     }
                     break; //프리즘에 도착한 혼합색일 경우 멈추고 분열 시도

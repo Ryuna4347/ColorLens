@@ -26,18 +26,18 @@ public class ClearEffect : MonoBehaviour
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Z))
-            Clear(3,1,10);
+            Clear(3,10);
     }
 
-    public void Clear(int Stars,int currentStage,int walkCount)
+    public void Clear(int Stars,int walkCount)
     {
-        StartCoroutine(ClearCor(Stars,currentStage,walkCount));
+        StartCoroutine(ClearCor(Stars,walkCount));
     }
-    IEnumerator ClearCor(int Stars,int currentStage,int walkCount)
+    IEnumerator ClearCor(int Stars,int walkCount)
     {
         clearPanel.SetActive(true);
         SoundManager.instance.Play("Clear",1,1);
-        ClearSave.instance.Save(currentStage,Stars);
+        ClearSave.instance.Save(Stars);
         walkCountText.text = walkCount+"번의 이동횟수로 클리어!";
         Color color;
         while (panel.color.a<=0.5f)
