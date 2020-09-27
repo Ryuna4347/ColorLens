@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
         {
             canMove = true;
         }
-        if (PlayerPrefs.GetInt("Tutorial" + level)>0)
+        else if (PlayerPrefs.GetInt("Tutorial" + level)>0)
         {
             tutorialCanvas.SetActive(false);
             canMove = true;

@@ -45,8 +45,10 @@ public class SceneChange : MonoBehaviour
     }
     public void NextStage()
     {
+        string[] chapStage = SceneManager.GetActiveScene().name.Split('-');
+        string nextStageName = chapStage[0] +'-' + (int.Parse(chapStage[1])+1);
         Time.timeScale = 1;
-        SceneManager.LoadScene((int.Parse(SceneManager.GetActiveScene().name) + 1).ToString());
+        SceneManager.LoadScene(nextStageName);
     }
 
     public void Move(int dir)

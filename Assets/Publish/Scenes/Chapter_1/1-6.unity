@@ -9218,6 +9218,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1132431242}
     m_Modifications:
+    - target: {fileID: 2007572597, guid: d77f00ec9e13bd44e9b9d58a1b238b93, type: 3}
+      propertyPath: colorNow
+      value: Green
+      objectReference: {fileID: 0}
     - target: {fileID: 7419352366533594891, guid: d77f00ec9e13bd44e9b9d58a1b238b93,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10505,10 +10509,10 @@ Transform:
   - {fileID: 1077912230}
   - {fileID: 1776635900}
   - {fileID: 1289130656}
-  - {fileID: 1601501762}
   - {fileID: 1427201041}
-  - {fileID: 1784031243}
+  - {fileID: 1601501762}
   - {fileID: 359681235}
+  - {fileID: 1784031243}
   - {fileID: 1044517593}
   - {fileID: 2059524323}
   m_Father: {fileID: 1622605253}
