@@ -162,12 +162,23 @@ public class PlayerMove1 : MonoBehaviour
         Vector3 lastPos = transform.position;
         routeList = new List<Direction>();
         int layer = 1;
+        Direction tempDir = Direction.RETURN;
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
 
         for (int i = 0; i < moveCount; i++)
         {
-            Vector3 dir = GetVectorFromDirection(_dir);
+            Vector3 dir;
+
+            if (tempDir == Direction.RETURN)
+            {
+                dir=GetVectorFromDirection(_dir);
+            }
+            else //렌즈에 의한 일회성 경로변경일 경우
+            {
+                dir = GetVectorFromDirection(tempDir);
+                tempDir = Direction.RETURN;
+            }
             
             List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
 
@@ -210,8 +221,8 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    _dir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
-                    if (_dir == 0)
+                    tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    if (tempDir == 0) //튕겨 나올경우(거울/렌즈에 수직 진입 시도)
                     {
                         if((int)dirNow<=4)
                         {

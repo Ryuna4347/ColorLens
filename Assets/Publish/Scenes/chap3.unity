@@ -4907,7 +4907,7 @@ PrefabInstance:
     - target: {fileID: 52170021987518555, guid: 2e8cc78a6962ed145aa014ffebe28ad1,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: StageSelect
+      value: ChapterSelect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e8cc78a6962ed145aa014ffebe28ad1, type: 3}

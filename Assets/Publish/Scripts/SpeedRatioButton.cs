@@ -8,8 +8,8 @@ public class SpeedRatioButton : MonoBehaviour
 
     public void ChangeMoveSpeedRatio()
     {
-        float speedRatio = buttonPressed ? 1.5f : 1.0f;
         buttonPressed = !buttonPressed;
+        float speedRatio = buttonPressed ? 1.5f : 1.0f;
         GameManager.instance.ChangeMoveRatio(speedRatio);
     }
 }

@@ -93,11 +93,6 @@ public class GameManager : MonoBehaviour
                         Time.timeScale = 0;
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.R) && pausePanel.activeSelf==false) //R키 누르면 현재 씬 재시작
-                {
-                    SoundManager.instance.Play("Restart", 1, 1);
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                }
 
                 if ((tutorialCanvas != null && pausePanel.activeSelf == false) && Input.GetKeyDown(KeyCode.H))
                 {
@@ -129,6 +124,15 @@ public class GameManager : MonoBehaviour
                     moveCount++;
                 }
             }
+        }
+        if (canMove)
+        {
+            if (Input.GetKeyDown(KeyCode.R) && pausePanel.activeSelf == false) //R키 누르면 현재 씬 재시작
+            {
+                SoundManager.instance.Play("Restart", 1, 1);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
         }
     }
 
@@ -362,10 +366,14 @@ public class GameManager : MonoBehaviour
                 copy[i].SetActive(false); 
                 CheckMoveOver(copy[i]);
             }
-            mergeChar.SetActive(true);
-            mergeChar.transform.position = mergePos;
+            if (mergeChar != null)
+            {
+                mergeChar.SetActive(true);
+                mergeChar.transform.position = mergePos;
+            }
         }
-        moveRatioChanged(moveRatio);
+        if(moveRatioChanged != null)
+            moveRatioChanged(moveRatio);
     }
 
     public void CheckSplit(GameObject color, Direction _dir)

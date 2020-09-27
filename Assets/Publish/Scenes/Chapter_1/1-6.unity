@@ -9670,6 +9670,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -30.28
       objectReference: {fileID: 0}
+    - target: {fileID: 5873310956681817745, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: m_Name
+      value: ChapterSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8353039282416759828, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: ChapterSelect
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3961874c6cb8379479de4f9c5ff90cb3, type: 3}
 --- !u!1 &1508071922 stripped
