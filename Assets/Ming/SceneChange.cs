@@ -16,7 +16,7 @@ public class SceneChange : MonoBehaviour
             else if (SceneManager.GetActiveScene().name == "StageSelect")
                 SceneManager.LoadScene("Title");
             else if (SceneManager.GetActiveScene().name == "chap1" || SceneManager.GetActiveScene().name == "chap2" || SceneManager.GetActiveScene().name == "chap3")
-                SceneManager.LoadScene("StageSelect");
+                SceneManager.LoadScene("ChapterSelect");
         }
     }
 

@@ -11548,6 +11548,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 963047526}
     m_Modifications:
+    - target: {fileID: 2256945087225517955, guid: dfedad4ea86226c4d995f447b1a17ae4,
+        type: 3}
+      propertyPath: isHorizontal
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3897815895296929905, guid: dfedad4ea86226c4d995f447b1a17ae4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11607,6 +11612,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Concave_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539647904569166173, guid: dfedad4ea86226c4d995f447b1a17ae4,
+        type: 3}
+      propertyPath: isHorizontal
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfedad4ea86226c4d995f447b1a17ae4, type: 3}

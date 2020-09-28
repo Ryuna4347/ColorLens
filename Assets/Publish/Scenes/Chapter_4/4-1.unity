@@ -11028,7 +11028,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2007572597, guid: d77f00ec9e13bd44e9b9d58a1b238b93, type: 3}
       propertyPath: colorNow
-      value: Blue
+      value: Green
       objectReference: {fileID: 0}
     - target: {fileID: 7419352366533594891, guid: d77f00ec9e13bd44e9b9d58a1b238b93,
         type: 3}
@@ -13418,7 +13418,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2007572597, guid: d77f00ec9e13bd44e9b9d58a1b238b93, type: 3}
       propertyPath: colorNow
-      value: Green
+      value: Blue
       objectReference: {fileID: 0}
     - target: {fileID: 7419352366533594891, guid: d77f00ec9e13bd44e9b9d58a1b238b93,
         type: 3}
