@@ -12,10 +12,14 @@ public class CutScene : MonoBehaviour
 
     private void Awake()
     {
-        if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().name,0) == 0)
+        if (SceneManager.GetActiveScene().name == "1-1" || SceneManager.GetActiveScene().name == "2-1" ||
+            SceneManager.GetActiveScene().name == "3-1" || SceneManager.GetActiveScene().name == "4-1")
         {
-            PlayerPrefs.SetInt(SceneManager.GetActiveScene().name,1);
-            StartCoroutine(cutSceneCor());
+           if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().name,0) == 0)
+                 {
+                     PlayerPrefs.SetInt(SceneManager.GetActiveScene().name,1);
+                     StartCoroutine(cutSceneCor());
+                 }   
         }
     }
 
@@ -31,6 +35,7 @@ public class CutScene : MonoBehaviour
         Color color=Color.white;
         for (int i = sceneImages.Length-1; i >=0; i--)
         {
+            yield return new WaitUntil(()=>Input.GetMouseButtonDown(0));
             color=Color.white;
             while (color.a>0)//무한반복
             {
