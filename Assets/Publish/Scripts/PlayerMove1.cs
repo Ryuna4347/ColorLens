@@ -134,8 +134,8 @@ public class PlayerMove1 : MonoBehaviour
         
         if (!collisionChecked && collisionList.Count >= 1)
         {
-            CheckCollideColors(); //색의 합병은 이동이 다 끝난 이후 체크
-            yield break;
+            if(CheckCollideColors()) //색의 합병은 이동이 다 끝난 이후 체크
+                yield break;
         }
         if (collidingPrism != null)
         {
@@ -446,18 +446,23 @@ public class PlayerMove1 : MonoBehaviour
     /// <summary>
     /// 다른 색상과 충돌을 체크하여 색을 합친다.
     /// </summary>
-    private void CheckCollideColors()
+    private bool CheckCollideColors()
     {
+        List<GameObject> characterList = new List<GameObject>();
+
         collisionChecked = true;
+        characterList.Add(gameObject);
         foreach (GameObject collide in collisionList) //중복처리 방지하도록 제일 빠르게 도달한 오브젝트가 다른 오브젝트의 이 함수 진행을 막는다.
         {
             collide.GetComponent<PlayerMove1>().collisionChecked = true;
+            if (GameManager.instance.IsCharacterMoving(collide.gameObject)) //아직 움직이는 캐릭터가 존재하는 경우 합성하면 안된다.
+            {
+                return false;
+            }
+            characterList.Add(collide);
         }
-        if (!collisionList.Contains(gameObject))
-        {
-            collisionList.Add(this.gameObject);
-        }
-        GameManager.instance.CheckMerge(collisionList);
+        GameManager.instance.CheckMerge(characterList);
+        return true;
     }
 
     /// <summary>

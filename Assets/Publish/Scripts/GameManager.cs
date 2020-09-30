@@ -375,6 +375,16 @@ public class GameManager : MonoBehaviour
         if(moveRatioChanged != null)
             moveRatioChanged(moveRatio);
     }
+    
+    public bool IsCharacterMoving(GameObject character)
+    {
+        if (movingChars.Contains(character))
+        {
+            return true;
+        }
+        else
+            return false;
+    }
 
     public void CheckSplit(GameObject color, Direction _dir)
     {
