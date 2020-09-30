@@ -457,6 +457,10 @@ public class PlayerMove1 : MonoBehaviour
             collide.GetComponent<PlayerMove1>().collisionChecked = true;
             if (GameManager.instance.IsCharacterMoving(collide.gameObject)) //아직 움직이는 캐릭터가 존재하는 경우 합성하면 안된다.
             {
+                foreach(GameObject alreadyProcessed in characterList)
+                {
+                    collide.GetComponent<PlayerMove1>().collisionChecked = false;
+                }
                 return false;
             }
             characterList.Add(collide);
