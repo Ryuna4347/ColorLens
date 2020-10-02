@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> movingChars; //현재 움직이고 있는 캐릭터 수
     public bool canMove=false;
     List<int> baseMoveCount; //각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
+    public Animator[] StarAnims;//인게임 별
+    public Text MoveText;//인게임 텍스트UI
     int moveCount; //현재 맵에서 이동횟수
     private bool isGameOver;
     public float moveRatio { get; private set; } //배속
@@ -134,6 +136,8 @@ public class GameManager : MonoBehaviour
             }
 
         }
+        InGameStates();
+
     }
 
     private void CheckTutorial()
@@ -155,6 +159,25 @@ public class GameManager : MonoBehaviour
         tutorialCanvas.SetActive(false);
         canMove = true;
     }
+
+    #region 인게임 별표시
+    void InGameStates()
+    {
+        if (moveCount > baseMoveCount[0])
+        {
+            StarAnims[0].Play("Star_Delete");//세번째 별
+        }
+        else if (moveCount > baseMoveCount[1])
+        {
+            StarAnims[1].Play("Star_Delete");//두번째 별
+        }
+
+        MoveText.text = "이동횟수 : " + moveCount;
+
+    }
+  
+    #endregion
+
 
     #region 게임관리(성공/실패)
 
