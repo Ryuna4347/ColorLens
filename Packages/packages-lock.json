@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.coffee.ui-particle": {
+      "version": "file:UIParticle",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.2d.animation": {
       "version": "3.2.3",
       "depth": 0,
