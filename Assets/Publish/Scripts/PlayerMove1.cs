@@ -476,7 +476,7 @@ public class PlayerMove1 : MonoBehaviour
     /// <param name="count"></param>
     private void CheckCollidePrism()
     {
-        EffectManger.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
+        EffectManager.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
         SoundManager.instance.Play("Division");
         GameManager.instance.CheckSplit(gameObject, routeList[routeList.Count - 1]);
     }
@@ -511,7 +511,7 @@ public class PlayerMove1 : MonoBehaviour
         SoundManager.instance.Play("Die");
         GameManager.instance.CheckMoveOver(gameObject);
         gameObject.SetActive(false);
-        EffectManger.instance.circleEffect(transform.position, gameObject.name);
+        EffectManager.instance.circleEffect(transform.position, gameObject.name);
     }
     private IEnumerator DisappearCharacter()
     {

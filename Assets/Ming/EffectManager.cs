@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class EffectManger : MonoBehaviour
+public class EffectManager : MonoBehaviour
 {
-    public static EffectManger instance;
+    public static EffectManager instance;
     private void Awake()
     {
         if (instance == null)
