@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
+    public bool isDev;
     public List<string> unlockStageNames; //튜토리얼 페이지들이 요구하는 최저 클리어 스테이지 명
     public List<GameObject> buttons; //튜토리얼 앞/뒤 이동버튼
     public List<GameObject> pageList;
@@ -40,7 +41,7 @@ public class Tutorial : MonoBehaviour
             }
         }
 
-        if(unlockStageNames[page]=="" || PlayerPrefs.GetInt(unlockStageNames[page],0)>0) // 다음 도움말을 볼 수 있는 스테이지까지 올라간 경우
+        if(isDev || unlockStageNames[page]=="" || PlayerPrefs.GetInt(unlockStageNames[page],0)>0) // 다음 도움말을 볼 수 있는 스테이지까지 올라간 경우
         {
             buttons[1].GetComponent<Button>().interactable = true;
         }
