@@ -18,8 +18,18 @@ public class Tutorial : MonoBehaviour
         {
             pageList.Add(page.gameObject);
         }
+    }
 
+    private void OnEnable()
+    {
         UpdatePage(1);
+    }
+
+    private void OnDisable()
+    {
+        Animator pageAnimator = pageList[pageIdx - 1].GetComponentInChildren<Animator>();
+
+        //pageAnimator.SetInteger("page", 0);
     }
 
     private void UpdatePage(int page)
@@ -57,7 +67,7 @@ public class Tutorial : MonoBehaviour
         Animator pageAnimator = pageList[pageIdx - 1].GetComponentInChildren<Animator>();
         if(pageAnimator != null)
         {
-            pageAnimator.SetInteger("page", page);
+            pageAnimator.SetTrigger("page_" + page);
         }
     }
 
