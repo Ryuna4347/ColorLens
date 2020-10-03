@@ -31,7 +31,6 @@ public class CutScene : MonoBehaviour
             imgs.Add(Instantiate(scene,transform));
             imgs[sceneImages.Length-1-i].sprite = sceneImages[i];
         }
-
         Color color=Color.white;
         for (int i = sceneImages.Length-1; i >=0; i--)
         {
@@ -44,7 +43,9 @@ public class CutScene : MonoBehaviour
                 imgs[i].color = color;
                 yield return new WaitForSeconds(0.01f); //0.2초의 간격을 두고 실행됨  
             }
-            Destroy(imgs[i]);
+
+            imgs[i].gameObject.SetActive(false);
         }
+        //FindObjectOfType<Pause>().CanPuse = true;
     }
 }
