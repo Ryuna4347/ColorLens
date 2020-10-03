@@ -1575,7 +1575,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -10558,7 +10558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd585ada1a1138540b6c4d54ded5eaab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDev: 0
+  isDev: 1
   unlockStageNames:
   - 
   - 
@@ -10569,7 +10569,7 @@ MonoBehaviour:
   - 2-7
   - 2-7
   - 2-12
-  - 3-6
+  - 3-2
   buttons:
   - {fileID: 667804505}
   - {fileID: 351624935}
@@ -25205,7 +25205,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -39915,7 +39915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2050332647
 MonoBehaviour:
   m_ObjectHideFlags: 0
