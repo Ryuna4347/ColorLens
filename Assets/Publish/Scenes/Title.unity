@@ -10558,18 +10558,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd585ada1a1138540b6c4d54ded5eaab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDev: 1
+  isDev: 0
   unlockStageNames:
   - 
   - 
-  - 1-7
-  - 2-1
-  - 2-1
-  - 2-1
-  - 2-8
-  - 2-8
-  - 3-1
-  - 3-7
+  - 1-6
+  - 1-12
+  - 1-12
+  - 1-12
+  - 2-7
+  - 2-7
+  - 2-12
+  - 3-6
   buttons:
   - {fileID: 667804505}
   - {fileID: 351624935}
