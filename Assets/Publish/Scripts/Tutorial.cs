@@ -41,23 +41,27 @@ public class Tutorial : MonoBehaviour
         else
         {
             buttons[0].SetActive(true);
-            if(page == 10)
-            {
-                buttons[1].SetActive(false);
-            }
-            else
-            {
-                buttons[1].SetActive(true);
-            }
         }
 
-        if(isDev || unlockStageNames[page]=="" || PlayerPrefs.GetInt(unlockStageNames[page],0)>0) // 다음 도움말을 볼 수 있는 스테이지까지 올라간 경우
+        if (page == pageList.Count)
         {
-            buttons[1].GetComponent<Button>().interactable = true;
+            buttons[1].SetActive(false);
         }
         else
         {
-            buttons[1].GetComponent<Button>().interactable = false;
+            buttons[1].SetActive(true);
+        }
+
+        if (buttons[1].activeSelf == true)
+        {
+            if (isDev || (unlockStageNames[page] == "" || PlayerPrefs.GetInt(unlockStageNames[page], 0) > 0)) // 다음 도움말을 볼 수 있는 스테이지까지 올라간 경우
+            {
+                buttons[1].GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                buttons[1].GetComponent<Button>().interactable = false;
+            }
         }
 
         pageList[pageIdx - 1].SetActive(false);

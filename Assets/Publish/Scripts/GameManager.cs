@@ -53,7 +53,11 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine("CheckGameOver"); //캐릭터 로드가 완료된 이후 게임 종료여부를 체크한다.
-        CheckTutorial();
+
+        if (!SceneManager.GetActiveScene().name.Equals("1-1")) //현재 1-1스테이지만 컷신이 존재하므로 컷신이 CheckTutorial을 호출한다.
+        {
+            CheckTutorial();
+        }
     }
 
     public void MoveBtn(int _dir)
@@ -96,13 +100,6 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                if ((tutorialCanvas != null && pausePanel.activeSelf == false) && Input.GetKeyDown(KeyCode.H))
-                {
-                    canMove = false;
-                    tutorialCanvas.SetActive(true);
-                    return;
-                }
-
                 int dir = 0;
                 if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                     dir = 7;
@@ -140,16 +137,22 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void CheckTutorial()
+    public void CheckTutorial()
     {
         if(tutorialCanvas == null) //튜토리얼이 없는 스테이지는 그냥 바로 이동가능
         {
             canMove = true;
+            return;
         }
-        else if (PlayerPrefs.GetInt("Tutorial" + level)>0)
+        else if (PlayerPrefs.GetInt("Tutorial" + level) > 0)
         {
-            tutorialCanvas.SetActive(false);
             canMove = true;
+            return;
+        }
+        else
+        {
+            canMove = false;
+            tutorialCanvas.SetActive(true);
         }
     }
 
