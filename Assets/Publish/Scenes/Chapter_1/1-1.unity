@@ -3383,6 +3383,7 @@ MonoBehaviour:
   - {fileID: 2043468412}
   - {fileID: 2006452657}
   pageList: []
+  ingameAnimation: 0100000002000000
 --- !u!114 &473628170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9895,7 +9896,7 @@ PrefabInstance:
         type: 3}
       propertyPath: music
       value: 
-      objectReference: {fileID: 8300000, guid: e256a2cb92bf382428d9d463553a95e8, type: 3}
+      objectReference: {fileID: 8300000, guid: 704bc11df0764df41b6a8f90ce6f72c7, type: 3}
     - target: {fileID: 1476970651599911951, guid: 5081c18cf78edfe4cbd049e45ba5d79f,
         type: 3}
       propertyPath: volume

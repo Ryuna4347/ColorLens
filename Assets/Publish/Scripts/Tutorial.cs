@@ -9,6 +9,7 @@ public class Tutorial : MonoBehaviour
     public List<string> unlockStageNames; //튜토리얼 페이지들이 요구하는 최저 클리어 스테이지 명
     public List<GameObject> buttons; //튜토리얼 앞/뒤 이동버튼
     public List<GameObject> pageList;
+    public List<int> ingameAnimation = new List<int>(); //인게임에서 애니메이션 트리거를 조절하기 위함(트리거의 page_ 뒷 번호를 작성. 메인 타이틀 씬에서는 절대 건들지 말 것)
     private int pageIdx = 1; //현재 튜토리얼 페이지 번호(1부터 시작)
 
     private void Awake()
@@ -61,6 +62,7 @@ public class Tutorial : MonoBehaviour
             else
             {
                 buttons[1].GetComponent<Button>().interactable = false;
+                buttons[1].GetComponent<TutorialNextButton>().lockedStageName = unlockStageNames[page];
             }
         }
 
@@ -69,18 +71,35 @@ public class Tutorial : MonoBehaviour
         pageIdx = page;
 
         Animator pageAnimator = pageList[pageIdx - 1].GetComponentInChildren<Animator>();
-        if(pageAnimator != null)
+        if (pageAnimator != null)
         {
-            pageAnimator.SetTrigger("page_" + page);
+            if (ingameAnimation.Count == 0)
+            {
+                pageAnimator.SetTrigger("page_" + page);
+            }
+            else //인게임에서는 1페이지부터 시작이어서 page로는 원래 다른 페이지의 애니메이션이 실행이 안된다.
+            {
+                if (ingameAnimation[page - 1] > 0)
+                {
+                    pageAnimator.SetTrigger("page_" + ingameAnimation[page - 1]);
+                }
+            }
         }
     }
 
     public void ShowPrevPage()
     {
         UpdatePage(pageIdx - 1);
+        SoundManager.instance.Play("Btn");
     }
     public void ShowNextPage()
     {
         UpdatePage(pageIdx + 1);
+        SoundManager.instance.Play("Btn");
+    }
+    public void CloseUI()
+    {
+        SoundManager.instance.Play("Back");
+        transform.parent.gameObject.SetActive(false);
     }
 }

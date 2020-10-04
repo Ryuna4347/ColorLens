@@ -699,7 +699,7 @@ MonoBehaviour:
   - {fileID: 595150004}
   - {fileID: 445704771}
   - {fileID: 931173499}
-  StageNum: 21
+  stageNum: 21
 --- !u!114 &269317818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,17 +904,17 @@ PrefabInstance:
     - target: {fileID: 52170021987518554, guid: 2e8cc78a6962ed145aa014ffebe28ad1,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 52170021987518554, guid: 2e8cc78a6962ed145aa014ffebe28ad1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 52170021987518554, guid: 2e8cc78a6962ed145aa014ffebe28ad1,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 52170021987518554, guid: 2e8cc78a6962ed145aa014ffebe28ad1,
         type: 3}
@@ -1427,6 +1427,11 @@ PrefabInstance:
       propertyPath: volume
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1476970651599911951, guid: 5081c18cf78edfe4cbd049e45ba5d79f,
+        type: 3}
+      propertyPath: music
+      value: 
+      objectReference: {fileID: 8300000, guid: 6b83b4a17e83b4e44b52d1c2387322f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5081c18cf78edfe4cbd049e45ba5d79f, type: 3}
 --- !u!1 &482701584
@@ -1941,7 +1946,7 @@ MonoBehaviour:
   - {fileID: 2018255527}
   - {fileID: 1155492053}
   - {fileID: 1419117035}
-  StageNum: 22
+  stageNum: 22
 --- !u!114 &562680198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2557,7 +2562,7 @@ MonoBehaviour:
   - {fileID: 2060831860}
   - {fileID: 505558766}
   - {fileID: 1850111015}
-  StageNum: 15
+  stageNum: 15
 --- !u!114 &744036009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3085,7 +3090,7 @@ MonoBehaviour:
   - {fileID: 1246717425}
   - {fileID: 1547356714}
   - {fileID: 2085485165}
-  StageNum: 19
+  stageNum: 19
 --- !u!114 &997907371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3310,7 +3315,7 @@ MonoBehaviour:
   - {fileID: 28044916}
   - {fileID: 1189672249}
   - {fileID: 562672563}
-  StageNum: 23
+  stageNum: 23
 --- !u!114 &1016823023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4113,7 +4118,7 @@ MonoBehaviour:
   - {fileID: 1021417040}
   - {fileID: 1005436698}
   - {fileID: 1349610659}
-  StageNum: 24
+  stageNum: 24
 --- !u!114 &1181855081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5355,7 +5360,7 @@ MonoBehaviour:
   - {fileID: 1292034530}
   - {fileID: 1903920627}
   - {fileID: 56046089}
-  StageNum: 18
+  stageNum: 18
 --- !u!114 &1657664416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6191,7 +6196,7 @@ MonoBehaviour:
   - {fileID: 2047509115}
   - {fileID: 352370685}
   - {fileID: 1626214207}
-  StageNum: 17
+  stageNum: 17
 --- !u!114 &1908969047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6490,7 +6495,7 @@ MonoBehaviour:
   - {fileID: 1848652889}
   - {fileID: 669566703}
   - {fileID: 144714955}
-  StageNum: 16
+  stageNum: 16
 --- !u!114 &2014715761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6641,7 +6646,7 @@ MonoBehaviour:
   - {fileID: 1308901090}
   - {fileID: 1814683395}
   - {fileID: 933551976}
-  StageNum: 14
+  stageNum: 14
 --- !u!114 &2015884352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7145,7 +7150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -200}
+  m_AnchoredPosition: {x: -300.00003, y: -200}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2115998708
@@ -7164,7 +7169,7 @@ MonoBehaviour:
   - {fileID: 524457636}
   - {fileID: 2140771383}
   - {fileID: 818166842}
-  StageNum: 20
+  stageNum: 20
 --- !u!114 &2115998709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7480,7 +7485,7 @@ MonoBehaviour:
   - {fileID: 1813039387}
   - {fileID: 1167014181}
   - {fileID: 2086744384}
-  StageNum: 13
+  stageNum: 13
 --- !u!222 &1949114822495777467
 CanvasRenderer:
   m_ObjectHideFlags: 0

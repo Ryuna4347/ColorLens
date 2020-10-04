@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviour
     public void CloseTutorial()
     {
         PlayerPrefs.SetInt("Tutorial" + level, 1);
+        SoundManager.instance.Play("Back");
         tutorialCanvas.SetActive(false);
         canMove = true;
     }
