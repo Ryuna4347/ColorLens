@@ -14,9 +14,9 @@ public class CutScene : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "1-1")
         {
-            if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().name, 0) == 0)
+            if (PlayerPrefs.GetInt("Cut_"+SceneManager.GetActiveScene().name, 0) == 0)
             {
-                PlayerPrefs.SetInt(SceneManager.GetActiveScene().name, 1);
+                PlayerPrefs.SetInt("Cut_"+SceneManager.GetActiveScene().name, 1);
                 StartCoroutine(cutSceneCor());
             }
             else //한 번 컷신을 본 경우 컷신을 더 이상 보여주지 않는다.

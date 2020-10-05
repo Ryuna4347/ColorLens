@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 
         if (!SceneManager.GetActiveScene().name.Equals("1-1")) //현재 1-1스테이지만 컷신이 존재하므로 컷신이 CheckTutorial을 호출한다.
         {
+            Debug.Log("여기");
             CheckTutorial();
         }
     }
@@ -144,7 +145,7 @@ public class GameManager : MonoBehaviour
             canMove = true;
             return;
         }
-        else if (PlayerPrefs.GetInt("Tutorial" + level) > 0)
+        else if (PlayerPrefs.GetInt("Tut_" + level,0) > 0)
         {
             canMove = true;
             return;
@@ -158,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     public void CloseTutorial()
     {
-        PlayerPrefs.SetInt("Tutorial" + level, 1);
+        PlayerPrefs.SetInt("Tut_" + level, 1);
         SoundManager.instance.Play("Back");
         tutorialCanvas.SetActive(false);
         canMove = true;
