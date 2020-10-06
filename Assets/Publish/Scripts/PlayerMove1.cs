@@ -518,9 +518,9 @@ public class PlayerMove1 : MonoBehaviour
         float delay = 1.0f;
 
         Color color = render.color;
-        for (float time = 0; time < delay; time+=0.05f)
+        for (float time = 0; time < delay; time+=0.05f* charMoveRatio)
         {
-            color.a -= 0.05f;
+            color.a -= 0.05f* charMoveRatio;
             render.color = color;
             faceRenderer.color = color;
 

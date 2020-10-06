@@ -17,6 +17,7 @@ public class SelectBtn : MonoBehaviour
             {
                 GetComponent<Button>().interactable = true;
                 transform.Find("Lock").gameObject.SetActive(false);
+                transform.Find("NotClear").gameObject.SetActive(true);
             }
             else
             {

@@ -88,16 +88,7 @@ public class GameManager : MonoBehaviour
             {
                 if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && (tutorialCanvas == null || tutorialCanvas.activeSelf==false))
                 {
-                    if (Time.timeScale == 0) //일시정지상태일때 
-                    {
-                        pausePanel.SetActive(false); //일시정지 품   
-                        Time.timeScale = 1;
-                    }
-                    else
-                    {
-                        pausePanel.SetActive(true);
-                        Time.timeScale = 0;
-                    }
+                    CheckPause();
                 }
 
                 int dir = 0;
@@ -162,6 +153,20 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.Play("Back");
         tutorialCanvas.SetActive(false);
         canMove = true;
+    }
+
+    public void CheckPause()
+    {
+        if (Time.timeScale == 0) //일시정지상태일때 
+        {
+            pausePanel.SetActive(false); //일시정지 품   
+            Time.timeScale = 1;
+        }
+        else
+        {
+            pausePanel.SetActive(true);
+            Time.timeScale = 0;
+        }
     }
 
     #region 인게임 별표시

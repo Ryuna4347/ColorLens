@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     public GameObject tutorialCanvas;
+    public GameObject creditCanvas;
 
     private void Update()
     {
@@ -17,6 +18,10 @@ public class SceneChange : MonoBehaviour
                 if (tutorialCanvas.activeSelf == true)
                 {
                     tutorialCanvas.SetActive(false);
+                }
+                else if(creditCanvas.activeSelf == true)
+                {
+                    creditCanvas.SetActive(false);
                 }
                 else
                 {
@@ -58,6 +63,7 @@ public class SceneChange : MonoBehaviour
 
     public void Restart()
     {
+        Time.timeScale = 1;
         SoundManager.instance.Play("Restart",1,1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

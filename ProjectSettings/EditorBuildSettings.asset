@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/HowTo.unity
     guid: c8792d9052c4a84419b7abb757b7f249
   - enabled: 1
-    path: Assets/Publish/Scenes/Credit.unity
+    path: Assets/Publish/Scenes/LegacyMap/Credit.unity
     guid: e7638aeef11a1764d8cb544c3c053300
   - enabled: 1
     path: Assets/Publish/Scenes/0(Test).unity
