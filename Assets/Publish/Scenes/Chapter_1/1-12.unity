@@ -10061,7 +10061,7 @@ MonoBehaviour:
   - {fileID: 520087871}
   MoveText: {fileID: 520087873}
   tutorialCanvas: {fileID: 0}
-  pausePanel: {fileID: 0}
+  pausePanel: {fileID: 860052085}
 --- !u!4 &1072721167
 Transform:
   m_ObjectHideFlags: 0
