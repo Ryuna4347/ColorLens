@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
 
         if (!SceneManager.GetActiveScene().name.Equals("1-1")) //현재 1-1스테이지만 컷신이 존재하므로 컷신이 CheckTutorial을 호출한다.
         {
-            Debug.Log("여기");
             CheckTutorial();
         }
     }

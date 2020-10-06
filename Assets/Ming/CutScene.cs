@@ -21,6 +21,7 @@ public class CutScene : MonoBehaviour
             }
             else //한 번 컷신을 본 경우 컷신을 더 이상 보여주지 않는다.
             {
+                GameObject.Find("SetMusic").GetComponent<SetMusic>().PlayBGM();
                 GameManager.instance.CheckTutorial();
             }
         }
@@ -58,5 +59,6 @@ public class CutScene : MonoBehaviour
             imgs[i].gameObject.SetActive(false);
         }
         GameManager.instance.CheckTutorial();
+        GameObject.Find("SetMusic").GetComponent<SetMusic>().PlayBGM();
     }
 }
