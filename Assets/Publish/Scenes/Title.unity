@@ -12236,6 +12236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f98986aa379eae4d824f955f5d44bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialCanvas: {fileID: 2050332646}
 --- !u!4 &488693933
 Transform:
   m_ObjectHideFlags: 0
@@ -15364,7 +15365,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 356079082}
-        m_MethodName: ShowNextPage
+        m_MethodName: ShowPrevPage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35707,7 +35708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1654542318
 RectTransform:
   m_ObjectHideFlags: 0

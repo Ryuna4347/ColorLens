@@ -6,14 +6,24 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
+    public GameObject tutorialCanvas;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (SceneManager.GetActiveScene().name == "Title")
-                Application.Quit();
-            else if (SceneManager.GetActiveScene().name == "StageSelect")
+            {
+                if (tutorialCanvas.activeSelf == true)
+                {
+                    tutorialCanvas.SetActive(false);
+                }
+                else
+                {
+                    Application.Quit();
+                }
+            }
+            else if (SceneManager.GetActiveScene().name == "ChapterSelect")
                 SceneManager.LoadScene("Title");
             else if (SceneManager.GetActiveScene().name == "chap1" || SceneManager.GetActiveScene().name == "chap2" || SceneManager.GetActiveScene().name == "chap3")
                 SceneManager.LoadScene("ChapterSelect");
