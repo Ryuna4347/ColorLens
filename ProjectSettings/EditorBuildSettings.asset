@@ -7,7 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Publish/Scenes/Title.unity
-    guid: ecfbfc132ba323d4ab55a44de8046af1
+    guid: 443c2d18b1b40db4f95e70dcba8cea66
   - enabled: 1
     path: Assets/Publish/Scenes/ChapterSelect.unity
     guid: 3a1c32c29183a3c4c8442e5cb882da15
@@ -16,13 +16,13 @@ EditorBuildSettings:
     guid: d11b2a3be8a93f847ab3daba2fe7ed30
   - enabled: 1
     path: Assets/Publish/Scenes/chap2.unity
-    guid: 6947e3af7edef554a9a9765df7141c65
+    guid: 54ce0b6e02f5f374a9bf8989fc8dc748
   - enabled: 1
     path: Assets/Publish/Scenes/chap3.unity
-    guid: a0f9d4be5b299974eb7a712d666e09b9
+    guid: 6d3a1993127addb47b28c11e4802bc4e
   - enabled: 1
     path: Assets/Publish/Scenes/chap4.unity
-    guid: 9547dbe9b4374e7499ec4224fc04459a
+    guid: ae60c855956dd3e4b916695827763416
   - enabled: 1
     path: Assets/Publish/Scenes/HowTo.unity
     guid: c8792d9052c4a84419b7abb757b7f249
