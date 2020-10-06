@@ -16494,6 +16494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f98986aa379eae4d824f955f5d44bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialCanvas: {fileID: 0}
 --- !u!223 &3277344407335186850
 Canvas:
   m_ObjectHideFlags: 0
@@ -18445,6 +18446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb508776a801d544292b56b1381cce5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ratioImages: []
 --- !u!222 &8870585943953175706
 CanvasRenderer:
   m_ObjectHideFlags: 0

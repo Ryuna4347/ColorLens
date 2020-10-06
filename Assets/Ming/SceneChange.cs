@@ -34,7 +34,15 @@ public class SceneChange : MonoBehaviour
     {
         Time.timeScale = 1;
         SoundManager.instance.Play("Btn", 1, 1);
-        SceneManager.LoadScene(SceneName);
+        if (SceneName == "Chap")
+        {
+            string chapterNum = SceneManager.GetActiveScene().name.Split('-')[0];
+            SceneManager.LoadScene("Chap"+chapterNum);
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneName);
+        }
     }
     public void Back(string SceneName)
     {
