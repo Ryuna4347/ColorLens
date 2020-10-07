@@ -23,8 +23,8 @@ public class GameOverEffect : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.X))
-           GameOver();
+        //if(Input.GetKeyDown(KeyCode.X))
+        //   GameOver();
     }
 
     public void GameOver()

@@ -25,8 +25,8 @@ public class ClearEffect : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Z))
-            Clear(3,10);
+        //if(Input.GetKeyDown(KeyCode.Z))
+        //    Clear(3,10);
     }
 
     public void Clear(int Stars,int walkCount)
