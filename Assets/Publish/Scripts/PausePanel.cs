@@ -19,6 +19,7 @@ public class PausePanel : MonoBehaviour
 
     public void ResumeStage()
     {
+        SoundManager.instance.Play("Btn");
         GameManager.instance.CheckPause();
     }
 }
