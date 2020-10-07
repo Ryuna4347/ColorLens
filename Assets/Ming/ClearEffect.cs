@@ -69,7 +69,9 @@ public class ClearEffect : MonoBehaviour
 
         foreach (Animator anim in Btns)
         {
-            anim.Play("TextAnim");
+            if(anim!=null)
+                anim.Play("TextAnim");
         }
+
     }
 }

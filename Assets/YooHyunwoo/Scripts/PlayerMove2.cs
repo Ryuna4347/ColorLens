@@ -83,10 +83,10 @@ public class PlayerMove2 : MonoBehaviour
             while (collidingPrism != false || collidingMirror != null || collidingLens != null)
             {
                 CheckCollidePrism(moveDir, i + 1);
-                if (CheckCollideLens(moveDir) == 0) //렌즈 측면으로 접근할 경우
-                {
-                    break; //이동 중지
-                }
+                //if (CheckCollideLens(moveDir) == 0) //렌즈 측면으로 접근할 경우
+                //{
+                //    break; //이동 중지
+                //}
 
                 int reflectDir = CheckCollideMirror(moveDir); //거울의 경우 반사된 방향으로 나머지 이동경로를 바꾼다.
                 if (reflectDir == 0)
@@ -166,10 +166,10 @@ public class PlayerMove2 : MonoBehaviour
             while (collidingPrism != false || collidingMirror != null || collidingLens != null)
             {
                 CheckCollidePrism(moveDir, j + 1);
-                if (CheckCollideLens(moveDir) == 0) //렌즈 측면으로 접근할 경우
-                {
-                    break; //이동 중지
-                }
+                //if (CheckCollideLens(moveDir) == 0) //렌즈 측면으로 접근할 경우
+                //{
+                //    break; //이동 중지
+                //}
 
                 int reflectDir = CheckCollideMirror(moveDir); //거울의 경우 반사된 방향으로 나머지 이동경로를 바꾼다.
                 if (reflectDir == 0)
@@ -235,26 +235,26 @@ public class PlayerMove2 : MonoBehaviour
     /// </summary>
     /// <param name="_dir"></param>
     /// <returns>이동 기능 중지(렌즈에 수직으로 접근하여 튕겨나옴)</returns>
-    private int CheckCollideLens(int _dir)
-    {
-        if(collidingLens != null)
-        {
-            movePause = true;
-            Direction refract = collidingLens.GetConcaveRefractDirection(_dir);
-            if(refract == Direction.RETURN)
-            {
-                int reverseDir = _dir > 4 ? _dir - 4 : _dir + 4; //역방향
-                StartCoroutine(Move(reverseDir,0,true)); //직전에 모든 코루틴을 종료했기 때문에 한칸만 이동하고 이동이 종료된다.
-                return 0;
-            }
-            else
-            {
-                StartCoroutine(Move((int)refract,0,true));
-                return 1;
-            }
-        }
-        return 1; //충돌한 렌즈가 없는 경우 정상 진행
-    }
+    //private int CheckCollideLens(int _dir)
+    //{
+    //    if(collidingLens != null)
+    //    {
+    //        movePause = true;
+    //        //Direction refract = collidingLens.GetConcaveRefractDirection(_dir);
+    //        if(refract == Direction.RETURN)
+    //        {
+    //            int reverseDir = _dir > 4 ? _dir - 4 : _dir + 4; //역방향
+    //            StartCoroutine(Move(reverseDir,0,true)); //직전에 모든 코루틴을 종료했기 때문에 한칸만 이동하고 이동이 종료된다.
+    //            return 0;
+    //        }
+    //        else
+    //        {
+    //            StartCoroutine(Move((int)refract,0,true));
+    //            return 1;
+    //        }
+    //    }
+    //    return 1; //충돌한 렌즈가 없는 경우 정상 진행
+    //}
 
     /// <summary>
     /// 현재 접촉해있는 대각 거울이 있는지 체크

@@ -8,7 +8,7 @@ public class Lens : MonoBehaviour
     [Tooltip("렌즈가 수평으로 되어있는가?")] public bool isHorizontal;
     [Tooltip("렌즈의 좌측 또는 위쪽 부분인가?")] public bool isUpLeft;
 
-    public Direction GetConcaveRefractDirection(int dir)
+    public Direction GetConcaveRefractDirection(int dir, ref Direction originDir)
     {
         if (isConcave)
         {
@@ -22,13 +22,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.RIGHT:
                         case (int)Direction.DOWN_RIGHT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.RIGHT;
                             return Direction.UP_RIGHT;
-                        case (int)Direction.LEFT:
+                        case (int)Direction.RIGHT:
+                            return Direction.UP_RIGHT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.UP_LEFT:
+                            originDir = Direction.LEFT;
+                            return Direction.UP_LEFT;
+                        case (int)Direction.LEFT:
                             return Direction.UP_LEFT;
                     }
                 }
@@ -40,13 +44,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.UP:
                         case (int)Direction.UP_LEFT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.UP;
                             return Direction.UP_LEFT;
-                        case (int)Direction.DOWN:
+                        case (int)Direction.UP:
+                            return Direction.UP_LEFT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.DOWN_RIGHT:
+                            originDir = Direction.DOWN;
+                            return Direction.DOWN_LEFT;
+                        case (int)Direction.DOWN:
                             return Direction.DOWN_LEFT;
                     }
                 }
@@ -61,13 +69,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.RIGHT:
                         case (int)Direction.DOWN_RIGHT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.RIGHT;
                             return Direction.DOWN_RIGHT;
-                        case (int)Direction.LEFT:
+                        case (int)Direction.RIGHT:
+                            return Direction.DOWN_RIGHT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.UP_LEFT:
+                            originDir = Direction.LEFT;
+                            return Direction.DOWN_LEFT;
+                        case (int)Direction.LEFT:
                             return Direction.DOWN_LEFT;
                     }
                 }
@@ -79,13 +91,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.UP:
                         case (int)Direction.UP_LEFT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.UP;
                             return Direction.UP_RIGHT;
-                        case (int)Direction.DOWN:
+                        case (int)Direction.UP:
+                            return Direction.UP_RIGHT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.DOWN_RIGHT:
+                            originDir = Direction.DOWN;
+                            return Direction.DOWN_RIGHT;
+                        case (int)Direction.DOWN:
                             return Direction.DOWN_RIGHT;
                     }
                 }
@@ -103,13 +119,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.RIGHT:
                         case (int)Direction.DOWN_RIGHT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.RIGHT;
                             return Direction.DOWN_RIGHT;
-                        case (int)Direction.LEFT:
+                        case (int)Direction.RIGHT:
+                            return Direction.DOWN_RIGHT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.UP_LEFT:
+                            originDir = Direction.LEFT;
+                            return Direction.DOWN_LEFT;
+                        case (int)Direction.LEFT:
                             return Direction.DOWN_LEFT;
                     }
                 }
@@ -121,13 +141,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.UP:
                         case (int)Direction.UP_LEFT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.UP;
                             return Direction.UP_RIGHT;
-                        case (int)Direction.DOWN:
+                        case (int)Direction.UP:
+                            return Direction.UP_RIGHT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.DOWN_RIGHT:
+                            originDir = Direction.DOWN;
+                            return Direction.DOWN_RIGHT;
+                        case (int)Direction.DOWN:
                             return Direction.DOWN_RIGHT;
                     }
                 }
@@ -142,13 +166,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.RIGHT:
                         case (int)Direction.DOWN_RIGHT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.RIGHT;
                             return Direction.UP_RIGHT;
-                        case (int)Direction.LEFT:
+                        case (int)Direction.RIGHT:
+                            return Direction.UP_RIGHT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.UP_LEFT:
+                            originDir = Direction.LEFT;
+                            return Direction.UP_LEFT;
+                        case (int)Direction.LEFT:
                             return Direction.UP_LEFT;
                     }
                 }
@@ -160,13 +188,17 @@ public class Lens : MonoBehaviour
                     }
                     switch (dir)
                     {
-                        case (int)Direction.UP:
                         case (int)Direction.UP_LEFT:
                         case (int)Direction.UP_RIGHT:
+                            originDir = Direction.UP;
                             return Direction.UP_LEFT;
-                        case (int)Direction.DOWN:
+                        case (int)Direction.UP:
+                            return Direction.UP_LEFT;
                         case (int)Direction.DOWN_LEFT:
                         case (int)Direction.DOWN_RIGHT:
+                            originDir = Direction.DOWN;
+                            return Direction.DOWN_LEFT;
+                        case (int)Direction.DOWN:
                             return Direction.DOWN_LEFT;
                     }
                 }

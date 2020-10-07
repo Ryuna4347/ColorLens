@@ -72,6 +72,7 @@ public class SceneChange : MonoBehaviour
         string[] chapStage = SceneManager.GetActiveScene().name.Split('-');
         string nextStageName = chapStage[0] +'-' + (int.Parse(chapStage[1])+1);
         Time.timeScale = 1;
+        SoundManager.instance.Play("Btn", 1, 1);
         SceneManager.LoadScene(nextStageName);
     }
 

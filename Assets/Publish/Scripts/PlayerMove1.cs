@@ -221,7 +221,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow, ref _dir);
                     if (tempDir == 0) //튕겨 나올경우(거울/렌즈에 수직 진입 시도)
                     {
                         if((int)dirNow<=4)
@@ -336,7 +336,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
-                    tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow);
+                    tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow, ref _dir);
                     if (tempDir == 0)
                     {
                         if ((int)dirNow <= 4)

@@ -8,7 +8,6 @@ public class Tutorial_Prism : MonoBehaviour
     
     public void StartPrismEffect()
     {
-        Debug.Log(gameObject.name);
         foreach (GameObject prism in PrismObjs)
         {
             prism.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().Play();
