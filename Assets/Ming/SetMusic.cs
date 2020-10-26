@@ -7,21 +7,21 @@ using UnityEngine.SceneManagement;
 public class SetMusic : MonoBehaviour
 {
     public AudioClip music;
-    public float volume=1;
     void Start()
     {
         if (SceneManager.GetActiveScene().name == "1-1")
         {
-            BgmManager.instance.Set(null, volume);
+            BgmManager.instance.Set(null,SoundManager.instance.savedBGM);
         }
         else
         {
-            BgmManager.instance.Set(music, volume);
+            BgmManager.instance.Set(music, SoundManager.instance.savedBGM);
         }
     }
     
     public void PlayBGM()
     {
-        BgmManager.instance.Set(music, volume);
+        BgmManager.instance.Set(music, SoundManager.instance.savedBGM);
     }
+    
 }

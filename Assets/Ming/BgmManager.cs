@@ -20,6 +20,11 @@ public class BgmManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    private void Update()
+    {
+        source.volume = SoundManager.instance.savedBGM;
+    }
+
     public void Set(AudioClip clip, float volume = 1f)
     {
         if (source.clip != clip)
