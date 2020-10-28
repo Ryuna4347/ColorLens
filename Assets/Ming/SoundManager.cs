@@ -10,6 +10,9 @@ public class SoundManager : MonoBehaviour
     private AudioSource source;
     public AudioClip Btn, Back, ClearBtnAppear, StarAppear, Clear, Division, Multiply, Restart, GameOver, Die,DisAppear,Move;
 
+    public float savedBGM = 1;
+    public float savedSE = 1;
+    
     private void Awake()
     {
         if (instance == null)
@@ -66,7 +69,7 @@ public class SoundManager : MonoBehaviour
                 clip = Move;
                 break;
         }
-        source.volume = volume;
+        source.volume = volume*savedSE;
         source.pitch = pitch;
         source.PlayOneShot(clip);
     }
