@@ -1511,6 +1511,8 @@ MonoBehaviour:
   Die: {fileID: 0}
   DisAppear: {fileID: 0}
   Move: {fileID: 0}
+  savedBGM: 1
+  savedSE: 1
 --- !u!4 &294258262
 Transform:
   m_ObjectHideFlags: 0
@@ -6646,6 +6648,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8472665882647259003, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8472665882647259005, guid: 58f390a26bdd570409c1c51691dbe77f,
         type: 3}
@@ -18439,6 +18446,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stage_Text: {fileID: 331127221}
+  Star_requirement: {fileID: 0}
+  PausePanel: {fileID: 0}
+  GameoverPanel: {fileID: 0}
+  ClearPanel: {fileID: 0}
+  G_Star_requirement: {fileID: 0}
 --- !u!114 &3277344407544396544
 MonoBehaviour:
   m_ObjectHideFlags: 0

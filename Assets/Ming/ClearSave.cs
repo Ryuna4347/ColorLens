@@ -27,6 +27,16 @@ public class ClearSave : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+        else if(Input.GetKeyDown(KeyCode.F2))
+        {
+            for (int i = 1; i <= 4; i++)
+            {
+                for (int j = 1; j <= 12; j++)
+                {
+                    PlayerPrefs.SetInt(i.ToString()+"-"+j.ToString(),3);
+                }
+            }
+        }
     }
 
     public void Save(int starNum)

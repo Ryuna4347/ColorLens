@@ -5261,6 +5261,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8472665882647259003, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8472665882647259005, guid: 58f390a26bdd570409c1c51691dbe77f,
         type: 3}
       propertyPath: m_Name
