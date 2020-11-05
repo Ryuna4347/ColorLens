@@ -253,9 +253,11 @@ public class PlayerMove1 : MonoBehaviour
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
                 }
-                else //흰색 타일
+                else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
+                    TileBase tileBase = hitObj.GetComponent<TileBase>();
 
+                    tileBase.GetNextDirection(dirNow,i); //TileBase로 형변환은 했지만 GetNextDirection()은 원래 오버라이딩한 함수가 실행된다.
                 }
             }
             else

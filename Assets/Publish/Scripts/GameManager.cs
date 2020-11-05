@@ -9,8 +9,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance { get; private set; }
 
     public static Action<float> moveRatioChanged;
+    public static Action moveTurnEnded; //색상캐릭터의 전체 움직임 한번이 끝남에 따라 실행되는 이벤트들
 
     public List<GameObject> characters;
+    public List<GameObject> movableWalls; //기존 맵 이외의 움직일 수 있는 벽(흰색 타일 파괴 메꾸기용)
 
     public GameObject colorBox;//색상박스 부모변수
     [SerializeField] private int colorBox_Child_Count;//색상 박스 수
@@ -252,6 +254,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(0.1f/moveRatio); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
+        if (moveTurnEnded != null) //한 턴 종료에 대응되는 이벤트가 있을 시 실행
+            moveTurnEnded();
         canMove = true;
     }
 
@@ -617,6 +621,27 @@ public class GameManager : MonoBehaviour
             }
             return colorName;
         }
+    }
+    #endregion
+
+    #region 타일 관련(TileBase에 속한 오브젝트)
+
+    /// <summary>
+    /// 벽 오브젝트를 생성
+    /// </summary>
+    /// <param name="position">오브젝트의 로컬 포지션</param>
+    /// <param name="parentTransform">오브젝트의 부모 오브젝트</param>
+    public void CreateWall(Vector3 position, Transform parentTransform)
+    {
+        GameObject instWall = movableWalls.Find(x => x.gameObject.activeSelf == false);
+        if(!instWall)
+        {
+            instWall = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Objs/Wall"), parentTransform);
+            movableWalls.Add(instWall);
+        }
+        position.y = position.y - 0.5f;
+        position.z = (-3.5f + position.y) * 0.01f;
+        instWall.transform.localPosition = position;
     }
     #endregion
 }

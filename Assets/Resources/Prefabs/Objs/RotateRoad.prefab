@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5058945345045468688}
   - component: {fileID: 5504256979150327447}
   - component: {fileID: 6560103176620885093}
-  - component: {fileID: 1062552497550960277}
+  - component: {fileID: -9164170507522102683}
   m_Layer: 8
-  m_Name: Road
+  m_Name: RotateRoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15, y: 0.15}
   m_EdgeRadius: 0
---- !u!114 &1062552497550960277
+--- !u!114 &-9164170507522102683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3311224217135271081}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 600654cbee26175489d3eed962ceef0b, type: 3}
+  m_Script: {fileID: 11500000, guid: dba2e6c71b440344e9e40c1cd526f2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileType: 0
+  tileType: 3
+  nextDirection: 3
+  isClockwise: 1
+  rotateTime: 0.5

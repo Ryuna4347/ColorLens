@@ -21,7 +21,7 @@ public class Stage_Number : MonoBehaviour
 
     private void Update()
     {
-        if (PausePanel.active == true || GameoverPanel.active == true || ClearPanel.active == true)
+        if (PausePanel.activeSelf == true || GameoverPanel.activeSelf == true || ClearPanel.activeSelf == true)
             G_Star_requirement.SetActive(true);
         else
             G_Star_requirement.SetActive(false);
