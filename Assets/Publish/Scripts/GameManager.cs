@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
         {
             StarAnims[3].Play("Star_Delete");//세번째 별
             StarAnims[4].Play("Star_Delete");//세번째 별
-            Star_bar_Anims[0].Play("2Star_bar_Delete");
+            Star_bar_Anims[1].Play("2Star_bar_Delete");
             Invoke("Star1_Appear", 0.4f);
         }
         else if (moveCount > baseMoveCount[1])
@@ -207,7 +207,7 @@ public class GameManager : MonoBehaviour
     void Star1_Appear()
 
     {
-        StarAnims[5].Play("1Star_Appear");
+        StarAnims[5].Play("Star_Appear");
         Star_bar_Anims[2].Play("1Star_bar_APpearanim");
 
     }
