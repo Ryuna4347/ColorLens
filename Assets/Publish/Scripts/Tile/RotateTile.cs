@@ -20,10 +20,15 @@ public class RotateTile : TileBase
         GameManager.moveTurnEnded -= Rotate;
     }
 
+    public override Direction? GetNextDirection(Direction direction, int time)
+    {
+        return nextDirection;
+    }
+
     private IEnumerator RotateTransform()
     {
         float degree = isClockwise ? -90 : 90;
-        float time = 0;
+        float time = 0.01f;
 
         while(time < rotateTime)
         {

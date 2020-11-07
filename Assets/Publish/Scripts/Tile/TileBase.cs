@@ -10,6 +10,7 @@ public enum TileType
 public class TileBase : MonoBehaviour
 {
     [SerializeField] protected TileType tileType;
+    public TileType GetTileType { get { return tileType; } }
 
     public virtual Direction? GetNextDirection(Direction direction, int time) {
         return direction;

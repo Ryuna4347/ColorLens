@@ -15,6 +15,7 @@ TagManager:
   - Mirror
   - Wall
   - Objective
+  - Tile
   layers:
   - Default
   - TransparentFX

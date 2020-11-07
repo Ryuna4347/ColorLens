@@ -18,6 +18,7 @@ public class PlayerMove1 : MonoBehaviour
     [SerializeField]private Lens collidingLens=null;
     [SerializeField] private Mirror collidingMirror=null;
     [SerializeField] private Objective collidingObjective = null;
+    [SerializeField] private TileBase collidingTile = null;
     [SerializeField] public List<GameObject> collisionList; //현재 충돌중인 색상들의 리스트(충돌한 모든 오브젝트에서 체크하고, 한 오브젝트만 게임매니저에 요청하는 걸로)
 
     private SpriteRenderer faceRenderer;
@@ -153,10 +154,9 @@ public class PlayerMove1 : MonoBehaviour
     public List<Direction> routeList = new List<Direction>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
 
     /// <summary>
-    /// 
+    /// 이동할 경로 예측
     /// </summary>
     /// <param name="_dir"></param>
-    /// <param name="objEffect">분열에 의한 한 칸 이동인가?</param>
     public void CalculateRoute(Direction _dir)
     {
         Vector3 lastPos = transform.position;
@@ -165,6 +165,16 @@ public class PlayerMove1 : MonoBehaviour
         Direction tempDir = Direction.RETURN;
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
+
+        try
+        {
+            _dir = (Direction)CheckCollideTile(_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
+        }
+        catch(System.Exception e)
+        {
+            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message);
+            return;
+        }
 
         for (int i = 0; i < moveCount; i++)
         {
@@ -251,13 +261,31 @@ public class PlayerMove1 : MonoBehaviour
                         }
                         break;
                     }
-                    i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                    i--; //아이템은 한칸 이동으로 치지 않으므로
                 }
                 else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
                     TileBase tileBase = hitObj.GetComponent<TileBase>();
 
-                    tileBase.GetNextDirection(dirNow,i); //TileBase로 형변환은 했지만 GetNextDirection()은 원래 오버라이딩한 함수가 실행된다.
+                    if (tileBase.GetTileType != TileType.None && tileBase.GetTileType != TileType.Reverse) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
+                    {
+                        Direction nextDirection;
+
+                        try
+                        {
+                            nextDirection = (Direction)tileBase.GetNextDirection(dirNow, i);
+                            routeList.Add(nextDirection); //TileBase로 형변환은 했지만 GetNextDirection()은 원래 오버라이딩한 함수가 실행된다.
+
+                            if (tileBase.GetTileType.Equals(TileType.Rotate)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
+                            {
+                                _dir = nextDirection;
+                            }
+                        }
+                        catch(System.Exception e) {
+                            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message);
+                        }
+                        i--; //아이템은 한칸 이동으로 치지 않으므로
+                    }
                 }
             }
             else
@@ -276,6 +304,16 @@ public class PlayerMove1 : MonoBehaviour
         Direction tempDir = 0;
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
+        
+        try
+        {
+            _dir = (Direction)CheckCollideTile(_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message);
+            return;
+        }
 
         for (int i = 0; i < moveCount+1; i++) //분열 이후 첫 한 칸은 이동횟수에 들어가지 않는다.
         {
@@ -304,7 +342,7 @@ public class PlayerMove1 : MonoBehaviour
             {
                 GameObject hitObj;
 
-                if (hit.Count > 1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
+                if (hit.Count > 1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌될 시 흰색타일은 무시
                 {
                     hitObj = hit.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
                 }
@@ -313,7 +351,7 @@ public class PlayerMove1 : MonoBehaviour
                     hitObj = hit[0].gameObject;
                 }
 
-                string collideObjTag = hitObj.tag; //레이캐스트에 충돌한 오브젝트의 태그
+                string collideObjTag = hitObj.tag; 
 
                 Direction dirNow = GetDirectionFromVector(dir);
                 lastPos = lastPos + dir * moveValue;
@@ -322,19 +360,19 @@ public class PlayerMove1 : MonoBehaviour
 
                 if (collideObjTag.Equals("Wall"))
                 {
-                    break; //죽을 예정이므로 그 위치까지만 이동하면 됨
+                    break; //죽을 예정
                 }
                 else if (collideObjTag.Equals("Objective"))
                 {
-                    break; //색상 상자에 도착해도 더 이상 이동할 필요 없음
+                    break; //이동할 필요 없음
                 }
                 else if (collideObjTag.Equals("Prism"))
                 {
                     if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
-                    { //단색인 경우 프리즘을 통과하는게 좋다.
+                    { //단색인 경우
                         continue;
                     }
-                    break; //프리즘에 도착한 혼합색일 경우 멈추고 분열 시도
+                    break; //혼합색일 경우 분열 시도
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
@@ -370,9 +408,29 @@ public class PlayerMove1 : MonoBehaviour
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
                 }
-                else //흰색 타일
+                else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
+                    TileBase tileBase = hitObj.GetComponent<TileBase>();
 
+                    if (tileBase.GetTileType != TileType.None && tileBase.GetTileType != TileType.Reverse) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
+                    {
+                        Direction nextDirection;
+
+                        try
+                        {
+                            nextDirection = (Direction)tileBase.GetNextDirection(dirNow, i);
+                            routeList.Add(nextDirection); //TileBase로 형변환은 했지만 GetNextDirection()은 원래 오버라이딩한 함수가 실행된다.
+
+                            if (tileBase.GetTileType.Equals(TileType.Rotate)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
+                            {
+                                _dir = nextDirection;
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message);
+                        }
+                    }
                 }
             }
             else
@@ -443,6 +501,37 @@ public class PlayerMove1 : MonoBehaviour
             dir = vec.y > 0 ? (Direction)1 : (Direction)5;
         }
         return dir;
+    }
+
+    /// <summary>
+    /// 현재 색상 캐릭터가 밟고 있는 타일로 인한 초기 진행방향의 전환 여부를 확인
+    /// </summary>
+    /// <param name="direction">진행하려고 하는 초기 방향</param>
+    /// <returns></returns>
+    private Direction? CheckCollideTile(Direction direction)
+    {
+        TileType tileType = collidingTile.GetTileType;
+
+        if (tileType.Equals(TileType.None))
+        {
+            return direction;
+        }
+        else if (tileType.Equals(TileType.Reverse))
+        {
+            return collidingTile.GetNextDirection(direction, 0);
+        }
+        else if (tileType.Equals(TileType.Breakable))
+        {
+            return direction;
+        }
+        else if (tileType.Equals(TileType.Rotate))
+        {
+            return collidingTile.GetNextDirection(direction, 0);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -564,6 +653,10 @@ public class PlayerMove1 : MonoBehaviour
         {
             collidingObjective = collision.GetComponent<Objective>();
         }
+        else if(collision.gameObject.tag.Equals("Tile"))
+        {
+            collidingTile = collision.GetComponent<TileBase>();
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -575,6 +668,9 @@ public class PlayerMove1 : MonoBehaviour
         {
             collisionList.Remove(collision.gameObject);
         }
+        else if (collision.gameObject.tag.Equals("Tile"))
+        {
+            collidingTile = null;
+        }
     }
-
 }

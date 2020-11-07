@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3742219530189976897}
   m_Layer: 8
   m_Name: CrackedRoad
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,8 +99,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.51, y: 14.51}
+    pivot: {x: 0.4851826, y: 0.5148174}
+    oldSize: {x: 2.902, y: 2.902}
     newSize: {x: 12.96, y: 7.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
