@@ -269,20 +269,16 @@ public class PlayerMove1 : MonoBehaviour
 
                     if (tileBase.GetTileType != TileType.None && tileBase.GetTileType != TileType.Reverse) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
                     {
-                        Direction nextDirection;
-
-                        try
+                        if (tileBase.GetTileType.Equals(TileType.Rotate)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
                         {
-                            nextDirection = (Direction)tileBase.GetNextDirection(dirNow, i);
-                            routeList.Add(nextDirection); //TileBase로 형변환은 했지만 GetNextDirection()은 원래 오버라이딩한 함수가 실행된다.
-
-                            if (tileBase.GetTileType.Equals(TileType.Rotate)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
+                            try
                             {
-                                _dir = nextDirection;
+                                _dir = (Direction)tileBase.GetNextDirection(dirNow, i + 1);
                             }
-                        }
-                        catch(System.Exception e) {
-                            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message);
+                            catch(System.Exception e)
+                            {
+                                Debug.LogError("이동 경로 예측 오류\n" + gameObject.name + ", "+e.Message);
+                            }
                         }
                         i--; //아이템은 한칸 이동으로 치지 않으므로
                     }

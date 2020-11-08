@@ -2920,7 +2920,7 @@ PrefabInstance:
     - target: {fileID: 5058945345045468688, guid: befe037984c6f514c9e81a7c7d108432,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.5
+      value: -4.49
       objectReference: {fileID: 0}
     - target: {fileID: 5058945345045468688, guid: befe037984c6f514c9e81a7c7d108432,
         type: 3}
@@ -8030,8 +8030,10 @@ MonoBehaviour:
   movingChars: []
   canMove: 0
   StarAnims:
-  - {fileID: 1350446320}
-  - {fileID: 1350446319}
+  - {fileID: 0}
+  - {fileID: 0}
+  Star_bar_Anims: []
+  Star_standard_Text: []
   MoveText: {fileID: 1350446321}
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 140391931}
@@ -10581,18 +10583,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58f390a26bdd570409c1c51691dbe77f, type: 3}
---- !u!95 &1350446319 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8472665882534222387, guid: 58f390a26bdd570409c1c51691dbe77f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1350446318}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1350446320 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8472665882269847739, guid: 58f390a26bdd570409c1c51691dbe77f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1350446318}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1350446321 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8472665882857893758, guid: 58f390a26bdd570409c1c51691dbe77f,
@@ -14804,7 +14794,7 @@ PrefabInstance:
     - target: {fileID: 5058945345045468688, guid: 13627da54d3cc824681348c254638f2c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.5
+      value: -6.5
       objectReference: {fileID: 0}
     - target: {fileID: 5058945345045468688, guid: 13627da54d3cc824681348c254638f2c,
         type: 3}
