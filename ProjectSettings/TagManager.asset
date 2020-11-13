@@ -16,6 +16,7 @@ TagManager:
   - Wall
   - Objective
   - Tile
+  - Portal
   layers:
   - Default
   - TransparentFX

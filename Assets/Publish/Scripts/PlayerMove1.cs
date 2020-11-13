@@ -13,12 +13,15 @@ public class PlayerMove1 : MonoBehaviour
     public float delay;
     public float charMoveRatio;
 
+    public bool holdMoving = false;
+
     public bool collisionChecked; //충돌을 하면 a,b 모두에서 collisionStay가 발생해서 2번 함수를 실행하기 때문에 한쪽에서만 실행하도록 하기 위한 트리거
     [SerializeField] private GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
     [SerializeField]private Lens collidingLens=null;
     [SerializeField] private Mirror collidingMirror=null;
     [SerializeField] private Objective collidingObjective = null;
     [SerializeField] private TileBase collidingTile = null;
+    [SerializeField] private Portal collidingPortal = null;
     [SerializeField] public List<GameObject> collisionList; //현재 충돌중인 색상들의 리스트(충돌한 모든 오브젝트에서 체크하고, 한 오브젝트만 게임매니저에 요청하는 걸로)
 
     private SpriteRenderer faceRenderer;
@@ -148,6 +151,11 @@ public class PlayerMove1 : MonoBehaviour
             CheckCollideObjective();
             yield break;
         }
+        if (collidingPortal != null)
+        {
+            CheckCollidePortal();
+            yield break;
+        }
         GameManager.instance.CheckMoveOver(gameObject);
     }
 
@@ -156,15 +164,25 @@ public class PlayerMove1 : MonoBehaviour
     /// <summary>
     /// 이동할 경로 예측
     /// </summary>
-    /// <param name="_dir"></param>
-    public void CalculateRoute(Direction _dir)
+    /// <param name="_dir">초기 이동 방향</param>
+    /// <param name="remainMoveCount">남은 이동 횟수(포탈 아이템 이용시)</param>
+    public void CalculateRoute(Direction _dir, int remainMoveCount=-1)
     {
         Vector3 lastPos = transform.position;
-        routeList = new List<Direction>();
+        Direction tempDir = Direction.RETURN; //이동 방향이 일시적으로 변하는 경우를 위한 변수
         int layer = 1;
-        Direction tempDir = Direction.RETURN;
 
-        layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
+        int characterMoveCount = moveCount;
+
+        routeList = new List<Direction>();
+
+        if(remainMoveCount >= 0)
+        {
+            characterMoveCount = remainMoveCount;
+            routeList.Add(_dir); //처음 포탈에서 나가는 건 횟수에 치지 않아야한다.
+        }
+
+        layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj")));
 
         try
         {
@@ -172,11 +190,11 @@ public class PlayerMove1 : MonoBehaviour
         }
         catch(System.Exception e)
         {
-            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message);
+            Debug.LogError("이동 궤도 예측에 문제 발생 : " + e.Message +" "+ _dir);
             return;
         }
 
-        for (int i = 0; i < moveCount; i++)
+        for (int i = 0; i < characterMoveCount; i++)
         {
             Vector3 dir;
 
@@ -227,7 +245,7 @@ public class PlayerMove1 : MonoBehaviour
                         i--;
                         continue;
                     }
-                    break; //프리즘에 도착한 혼합색일 경우 멈추고 분열 시도
+                    break; //프리즘에 도착한 혼합색일 경우 프리즘까지만 이동하고 분열 시도
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
@@ -262,6 +280,10 @@ public class PlayerMove1 : MonoBehaviour
                         break;
                     }
                     i--; //아이템은 한칸 이동으로 치지 않으므로
+                }
+                else if (collideObjTag.Equals("Portal"))
+                {
+                    break;
                 }
                 else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
@@ -591,6 +613,14 @@ public class PlayerMove1 : MonoBehaviour
             EffectDie();
     }
 
+    private void CheckCollidePortal()
+    {
+        if(collidingPortal != null)
+        {
+            collidingPortal.TeleportCharacter(gameObject, routeList[routeList.Count - 1], moveCount - routeList.Count);
+        }
+    }
+
     public void EffectDie()
     {
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
@@ -637,7 +667,7 @@ public class PlayerMove1 : MonoBehaviour
         {
             collidingPrism = collision.gameObject;
         }
-        else if(collision.gameObject.tag.Equals("Wall"))
+        else if (collision.gameObject.tag.Equals("Wall"))
         {
             EffectDie();
         }
@@ -645,13 +675,17 @@ public class PlayerMove1 : MonoBehaviour
         {
             collisionList.Add(collision.gameObject);
         }
-        else if(collision.gameObject.tag.Equals("Objective"))
+        else if (collision.gameObject.tag.Equals("Objective"))
         {
             collidingObjective = collision.GetComponent<Objective>();
         }
-        else if(collision.gameObject.tag.Equals("Tile"))
+        else if (collision.gameObject.tag.Equals("Portal"))
         {
-            collidingTile = collision.GetComponent<TileBase>();
+            collidingPortal = collision.GetComponent<Portal>();
+        }
+        if (collision.gameObject.tag.Equals("Tile"))
+        {
+            collidingTile = collision.GetComponent<TileBase>(); //타일은 항상 체크
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -660,13 +694,17 @@ public class PlayerMove1 : MonoBehaviour
         {
             collidingPrism = null;
         }
-        else if (collision.gameObject.tag.Equals("Colors"))
+        if (collision.gameObject.tag.Equals("Colors"))
         {
             collisionList.Remove(collision.gameObject);
         }
-        else if (collision.gameObject.tag.Equals("Tile"))
+        if (collidingTile != null && collision.gameObject.tag.Equals("Tile") && collidingTile.gameObject == collision.gameObject)
         {
             collidingTile = null;
+        }
+        if (collision.gameObject.tag.Equals("Portal"))
+        {
+            collidingPortal = null;
         }
     }
 }
