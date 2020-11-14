@@ -176,17 +176,19 @@ public class PlayerMove1 : MonoBehaviour
 
         routeList = new List<Direction>();
 
-        if(remainMoveCount >= 0)
+        layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj")));
+
+        if (remainMoveCount >= 0)
         {
             characterMoveCount = remainMoveCount;
-            routeList.Add(_dir); //처음 포탈에서 나가는 건 횟수에 치지 않아야한다.
+            routeList.Add(_dir); //처음 포탈에서 나가는 건 횟수 X
+            lastPos += GetVectorFromDirection(_dir);
+            Debug.Log(lastPos);
         }
-
-        layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj")));
 
         try
         {
-            _dir = (Direction)CheckCollideTile(_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
+            _dir = (Direction)CheckFirstPosition(lastPos,_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
         }
         catch(System.Exception e)
         {
@@ -289,9 +291,9 @@ public class PlayerMove1 : MonoBehaviour
                 {
                     TileBase tileBase = hitObj.GetComponent<TileBase>();
 
-                    if (tileBase.GetTileType != TileType.None && tileBase.GetTileType != TileType.Reverse) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
+                    if (tileBase.GetTileType != TileType.NONE && tileBase.GetTileType != TileType.REVERSE) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
                     {
-                        if (tileBase.GetTileType.Equals(TileType.Rotate)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
+                        if (tileBase.GetTileType.Equals(TileType.ROTATE)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
                         {
                             try
                             {
@@ -325,7 +327,7 @@ public class PlayerMove1 : MonoBehaviour
         
         try
         {
-            _dir = (Direction)CheckCollideTile(_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
+            _dir = (Direction)CheckFirstPosition(lastPos,_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
         }
         catch (System.Exception e)
         {
@@ -430,7 +432,7 @@ public class PlayerMove1 : MonoBehaviour
                 {
                     TileBase tileBase = hitObj.GetComponent<TileBase>();
 
-                    if (tileBase.GetTileType != TileType.None && tileBase.GetTileType != TileType.Reverse) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
+                    if (tileBase.GetTileType != TileType.NONE && tileBase.GetTileType != TileType.REVERSE) //일반 타일과 반전타일 이외 타일들은 아이템처럼 취급한다.
                     {
                         Direction nextDirection;
 
@@ -439,7 +441,7 @@ public class PlayerMove1 : MonoBehaviour
                             nextDirection = (Direction)tileBase.GetNextDirection(dirNow, i);
                             routeList.Add(nextDirection); //TileBase로 형변환은 했지만 GetNextDirection()은 원래 오버라이딩한 함수가 실행된다.
 
-                            if (tileBase.GetTileType.Equals(TileType.Rotate)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
+                            if (tileBase.GetTileType.Equals(TileType.ROTATE)) //회전하는 타일은 영구적으로 이동방향을 바꾼다.
                             {
                                 _dir = nextDirection;
                             }
@@ -467,6 +469,7 @@ public class PlayerMove1 : MonoBehaviour
     private Vector3 GetVectorFromDirection(Direction _dir)
     {
         Vector3 dir = new Vector3();
+
         switch (_dir)
         {
             case (Direction)1: //위
@@ -526,30 +529,45 @@ public class PlayerMove1 : MonoBehaviour
     /// </summary>
     /// <param name="direction">진행하려고 하는 초기 방향</param>
     /// <returns></returns>
-    private Direction? CheckCollideTile(Direction direction)
+    private Direction? CheckFirstPosition(Vector2 pos, Direction direction)
     {
-        TileType tileType = collidingTile.GetTileType;
+        List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(pos, 0.1f,(1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))));
 
-        if (tileType.Equals(TileType.None))
+        if (hit != null)
         {
-            return direction;
+            GameObject hitObj;
+
+            if (hit.Count > 1) //장애물이 있는 타일은 처음부터 밟고 있을 수 없다.
+            {
+                return null;
+            }
+
+            hitObj = hit[0].gameObject;
+
+            TileType tileType = hitObj.GetComponent<TileBase>().GetTileType;
+
+            if (tileType.Equals(TileType.NONE))
+            {
+                return direction;
+            }
+            else if (tileType.Equals(TileType.REVERSE))
+            {
+                return hitObj.GetComponent<TileBase>().GetNextDirection(direction, 0);
+            }
+            else if (tileType.Equals(TileType.BREAKABLE))
+            {
+                return direction;
+            }
+            else if (tileType.Equals(TileType.ROTATE))
+            {
+                return hitObj.GetComponent<TileBase>().GetNextDirection(direction, 0);
+            }
+            else
+            {
+                return null;
+            }
         }
-        else if (tileType.Equals(TileType.Reverse))
-        {
-            return collidingTile.GetNextDirection(direction, 0);
-        }
-        else if (tileType.Equals(TileType.Breakable))
-        {
-            return direction;
-        }
-        else if (tileType.Equals(TileType.Rotate))
-        {
-            return collidingTile.GetNextDirection(direction, 0);
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     /// <summary>

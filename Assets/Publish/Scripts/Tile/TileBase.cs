@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum TileType
 {
-    None, Breakable, Reverse, Rotate
+    NONE, BREAKABLE, REVERSE, ROTATE
 }
 
 public class TileBase : MonoBehaviour
