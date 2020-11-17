@@ -505,17 +505,28 @@
           <e p="Scripts" t="Include">
             <e p="BGM_SE_MGr.cs" t="Include" />
             <e p="ButtonClicked.cs" t="Include" />
+            <e p="CameraResolution.cs" t="Include" />
             <e p="FinalCutScene.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
             <e p="Lens.cs" t="Include" />
+            <e p="Lock" t="Include">
+              <e p="LockBase.cs" t="Include" />
+              <e p="Prison.cs" t="Include" />
+            </e>
             <e p="Map.cs" t="Include" />
             <e p="Mirror.cs" t="Include" />
-            <e p="NewBehaviourScript.cs" t="Include" />
             <e p="Objective.cs" t="Include" />
             <e p="PausePanel.cs" t="Include" />
             <e p="PlayerMove1.cs" t="Include" />
+            <e p="Portal.cs" t="Include" />
             <e p="SelectChapter.cs" t="Include" />
             <e p="SpeedRatioButton.cs" t="Include" />
+            <e p="Tile" t="Include">
+              <e p="BreakableTile.cs" t="Include" />
+              <e p="ReverseTile.cs" t="Include" />
+              <e p="RotateTile.cs" t="Include" />
+              <e p="TileBase.cs" t="Include" />
+            </e>
             <e p="TitleButton.cs" t="Include" />
             <e p="Tutorial.cs" t="Include" />
             <e p="Tutorial_Prism.cs" t="Include" />

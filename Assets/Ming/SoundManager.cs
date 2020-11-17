@@ -12,7 +12,9 @@ public class SoundManager : MonoBehaviour
 
     public float savedBGM = 1;
     public float savedSE = 1;
-    
+
+    public bool isSoundbgs = true;
+    public bool isSoundbgm = true;
     private void Awake()
     {
         if (instance == null)
@@ -29,48 +31,51 @@ public class SoundManager : MonoBehaviour
 
     public void Play(string clipName,float volume=1,float pitch=1)
     {
-        AudioClip clip = null;
-        switch (clipName)
+        if (isSoundbgs)
         {
-            case "Btn":
-                clip = Btn;
-                break;
-            case "Back":
-                clip = Back;
-                break;
-            case "ClearBtnAppear":
-                clip = ClearBtnAppear;
-                break;
-            case "StarAppear":
-                clip = StarAppear;
-                break;
-            case "Clear":
-                clip = Clear;
-                break;
-            case "Division":
-                clip = Division;
-                break;
-            case "Multiply":
-                clip = Multiply;
-                break;
-            case "Restart":
-                clip = Restart;
-                break;
-            case "GameOver":
-                clip = GameOver;
-                break;
-            case "Die":
-                clip = Die;
-                break;
-            case "DisAppear":
-                clip = DisAppear;
-                break;
-            case "Move":
-                clip = Move;
-                break;
+            AudioClip clip = null;
+            switch (clipName)
+            {
+                case "Btn":
+                    clip = Btn;
+                    break;
+                case "Back":
+                    clip = Back;
+                    break;
+                case "ClearBtnAppear":
+                    clip = ClearBtnAppear;
+                    break;
+                case "StarAppear":
+                    clip = StarAppear;
+                    break;
+                case "Clear":
+                    clip = Clear;
+                    break;
+                case "Division":
+                    clip = Division;
+                    break;
+                case "Multiply":
+                    clip = Multiply;
+                    break;
+                case "Restart":
+                    clip = Restart;
+                    break;
+                case "GameOver":
+                    clip = GameOver;
+                    break;
+                case "Die":
+                    clip = Die;
+                    break;
+                case "DisAppear":
+                    clip = DisAppear;
+                    break;
+                case "Move":
+                    clip = Move;
+                    break;
+            }
+            source.volume = volume*savedSE;
+            source.pitch = pitch;
+            source.PlayOneShot(clip);   
         }
-        source.volume = volume*savedSE;
-        source.pitch = pitch;
-        source.PlayOneShot(clip);
     }
 }
