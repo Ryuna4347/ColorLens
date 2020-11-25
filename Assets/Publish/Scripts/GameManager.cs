@@ -21,13 +21,15 @@ public class GameManager : MonoBehaviour
     private int level; //현재 레벨
     public List<GameObject> movingChars; //현재 움직이고 있는 캐릭터 수
     public bool canMove=false;
-    List<int> baseMoveCount; //각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
-    public Animator[] StarAnims;//인게임 별이동
-    public Animator[] Star_bar_Anims;//인게임 별이동 바
-    public Text[] Star_standard_Text;//인게임 별이동 기준 텍스트
+    public List<int> baseMoveCount; //각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
 
-    public Text MoveText;//인게임 텍스트UI
-    int moveCount; //현재 맵에서 이동횟수
+    //public Animator[] StarAnims;//인게임 별이동
+    //public Animator[] Star_bar_Anims;//인게임 별이동 바
+    //public Text[] Star_standard_Text;//인게임 별이동 기준 텍스트
+
+    //public Text MoveText;//인게임 텍스트UI
+
+    public int moveCount; //현재 맵에서 이동횟수
     private bool isGameOver;
     public float moveRatio { get; private set; } //배속
 
@@ -180,41 +182,41 @@ public class GameManager : MonoBehaviour
     {
         if (moveCount > baseMoveCount[0])
         {
-            StarAnims[3].Play("Star_Delete");//세번째 별
-            StarAnims[4].Play("Star_Delete");//세번째 별
-            Star_bar_Anims[1].Play("2Star_bar_Delete");
-            Invoke("Star1_Appear", 0.4f);
+            //StarAnims[3].Play("Star_Delete");//세번째 별
+            //StarAnims[4].Play("Star_Delete");//세번째 별
+            //Star_bar_Anims[1].Play("2Star_bar_Delete");
+            //Invoke("Star1_Appear", 0.4f);
         }
         else if (moveCount > baseMoveCount[1])
         {
-            StarAnims[0].Play("Star_Delete");//세번째 별
-            StarAnims[1].Play("Star_Delete");//세번째 별
-            StarAnims[2].Play("Star_Delete");//세번째 별
-            Star_bar_Anims[0].Play("3Star_bar_Delete");
-            Invoke("Star2_Appear", 0.4f);
+            //StarAnims[0].Play("Star_Delete");//세번째 별
+            //StarAnims[1].Play("Star_Delete");//세번째 별
+            //StarAnims[2].Play("Star_Delete");//세번째 별
+            //Star_bar_Anims[0].Play("3Star_bar_Delete");
+            //Invoke("Star2_Appear", 0.4f);
             
         }
 
-        MoveText.text = "이동횟수 : " + moveCount;
+        //MoveText.text = "이동횟수 : " + moveCount;
 
     }
     void Star2_Appear()
     {
-        StarAnims[3].Play("Star_Appear");
-        StarAnims[4].Play("Star_Appear");
-        Star_bar_Anims[1].Play("2Star_bar_APpearanim");
+        //StarAnims[3].Play("Star_Appear");
+        //StarAnims[4].Play("Star_Appear");
+        //Star_bar_Anims[1].Play("2Star_bar_APpearanim");
     }
     void Star1_Appear()
 
     {
-        StarAnims[5].Play("Star_Appear");
-        Star_bar_Anims[2].Play("1Star_bar_APpearanim");
+        //StarAnims[5].Play("Star_Appear");
+        //Star_bar_Anims[2].Play("1Star_bar_APpearanim");
 
     }
     void InGame_standard_Text_Set()
     {
-        Star_standard_Text[0].text = baseMoveCount[1].ToString();
-        Star_standard_Text[1].text = baseMoveCount[0].ToString();
+        //Star_standard_Text[0].text = baseMoveCount[1].ToString();
+        //Star_standard_Text[1].text = baseMoveCount[0].ToString();
     }
 
     #endregion
