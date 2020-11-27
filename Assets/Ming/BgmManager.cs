@@ -22,7 +22,10 @@ public class BgmManager : MonoBehaviour
 
     private void Update()
     {
-        source.volume = SoundManager.instance.savedBGM;
+        if (SoundManager.instance.isSoundbgm)
+            source.volume = SoundManager.instance.savedBGM;
+        else
+            source.volume = 0;
     }
 
     public void Set(AudioClip clip, float volume = 1f)
