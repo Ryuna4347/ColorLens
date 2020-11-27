@@ -13,7 +13,7 @@ public class PlayerMove1 : MonoBehaviour
     public float delay;
     public float charMoveRatio;
 
-    public bool holdMoving = false;
+    public bool holdByPrison = false;
 
     public bool collisionChecked; //충돌을 하면 a,b 모두에서 collisionStay가 발생해서 2번 함수를 실행하기 때문에 한쪽에서만 실행하도록 하기 위한 트리거
     [SerializeField] private GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
@@ -178,6 +178,9 @@ public class PlayerMove1 : MonoBehaviour
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj")));
 
+        if (holdByPrison) 
+            return;
+
         if (remainMoveCount >= 0)
         {
             characterMoveCount = remainMoveCount;
@@ -324,7 +327,10 @@ public class PlayerMove1 : MonoBehaviour
         Direction tempDir = 0;
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj"))); //캐릭터들은 이동이 완료하고 충돌 검사합니다!
-        
+
+        if (holdByPrison)
+            return;
+
         try
         {
             _dir = (Direction)CheckFirstPosition(lastPos,_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
@@ -621,10 +627,12 @@ public class PlayerMove1 : MonoBehaviour
 
     private void CheckCollideObjective()
     {
+        string characterColorName = gameObject.name.Split(' ')[0]; //이름 뒤 Clone 제거
+
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
-        if (collidingObjective.CheckColor(gameObject.name))
+        if (collidingObjective.CheckColor(characterColorName))
         {
-            collidingObjective.EraseColor(gameObject.name);
+            collidingObjective.EraseColor(characterColorName);
             CharacterDisappear();
         }
         else

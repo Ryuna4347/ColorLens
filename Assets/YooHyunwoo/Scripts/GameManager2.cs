@@ -36,7 +36,7 @@ public class GameManager2 : MonoBehaviour
         colorBox = GameObject.Find("ColorBox_Parent");
         colorBox_Child_Count = colorBox.transform.childCount;
         baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
-        level = GameObject.Find("Map").GetComponent<Map>().GetLevel();
+        level = GameObject.Find("Map").GetComponent<Map>().Lev;
         moveCount = 0;
         //StartCoroutine("CheckGameOver");
         canMove = true;

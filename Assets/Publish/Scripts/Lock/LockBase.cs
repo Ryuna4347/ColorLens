@@ -16,7 +16,7 @@ public class LockBase : MonoBehaviour
     [SerializeField] protected string keyObjName;
     public LockType GetLockType { get { return lockType; } }
 
-    private void Awake()
+    protected virtual void Awake()
     {
 #if UNITY_EDITOR
         if (keyObjName == null)

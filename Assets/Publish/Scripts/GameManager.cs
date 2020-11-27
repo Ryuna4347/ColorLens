@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
@@ -17,6 +19,13 @@ public class GameManager : MonoBehaviour
     public GameObject colorBox;//색상박스 부모변수
     [SerializeField] private int colorBox_Child_Count;//색상 박스 수
     [SerializeField] private int arrive_count;//도착한 캐릭터 수
+
+    private int width, height;
+    public GameObject[,] tileArr;
+    public GameObject[,] objectiveArr;
+    public GameObject[,] obstacleArr;
+    public GameObject[,] characterArr;
+    public List<GameObject> unusedCharacters = new List<GameObject>();
 
     private int level; //현재 레벨
     public List<GameObject> movingChars; //현재 움직이고 있는 캐릭터 수
@@ -47,10 +56,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         colorBox_Child_Count = colorBox.transform.childCount;
-        baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
-        level = GameObject.Find("Map").GetComponent<Map>().GetLevel();
         moveCount = 0;
         moveRatio = 1.0f;
+        ReadMapData();
         LoadCharacters();
         if (moveRatioChanged != null)
         {
@@ -219,6 +227,69 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region 게임관리(타일 배열 관련)
+    private void ReadMapData()
+    {
+        Map mapdata = GameObject.Find("Map").GetComponent<Map>();
+
+        baseMoveCount = mapdata.GetBaseMoveCount();
+        level = mapdata.Lev;
+        width = mapdata.Width;
+        height = mapdata.Height;
+
+        tileArr = new GameObject[height, width];
+        obstacleArr = new GameObject[height, width];
+        objectiveArr = new GameObject[height, width];
+        characterArr = new GameObject[height, width];
+        unusedCharacters = new List<GameObject>();
+
+        List<GameObject> tileMapList = GameObject.Find("Tilemap").GetAllChilds();
+        tileMapList = tileMapList.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                tileArr[i, j] = tileMapList[i * width + j];
+            }
+        }
+
+        List<GameObject> obstacleMap = GameObject.Find("Obstacles").GetAllChilds();
+        for (int i = 0; i < obstacleMap.Count; i++)
+        {
+            if (obstacleMap[i].transform.childCount == 2) //렌즈의 경우 2칸을 차지하고 있으므로 별도 처리를 한다.
+            {
+
+                Vector2 objPos = obstacleMap[i].transform.GetChild(0).position;
+                objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
+                objPos.y = objPos.y + (height / 2);
+                obstacleArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(0).gameObject;
+
+                objPos = obstacleMap[i].transform.GetChild(1).position;
+                objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
+                objPos.y = objPos.y + (height / 2);
+                obstacleArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(1).gameObject;
+            }
+            else
+            {
+                Vector2 objPos = obstacleMap[i].transform.position;
+                objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
+                objPos.y = objPos.y + (height / 2);
+                obstacleArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i];
+            }
+        }
+
+        List<GameObject> objectiveMap = GameObject.Find("Objectives").GetAllChilds();
+        objectiveMap = objectiveMap.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
+        for (int i = 0; i < objectiveMap.Count; i++)
+        {
+            Vector2 objPos = objectiveMap[i].transform.position;
+            objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
+            objPos.y = objPos.y + (height / 2);
+            objectiveArr[(int)objPos.y, (int)(objPos.x)] = objectiveMap[i];
+        }
+    }
+
+    #endregion
 
     #region 게임관리(성공/실패)
 
@@ -674,4 +745,6 @@ public class GameManager : MonoBehaviour
         instWall.transform.localPosition = position;
     }
     #endregion
+
+
 }

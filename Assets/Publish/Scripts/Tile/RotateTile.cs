@@ -9,6 +9,8 @@ public class RotateTile : TileBase
     [SerializeField]private float rotateTime;
     [SerializeField] private GameObject arrowSpriteObj;
 
+    public Direction NextDirection { get { return NextDirection; } }
+
     //배속에 따른 회전속도 변경 추가 필요
 
     private void Awake()

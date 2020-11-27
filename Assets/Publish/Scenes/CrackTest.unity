@@ -6699,12 +6699,12 @@ PrefabInstance:
     - target: {fileID: 5058945345045468688, guid: 49308bac2125fa74cb2ca2c36a0d90ce,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.49
+      value: -9.5
       objectReference: {fileID: 0}
     - target: {fileID: 5058945345045468688, guid: 49308bac2125fa74cb2ca2c36a0d90ce,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.52
+      value: -6.5
       objectReference: {fileID: 0}
     - target: {fileID: 5058945345045468688, guid: 49308bac2125fa74cb2ca2c36a0d90ce,
         type: 3}
@@ -10168,7 +10168,7 @@ GameObject:
   - component: {fileID: 963047528}
   - component: {fileID: 963047527}
   m_Layer: 0
-  m_Name: Obstacle
+  m_Name: Obstacles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11438,6 +11438,7 @@ MonoBehaviour:
   colorBox: {fileID: 1132431241}
   colorBox_Child_Count: 0
   arrive_count: 0
+  unusedCharacters: []
   movingChars: []
   canMove: 0
   StarAnims:
@@ -11924,7 +11925,7 @@ GameObject:
   - component: {fileID: 1132431244}
   - component: {fileID: 1132431243}
   m_Layer: 0
-  m_Name: ObjectiveParent
+  m_Name: Objectives
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15082,6 +15083,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1210907890765621559, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125.200195
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886423722464167977, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50.986816
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920327495947787405, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -206.37012
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920327495947787405, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50.986816
+      objectReference: {fileID: 0}
+    - target: {fileID: 8252895103709276336, guid: 58f390a26bdd570409c1c51691dbe77f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50.986816
+      objectReference: {fileID: 0}
     - target: {fileID: 8472665882647259001, guid: 58f390a26bdd570409c1c51691dbe77f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18387,6 +18413,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lev: 48
   baseMoveCount: 140000000f000000
+  width: 20
+  height: 12
 --- !u!1001 &1626801676
 PrefabInstance:
   m_ObjectHideFlags: 0
