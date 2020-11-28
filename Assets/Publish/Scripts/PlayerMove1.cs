@@ -32,6 +32,7 @@ public class PlayerMove1 : MonoBehaviour
 
     private void Awake()
     {
+
         faceRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         faceRenderer.sprite = faceList[0];
 
@@ -105,7 +106,7 @@ public class PlayerMove1 : MonoBehaviour
 
         for (int i = 0; i < routeList.Count; i++)
         {
-            Vector2 nextPos = GetVectorFromDirection(routeList[i]);
+            Vector2 nextPos = CommonFunc.GetVectorFromDirection(routeList[i]);
 
             if(!isFlipped)
             {
@@ -185,7 +186,7 @@ public class PlayerMove1 : MonoBehaviour
         {
             characterMoveCount = remainMoveCount;
             routeList.Add(_dir); //처음 포탈에서 나가는 건 횟수 X
-            lastPos += GetVectorFromDirection(_dir);
+            lastPos += CommonFunc.GetVectorFromDirection(_dir);
             Debug.Log(lastPos);
         }
 
@@ -201,61 +202,67 @@ public class PlayerMove1 : MonoBehaviour
 
         for (int i = 0; i < characterMoveCount; i++)
         {
-            Vector3 dir;
+            //Vector3 dir;
 
-            if (tempDir == Direction.RETURN)
-            {
-                dir=GetVectorFromDirection(_dir);
-            }
-            else //렌즈에 의한 일회성 경로변경일 경우
-            {
-                dir = GetVectorFromDirection(tempDir);
-                tempDir = Direction.RETURN;
-            }
-            
-            List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
+            //if (tempDir == Direction.RETURN)
+            //{
+            //    dir=GetVectorFromDirection(_dir);
+            //}
+            //else //렌즈에 의한 일회성 경로변경일 경우
+            //{
+            //    dir = GetVectorFromDirection(tempDir);
+            //    tempDir = Direction.RETURN;
+            //}
 
-            if (hit.Count>0)
+            //List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
+            List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name, tempDir==Direction.RETURN?_dir:tempDir);
+
+            if (hitObjList.Count>0)
             {
                 GameObject hitObj;
 
-                if(hit.Count>1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
+                if(hitObjList.Count>1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
                 {
-                    hitObj = hit.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
+                    hitObj = hitObjList.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
                 }
                 else
                 {
-                    hitObj = hit[0].gameObject;
+                    hitObj = hitObjList[0].gameObject;
                 }
 
                 string collideObjTag = hitObj.tag; //레이캐스트에 충돌한 오브젝트의 태그
 
-                Direction dirNow = GetDirectionFromVector(dir);
-                lastPos= lastPos + dir * moveValue;
+                Direction dirNow;
+                if (tempDir == Direction.RETURN)
+                {
+                    dirNow = _dir;
+                }
+                else //렌즈에 의한 일회성 경로변경일 경우
+                {
+                    dirNow = tempDir;
+                    tempDir = Direction.RETURN;
+                }
+                lastPos = lastPos + CommonFunc.GetVectorFromDirection(dirNow) * moveValue;
 
                 routeList.Add(dirNow);
 
-                if (collideObjTag.Equals("Wall"))
+                if (collideObjTag.Equals("Wall") || collideObjTag.Equals("Objective") || collideObjTag.Equals("Portal"))
                 {
-                    break; //죽을 예정이므로 그 위치까지만 이동하면 됨
-                }
-                else if (collideObjTag.Equals("Objective"))
-                {
-                    break; //색상 상자에 도착해도 더 이상 이동할 필요 없음
+                    break; //이 블럭 이상으로 이동이 불가하다.
                 }
                 else if (collideObjTag.Equals("Prism"))
                 {
                     if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
-                    { //단색인 경우 프리즘을 통과하는게 좋다.
+                    { //단색인 경우 프리즘을 통과한다.
                         i--;
                         continue;
                     }
-                    break; //프리즘에 도착한 혼합색일 경우 프리즘까지만 이동하고 분열 시도
+                    break; //프리즘까지만 이동하고 분열 시도
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
                     tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow, ref _dir);
-                    if (tempDir == 0) //튕겨 나올경우(거울/렌즈에 수직 진입 시도)
+                    if (tempDir == 0) //거울/렌즈에 수직 진입 시도
                     {
                         if((int)dirNow<=4)
                         {
@@ -267,7 +274,7 @@ public class PlayerMove1 : MonoBehaviour
                         }
                         break;
                     }
-                    i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                    i--;
                 }
                 else if (collideObjTag.Equals("Mirror"))
                 {
@@ -285,10 +292,6 @@ public class PlayerMove1 : MonoBehaviour
                         break;
                     }
                     i--; //아이템은 한칸 이동으로 치지 않으므로
-                }
-                else if (collideObjTag.Equals("Portal"))
-                {
-                    break;
                 }
                 else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
@@ -347,18 +350,18 @@ public class PlayerMove1 : MonoBehaviour
 
             if (i == 0) //맨 처음은 분열된 이후 대각선 이동
             {
-                dir = GetVectorFromDirection(splitDir);
+                dir = CommonFunc.GetVectorFromDirection(splitDir);
             }
             else
             {
                 if (tempDir != (Direction)0)
                 {
-                    dir = GetVectorFromDirection(tempDir);
+                    dir = CommonFunc.GetVectorFromDirection(tempDir);
                     tempDir = 0;
                 }
                 else
                 {
-                    dir = GetVectorFromDirection(_dir);
+                    dir = CommonFunc.GetVectorFromDirection(_dir);
                 }
             }
 
@@ -379,7 +382,7 @@ public class PlayerMove1 : MonoBehaviour
 
                 string collideObjTag = hitObj.tag; 
 
-                Direction dirNow = GetDirectionFromVector(dir);
+                Direction dirNow = CommonFunc.GetDirectionFromVector(dir);
                 lastPos = lastPos + dir * moveValue;
 
                 routeList.Add(dirNow);
@@ -465,69 +468,6 @@ public class PlayerMove1 : MonoBehaviour
             }
         }
         StartCoroutine("Move");
-    }
-
-    /// <summary>
-    /// Direction형을 통해 방위 벡터로 변환
-    /// </summary>
-    /// <param name="_dir"></param>
-    /// <returns></returns>
-    private Vector3 GetVectorFromDirection(Direction _dir)
-    {
-        Vector3 dir = new Vector3();
-
-        switch (_dir)
-        {
-            case (Direction)1: //위
-                dir = new Vector3(0, 1);
-                break;
-            case (Direction)2: //오른쪽위
-                dir = new Vector3(1, 1);
-                break;
-            case (Direction)3: //오른쪽
-                dir = new Vector3(1, 0);
-                break;
-            case (Direction)4: //오른쪽아래
-                dir = new Vector3(1, -1);
-                break;
-            case (Direction)5: //아래
-                dir = new Vector3(0, -1);
-                break;
-            case (Direction)6: //왼쪽아래
-                dir = new Vector3(-1, -1);
-                break;
-            case (Direction)7: //왼쪽
-                dir = new Vector3(-1, 0);
-                break;
-            case (Direction)8: //왼쪽위
-                dir = new Vector3(-1, 1);
-                break;
-        }
-        return dir;
-    }
-
-    /// <summary>
-    /// 방위를 통해 Direction형으로 변환
-    /// </summary>
-    /// <param name="vec"></param>
-    /// <returns></returns>
-    private Direction GetDirectionFromVector(Vector2 vec)
-    {
-        Direction dir;
-
-        if(vec.x>0)
-        {
-            dir = (Direction)(3 - vec.y);
-        }
-        else if(vec.x<0)
-        {
-            dir = (Direction)(7 + vec.y);
-        }
-        else
-        {
-            dir = vec.y > 0 ? (Direction)1 : (Direction)5;
-        }
-        return dir;
     }
 
     /// <summary>

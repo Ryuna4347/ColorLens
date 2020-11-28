@@ -1508,6 +1508,10 @@ MonoBehaviour:
   Die: {fileID: 0}
   DisAppear: {fileID: 0}
   Move: {fileID: 0}
+  savedBGM: 1
+  savedSE: 1
+  isSoundbgs: 1
+  isSoundbgm: 1
 --- !u!4 &294258262
 Transform:
   m_ObjectHideFlags: 0
@@ -2271,12 +2275,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3649474214906289949, guid: faa968c1431c35745b0c254b1205df3a,
     type: 3}
   m_PrefabInstance: {fileID: 379234730}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &380367848 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8472665882269847739, guid: 58f390a26bdd570409c1c51691dbe77f,
-    type: 3}
-  m_PrefabInstance: {fileID: 470357463}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &389699874
 PrefabInstance:
@@ -5295,7 +5293,7 @@ GameObject:
   - component: {fileID: 963047528}
   - component: {fileID: 963047527}
   m_Layer: 0
-  m_Name: Obstacle
+  m_Name: Obstacles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6331,15 +6329,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characters:
   - {fileID: 0}
+  movableWalls: []
   colorBox: {fileID: 1132431241}
   colorBox_Child_Count: 0
   arrive_count: 0
+  unusedCharacters: []
   movingChars: []
   canMove: 0
-  StarAnims:
-  - {fileID: 380367848}
-  - {fileID: 1627585539}
-  MoveText: {fileID: 1622448787}
+  baseMoveCount: 
+  moveCount: 0
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 1508071922}
 --- !u!4 &1072721167
@@ -6743,7 +6741,7 @@ GameObject:
   - component: {fileID: 1132431244}
   - component: {fileID: 1132431243}
   m_Layer: 0
-  m_Name: ObjectiveParent
+  m_Name: Objectives
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10262,18 +10260,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1601501761}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1622448787 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8472665882857893758, guid: 58f390a26bdd570409c1c51691dbe77f,
-    type: 3}
-  m_PrefabInstance: {fileID: 470357463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1622605251
 GameObject:
   m_ObjectHideFlags: 0
@@ -10333,6 +10319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lev: 6
   baseMoveCount: 0900000007000000
+  width: 16
+  height: 9
 --- !u!1001 &1625140141
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10407,12 +10395,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3649474214906289949, guid: faa968c1431c35745b0c254b1205df3a,
     type: 3}
   m_PrefabInstance: {fileID: 1625140141}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1627585539 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8472665882534222387, guid: 58f390a26bdd570409c1c51691dbe77f,
-    type: 3}
-  m_PrefabInstance: {fileID: 470357463}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1627951334
 PrefabInstance:

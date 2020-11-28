@@ -22,9 +22,8 @@ public class GameManager : MonoBehaviour
 
     private int width, height;
     public GameObject[,] tileArr;
-    public GameObject[,] objectiveArr;
-    public GameObject[,] obstacleArr;
-    public GameObject[,] characterArr;
+    public GameObject[,] objectArr; //objective+obstacle
+    public List<GameObject>[,] characterArr;
     public List<GameObject> unusedCharacters = new List<GameObject>();
 
     private int level; //현재 레벨
@@ -232,6 +231,8 @@ public class GameManager : MonoBehaviour
     #region 게임관리(타일 배열 관련)
     private void ReadMapData()
     {
+        int i, j;
+
         Map mapdata = GameObject.Find("Map").GetComponent<Map>();
 
         baseMoveCount = mapdata.GetBaseMoveCount();
@@ -240,23 +241,22 @@ public class GameManager : MonoBehaviour
         height = mapdata.Height;
 
         tileArr = new GameObject[height, width];
-        obstacleArr = new GameObject[height, width];
-        objectiveArr = new GameObject[height, width];
-        characterArr = new GameObject[height, width];
+        objectArr = new GameObject[height, width];
+        characterArr = new List<GameObject>[height, width];
         unusedCharacters = new List<GameObject>();
 
         List<GameObject> tileMapList = GameObject.Find("Tilemap").GetAllChilds();
         tileMapList = tileMapList.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
-        for (int i = 0; i < height; i++)
+        for (i = 0; i < height; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (j = 0; j < width; j++)
             {
                 tileArr[i, j] = tileMapList[i * width + j];
             }
         }
 
         List<GameObject> obstacleMap = GameObject.Find("Obstacles").GetAllChilds();
-        for (int i = 0; i < obstacleMap.Count; i++)
+        for (i = 0; i < obstacleMap.Count; i++)
         {
             if (obstacleMap[i].transform.childCount == 2) //렌즈의 경우 2칸을 차지하고 있으므로 별도 처리를 한다.
             {
@@ -264,31 +264,105 @@ public class GameManager : MonoBehaviour
                 Vector2 objPos = obstacleMap[i].transform.GetChild(0).position;
                 objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
                 objPos.y = objPos.y + (height / 2);
-                obstacleArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(0).gameObject;
+                objectArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(0).gameObject;
 
                 objPos = obstacleMap[i].transform.GetChild(1).position;
                 objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
                 objPos.y = objPos.y + (height / 2);
-                obstacleArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(1).gameObject;
+                objectArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(1).gameObject;
             }
             else
             {
                 Vector2 objPos = obstacleMap[i].transform.position;
                 objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
                 objPos.y = objPos.y + (height / 2);
-                obstacleArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i];
+                objectArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i];
             }
         }
 
         List<GameObject> objectiveMap = GameObject.Find("Objectives").GetAllChilds();
         objectiveMap = objectiveMap.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
-        for (int i = 0; i < objectiveMap.Count; i++)
+        for (i = 0; i < objectiveMap.Count; i++)
         {
             Vector2 objPos = objectiveMap[i].transform.position;
             objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
             objPos.y = objPos.y + (height / 2);
-            objectiveArr[(int)objPos.y, (int)(objPos.x)] = objectiveMap[i];
+            objectArr[(int)objPos.y, (int)(objPos.x)] = objectiveMap[i];
         }
+
+        for(i=0; i<height; i++)
+        {
+            for(j=0; j<width; j++)
+            {
+                characterArr[i, j] = new List<GameObject>();
+            }
+        }
+
+        List<GameObject> characterMap = GameObject.Find("Characters").GetAllChilds();
+        characterMap = characterMap.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
+        for (i = 0; i < characterMap.Count; i++)
+        {
+            characterMap[i].name = characterMap[i].name.Split(' ')[0] + characterMap[i].transform.GetSiblingIndex();
+            if (characterMap[i].transform.position.x < - width / 2)
+            {
+                unusedCharacters.Add(characterMap[i]);
+            }
+            else
+            {
+                Vector2 objPos = characterMap[i].transform.position;
+                objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
+                objPos.y = objPos.y + (height / 2);
+                characterArr[(int)objPos.y, (int)(objPos.x)].Add(characterMap[i]);
+                Debug.Log((int)objPos.y +" " +(int)(objPos.x) + " " + characterMap[i]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 다음 이동할 위치에 충돌할 물체가 있는지 체크
+    /// </summary>
+    /// <param name="characterName"></param>
+    /// <returns></returns>
+    public List<GameObject> GetObjsNextPosition(string characterName, Direction dir)
+    {
+        List<GameObject> result = new List<GameObject>();
+
+        Vector2 index = GetArrayIndexOfCharacter(characterName);
+        if (index == null)
+            return null;
+        Vector2 nextDirection = CommonFunc.GetVectorFromDirection(dir);
+        int h = (int)(index.x+nextDirection.y), w = (int)(index.y+nextDirection.x);
+
+
+        result.Add(tileArr[h, w]); //타일맵은 기본으로 존재한다.
+
+        if(objectArr[h,w] != null) //색 상자 or 아이템이 존재하는 경우 추가
+        {
+            result.Add(objectArr[h, w]);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// characterArr에서 캐릭터가 위치하고 있는 인덱스를 반환한다.
+    /// </summary>
+    /// <param name="characterName"></param>
+    /// <returns></returns>
+    public Vector2 GetArrayIndexOfCharacter(string characterName)
+    {
+        for(int i=0; i<height; i++)
+        {
+            for(int j=0; j<width; j++)
+            {
+                if (characterArr[i, j].Count < 1) continue;
+                if(characterArr[i,j].Find(x=>x.name.Equals(characterName)))
+                {
+                    return new Vector2(i,j);
+                }
+            }
+        }
+        return new Vector2(-100,-100);
     }
 
     #endregion
