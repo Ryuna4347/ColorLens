@@ -297,6 +297,7 @@ public class GameManager : MonoBehaviour
                 characterArr[i, j] = new List<GameObject>();
             }
         }
+        objectArr.PrintArray();
 
         List<GameObject> characterMap = GameObject.Find("Characters").GetAllChilds();
         characterMap = characterMap.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
@@ -323,16 +324,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="characterName"></param>
     /// <returns></returns>
-    public List<GameObject> GetObjsNextPosition(string characterName, Direction dir)
+    public List<GameObject> GetObjsNextPosition(string characterName, Vector2 characterPos, Direction dir)
     {
         List<GameObject> result = new List<GameObject>();
 
-        Vector2 index = GetArrayIndexOfCharacter(characterName);
-        if (index == null)
+        Vector2 arrayIndex = ConvertPosToTwoDimentionIdx(characterPos);
+        if (!CheckCharacterAlive(characterName)) //게임 정보가 일치하지 않음.
+        {
+            Debug.LogError("게임 정보가 일치하지 않습니다.(잘못된 캐릭터)");
             return null;
+        }
         Vector2 nextDirection = CommonFunc.GetVectorFromDirection(dir);
-        int h = (int)(index.x+nextDirection.y), w = (int)(index.y+nextDirection.x);
-
+        int h = (int)(arrayIndex.y+nextDirection.y), w = (int)(arrayIndex.x+nextDirection.x);
 
         result.Add(tileArr[h, w]); //타일맵은 기본으로 존재한다.
 
@@ -363,6 +366,32 @@ public class GameManager : MonoBehaviour
             }
         }
         return new Vector2(-100,-100);
+    }
+
+    private Vector2 ConvertPosToTwoDimentionIdx(Vector2 pos)
+    {
+        Vector2 index = new Vector2();
+
+        index.x = Mathf.Ceil(pos.x) + (width / 2) - 1;
+        index.y = pos.y + (height / 2);
+
+        return index;
+    }
+
+    private bool CheckCharacterAlive(string characterName)
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (characterArr[i, j].Count < 1) continue;
+                if (characterArr[i, j].Find(x => x.name.Equals(characterName)))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     #endregion

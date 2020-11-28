@@ -215,9 +215,9 @@ public class PlayerMove1 : MonoBehaviour
             //}
 
             //List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
-            List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name, tempDir==Direction.RETURN?_dir:tempDir);
+            List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name,lastPos, tempDir==Direction.RETURN?_dir:tempDir);
 
-            if (hitObjList.Count>0)
+            if (hitObjList != null && hitObjList.Count>0)
             {
                 GameObject hitObj;
 
