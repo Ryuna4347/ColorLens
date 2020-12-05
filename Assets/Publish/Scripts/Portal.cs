@@ -14,26 +14,25 @@ public class Portal : MonoBehaviour
 #endif
     }
 
-    public void TeleportCharacter(GameObject charac, Direction dir, int remainMoveCount)
+    public void TeleportCharacter(PlayerMove1 character)
     {
-        StartCoroutine(Teleport(charac, dir, remainMoveCount));
+        StartCoroutine(Teleport(character));
     }
 
-    public IEnumerator Teleport(GameObject charac, Direction dir, int remainMoveCount)
+    private IEnumerator Teleport(PlayerMove1 character)
     {
-        PlayerMove1 characMove;
-        if ((characMove = charac.GetComponent<PlayerMove1>()) == null || connectedPortal == null)
+        if (character == null || connectedPortal == null)
             yield break; 
 
         yield return new WaitForSeconds(0.1f);
 
         Vector3 teleportPos = connectedPortal.transform.position;
-        teleportPos.z = charac.transform.position.z;
-        charac.transform.position = teleportPos;
+        teleportPos.z = character.transform.position.z;
+        character.transform.position = teleportPos;
 
         yield return new WaitForSeconds(0.1f);
 
-        characMove.CalculateRoute(dir,remainMoveCount);
+        character.CalculateRoute(character.routeList[character.routeList.Count - 1], character.routeList.Count);
     }
 
 }

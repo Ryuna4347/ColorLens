@@ -56,6 +56,8 @@ public class PlayerMove1 : MonoBehaviour
     private void OnDisable()
     {
         GameManager.moveRatioChanged -= moveRatioChanged;
+        GameManager.instance.CheckMoveOver(gameObject);
+        GameManager.instance.UpdateCharacterActive(gameObject, transform.position, false);
 
         if ( moveGuide != null )
             moveGuide.Rewind();
@@ -100,9 +102,11 @@ public class PlayerMove1 : MonoBehaviour
 
     public IEnumerator Move()
     {
+        Vector3 oldPosition = transform.position;
+
+        Vector3 facePos = faceRenderer.transform.localPosition;
         faceRenderer.sprite = faceList[1];
         bool isFlipped = faceRenderer.flipX;
-        Vector3 facePos = faceRenderer.transform.localPosition;
 
         for (int i = 0; i < routeList.Count; i++)
         {
@@ -133,31 +137,33 @@ public class PlayerMove1 : MonoBehaviour
             SoundManager.instance.Play("Move");
             yield return new WaitForSeconds(delay/ charMoveRatio * 1.5f);
         }
-
         faceRenderer.sprite = faceList[0];
-        yield return null;
-        
-        if (!collisionChecked && collisionList.Count >= 1)
+
+        //if (!collisionChecked && collisionList.Count >= 1)
+        //{
+        //    if(CheckCollideColors()) //색의 합병은 이동이 다 끝난 이후 체크
+        //        yield break;
+        //}
+        //if (collidingPrism != null)
+        //{
+        //    CheckCollidePrism();
+        //    yield break;
+        //}
+        //if (collidingObjective != null)
+        //{
+        //    CheckCollideObjective();
+        //    yield break;
+        //}
+        //if (collidingPortal != null)
+        //{
+        //    CheckCollidePortal();
+        //    yield break;
+        //}
+        GameManager.instance.UpdateCharacterPos(gameObject, oldPosition, transform.position);
+        if (GameManager.instance.CheckCollisionWithObjects(this, transform.position)) //게임매니저에서 어떤 종류의 충돌인지 확인하고 넘겨주도록 한다.
         {
-            if(CheckCollideColors()) //색의 합병은 이동이 다 끝난 이후 체크
-                yield break;
+            GameManager.instance.CheckMoveOver(gameObject);
         }
-        if (collidingPrism != null)
-        {
-            CheckCollidePrism();
-            yield break;
-        }
-        if (collidingObjective != null)
-        {
-            CheckCollideObjective();
-            yield break;
-        }
-        if (collidingPortal != null)
-        {
-            CheckCollidePortal();
-            yield break;
-        }
-        GameManager.instance.CheckMoveOver(gameObject);
     }
 
     public List<Direction> routeList = new List<Direction>(); //이동 시 지나게 될 경로(프리즘을 만난 경우 멈춤. 렌즈, 거울은 진행)
@@ -167,27 +173,29 @@ public class PlayerMove1 : MonoBehaviour
     /// </summary>
     /// <param name="_dir">초기 이동 방향</param>
     /// <param name="remainMoveCount">남은 이동 횟수(포탈 아이템 이용시)</param>
-    public void CalculateRoute(Direction _dir, int remainMoveCount=-1)
+    public void CalculateRoute(Direction _dir, int alreadyMoveCount = -1)
     {
         Vector3 lastPos = transform.position;
         Direction tempDir = Direction.RETURN; //이동 방향이 일시적으로 변하는 경우를 위한 변수
         int layer = 1;
-
-        int characterMoveCount = moveCount;
+        int characterMoveCount;
 
         routeList = new List<Direction>();
 
         layer = ((1 << LayerMask.NameToLayer("Tile")) | (1 << LayerMask.NameToLayer("Obj")));
 
-        if (holdByPrison) 
+        if (holdByPrison)
             return;
 
-        if (remainMoveCount >= 0)
+        if (alreadyMoveCount >= 0)
         {
-            characterMoveCount = remainMoveCount;
+            characterMoveCount = moveCount - alreadyMoveCount;
             routeList.Add(_dir); //처음 포탈에서 나가는 건 횟수 X
             lastPos += CommonFunc.GetVectorFromDirection(_dir);
-            Debug.Log(lastPos);
+        }
+        else
+        {
+            characterMoveCount = moveCount;
         }
 
         try
@@ -202,19 +210,6 @@ public class PlayerMove1 : MonoBehaviour
 
         for (int i = 0; i < characterMoveCount; i++)
         {
-            //Vector3 dir;
-
-            //if (tempDir == Direction.RETURN)
-            //{
-            //    dir=GetVectorFromDirection(_dir);
-            //}
-            //else //렌즈에 의한 일회성 경로변경일 경우
-            //{
-            //    dir = GetVectorFromDirection(tempDir);
-            //    tempDir = Direction.RETURN;
-            //}
-
-            //List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
             List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name,lastPos, tempDir==Direction.RETURN?_dir:tempDir);
 
             if (hitObjList != null && hitObjList.Count>0)
@@ -264,14 +259,8 @@ public class PlayerMove1 : MonoBehaviour
                     tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow, ref _dir);
                     if (tempDir == 0) //거울/렌즈에 수직 진입 시도
                     {
-                        if((int)dirNow<=4)
-                        {
-                            routeList.Add(dirNow+4);
-                        }
-                        else
-                        {
-                            routeList.Add(dirNow - 4);
-                        }
+                        routeList.Add((Direction)((int)dirNow <= 4 ? (int)dirNow + 4 : (int)dirNow - 4));
+
                         break;
                     }
                     i--;
@@ -281,14 +270,8 @@ public class PlayerMove1 : MonoBehaviour
                     _dir = hitObj.GetComponent<Mirror>().GetMirrorReflectDirection(dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
                     if (_dir == 0)
                     {
-                        if ((int)dirNow <= 4)
-                        {
-                            routeList.Add(dirNow + 4);
-                        }
-                        else
-                        {
-                            routeList.Add(dirNow - 4);
-                        }
+                        routeList.Add((Direction)((int)dirNow <= 4 ? (int)dirNow + 4 : (int)dirNow - 4));
+
                         break;
                     }
                     i--; //아이템은 한칸 이동으로 치지 않으므로
@@ -365,35 +348,40 @@ public class PlayerMove1 : MonoBehaviour
                 }
             }
 
-            List<Collider2D> hit = new List<Collider2D>(Physics2D.OverlapCircleAll(lastPos + dir * moveValue, 0.1f, layer));
+            List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name, lastPos, tempDir == Direction.RETURN ? _dir : tempDir);
 
-            if (hit != null)
+            if (hitObjList != null && hitObjList.Count > 0)
             {
                 GameObject hitObj;
 
-                if (hit.Count > 1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌될 시 흰색타일은 무시
+                if (hitObjList.Count > 1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
                 {
-                    hitObj = hit.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
+                    hitObj = hitObjList.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
                 }
                 else
                 {
-                    hitObj = hit[0].gameObject;
+                    hitObj = hitObjList[0].gameObject;
                 }
 
-                string collideObjTag = hitObj.tag; 
+                string collideObjTag = hitObj.tag; //레이캐스트에 충돌한 오브젝트의 태그
 
-                Direction dirNow = CommonFunc.GetDirectionFromVector(dir);
-                lastPos = lastPos + dir * moveValue;
+                Direction dirNow;
+                if (tempDir == Direction.RETURN)
+                {
+                    dirNow = _dir;
+                }
+                else //렌즈에 의한 일회성 경로변경일 경우
+                {
+                    dirNow = tempDir;
+                    tempDir = Direction.RETURN;
+                }
+                lastPos = lastPos + CommonFunc.GetVectorFromDirection(dirNow) * moveValue;
 
                 routeList.Add(dirNow);
 
-                if (collideObjTag.Equals("Wall"))
+                if (collideObjTag.Equals("Wall") || collideObjTag.Equals("Objective") || collideObjTag.Equals("Portal"))
                 {
-                    break; //죽을 예정
-                }
-                else if (collideObjTag.Equals("Objective"))
-                {
-                    break; //이동할 필요 없음
+                    break; //이 블럭 이상으로 이동이 불가하다.
                 }
                 else if (collideObjTag.Equals("Prism"))
                 {
@@ -408,14 +396,8 @@ public class PlayerMove1 : MonoBehaviour
                     tempDir = hitObj.GetComponent<Lens>().GetConcaveRefractDirection((int)dirNow, ref _dir);
                     if (tempDir == 0)
                     {
-                        if ((int)dirNow <= 4)
-                        {
-                            routeList.Add((Direction)((int)dirNow + 4));
-                        }
-                        else
-                        {
-                            routeList.Add((Direction)((int)dirNow - 4));
-                        }
+                        routeList.Add((Direction)((int)dirNow<=4? (int)dirNow + 4: (int)dirNow - 4));
+                        
                         break;
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
@@ -425,14 +407,8 @@ public class PlayerMove1 : MonoBehaviour
                     _dir = hitObj.GetComponent<Mirror>().GetMirrorReflectDirection(dirNow); //거울은 방향이 영구적으로 바뀌게 된다.
                     if (_dir == 0)
                     {
-                        if ((int)dirNow <= 4)
-                        {
-                            routeList.Add(dirNow + 4);
-                        }
-                        else
-                        {
-                            routeList.Add(dirNow - 4);
-                        }
+                        routeList.Add((Direction)((int)dirNow <= 4 ? (int)dirNow + 4 : (int)dirNow - 4));
+
                         break;
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
@@ -551,13 +527,13 @@ public class PlayerMove1 : MonoBehaviour
     {
         EffectManager.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
         SoundManager.instance.Play("Division");
-        GameManager.instance.CheckSplit(gameObject, routeList[routeList.Count - 1]);
+        GameManager.instance.CheckSplit(this);
     }
 
     /// <summary>
     /// 벽에 충돌해서 플레이어 사망
     /// </summary>
-    private void CharacterDisappear()
+    public void CharacterDisappear()
     {
         SoundManager.instance.Play("DisAppear");
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
@@ -583,7 +559,7 @@ public class PlayerMove1 : MonoBehaviour
     {
         if(collidingPortal != null)
         {
-            collidingPortal.TeleportCharacter(gameObject, routeList[routeList.Count - 1], moveCount - routeList.Count);
+            collidingPortal.TeleportCharacter(this);
         }
     }
 

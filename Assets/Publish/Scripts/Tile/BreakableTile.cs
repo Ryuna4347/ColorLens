@@ -53,6 +53,7 @@ public class BreakableTile : TileBase
             passedTime += 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
+        GameManager.instance.UpdateObjectActive(gameObject, transform.position, false);
         Destroy(this.gameObject);
     }
 
