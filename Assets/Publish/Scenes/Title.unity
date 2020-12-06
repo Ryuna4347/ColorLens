@@ -12030,6 +12030,7 @@ MonoBehaviour:
   savedBGM: 1
   savedSE: 1
   isSoundbgs: 1
+  isSoundbgm: 1
 --- !u!4 &476147229
 Transform:
   m_ObjectHideFlags: 0

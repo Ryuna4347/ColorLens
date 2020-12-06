@@ -205,7 +205,7 @@ public class PlayerMove2 : MonoBehaviour
                 collisionChecked = true;
                 foreach (GameObject collide in collisionList) //중복처리 방지하도록 제일 빠르게 도달한 오브젝트가 다른 오브젝트의 이 함수 진행을 막는다.
                 {
-                    collide.GetComponent<PlayerMove1>().collisionChecked = true;
+                    //collide.GetComponent<PlayerMove1>().collisionChecked = true;
                 }
                 if (!collisionList.Contains(gameObject))
                 {

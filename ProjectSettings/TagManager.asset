@@ -17,6 +17,8 @@ TagManager:
   - Objective
   - Tile
   - Portal
+  - Test
+  - Test_Obj
   layers:
   - Default
   - TransparentFX

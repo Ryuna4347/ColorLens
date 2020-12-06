@@ -102,7 +102,7 @@ public class Objective : MonoBehaviour
     {
         spriteRenderer.sprite = completeSprite;
 
-        GetComponent<Collider2D>().enabled = false; //이후 충돌 금지
+        GameManager.instance.UpdateObjectActive(gameObject, transform.position, false);
         GameManager.instance.ControlColorBoxCount();
     }
 }

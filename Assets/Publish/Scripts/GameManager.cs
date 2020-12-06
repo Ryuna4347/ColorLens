@@ -321,9 +321,13 @@ public class GameManager : MonoBehaviour
 #endif
             if (objectArr[arrIdx[1], arrIdx[0]] != objectItem)
                 return false;
-            characterArr[arrIdx[1], arrIdx[0]] = null;
-            GameObject newWall = CreateWall(position, GameObject.Find("Tilemap").transform);
-            tileArr[arrIdx[0], arrIdx[1]] = newWall;
+
+            if (!objectArr[arrIdx[1], arrIdx[0]].CompareTag("Objective"))
+            {
+                GameObject newWall = CreateWall(position, GameObject.Find("Tilemap").transform);
+                tileArr[arrIdx[1], arrIdx[0]] = newWall;
+            }
+            objectArr[arrIdx[1], arrIdx[0]] = null;
         }
         return true;
     }
@@ -354,7 +358,6 @@ public class GameManager : MonoBehaviour
             return false;
         characterArr[oldIdx[1], oldIdx[0]].Remove(character);
         characterArr[newIdx[1], newIdx[0]].Add(character);
-        Debug.Log("d");
         return true;
     }
     
@@ -475,6 +478,7 @@ public class GameManager : MonoBehaviour
         if (moveTurnEnded != null) //한 턴 종료에 대응되는 이벤트가 있을 시 실행
             moveTurnEnded();
         CheckCharacterPosition();
+        CheckObjectPosition();
         canMove = true;
     }
 
@@ -618,7 +622,7 @@ public class GameManager : MonoBehaviour
             List<GameObject> copy= new List<GameObject>(colors);
             for (int i=0; i<copy.Count; i++)
             {
-                copy[i].SetActive(false);
+                copy[i].GetComponent<PlayerMove1>().CharacterDisappear();
             }
             if (mergeChar != null)
             {
@@ -658,7 +662,7 @@ public class GameManager : MonoBehaviour
         }
         dir = character.routeList[character.routeList.Count - 1];
         character.transform.position = new Vector3(-180, 0, character.transform.position.z);
-        character.gameObject.SetActive(false);
+        character.CharacterDisappear();
 
         switch (colorName)
         {
@@ -947,6 +951,29 @@ public class GameManager : MonoBehaviour
                         sphere.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
                     }
+                }
+            }
+        }
+    }
+    private void CheckObjectPosition()
+    {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Test_Obj"))
+        {
+            Destroy(obj);
+        }
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (objectArr[i, j] != null)
+                {
+                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    sphere.GetComponent<MeshRenderer>().material.color = Color.red;
+                    sphere.tag = "Test_Obj";
+                    sphere.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
+
                 }
             }
         }

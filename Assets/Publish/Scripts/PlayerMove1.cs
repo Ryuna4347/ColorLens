@@ -15,15 +15,6 @@ public class PlayerMove1 : MonoBehaviour
 
     public bool holdByPrison = false;
 
-    public bool collisionChecked; //충돌을 하면 a,b 모두에서 collisionStay가 발생해서 2번 함수를 실행하기 때문에 한쪽에서만 실행하도록 하기 위한 트리거
-    [SerializeField] private GameObject collidingPrism=null; //움직임이 다 끝난 이후에 충돌처리를 하는 것이 자연스러울 것 같아서 추가
-    [SerializeField]private Lens collidingLens=null;
-    [SerializeField] private Mirror collidingMirror=null;
-    [SerializeField] private Objective collidingObjective = null;
-    [SerializeField] private TileBase collidingTile = null;
-    [SerializeField] private Portal collidingPortal = null;
-    [SerializeField] public List<GameObject> collisionList; //현재 충돌중인 색상들의 리스트(충돌한 모든 오브젝트에서 체크하고, 한 오브젝트만 게임매니저에 요청하는 걸로)
-
     private SpriteRenderer faceRenderer;
     public List<Sprite> faceList = new List<Sprite>();
 
@@ -44,9 +35,6 @@ public class PlayerMove1 : MonoBehaviour
 
     private void OnEnable()
     {
-        collisionChecked = false;
-        collisionList = new List<GameObject>();
-
         GameManager.moveRatioChanged += moveRatioChanged;
 
         if (moveGuide != null)
@@ -56,10 +44,8 @@ public class PlayerMove1 : MonoBehaviour
     private void OnDisable()
     {
         GameManager.moveRatioChanged -= moveRatioChanged;
-        GameManager.instance.CheckMoveOver(gameObject);
-        GameManager.instance.UpdateCharacterActive(gameObject, transform.position, false);
 
-        if ( moveGuide != null )
+        if (moveGuide != null )
             moveGuide.Rewind();
 
         Color color = render.color;
@@ -139,26 +125,6 @@ public class PlayerMove1 : MonoBehaviour
         }
         faceRenderer.sprite = faceList[0];
 
-        //if (!collisionChecked && collisionList.Count >= 1)
-        //{
-        //    if(CheckCollideColors()) //색의 합병은 이동이 다 끝난 이후 체크
-        //        yield break;
-        //}
-        //if (collidingPrism != null)
-        //{
-        //    CheckCollidePrism();
-        //    yield break;
-        //}
-        //if (collidingObjective != null)
-        //{
-        //    CheckCollideObjective();
-        //    yield break;
-        //}
-        //if (collidingPortal != null)
-        //{
-        //    CheckCollidePortal();
-        //    yield break;
-        //}
         GameManager.instance.UpdateCharacterPos(gameObject, oldPosition, transform.position);
         if (GameManager.instance.CheckCollisionWithObjects(this, transform.position)) //게임매니저에서 어떤 종류의 충돌인지 확인하고 넘겨주도록 한다.
         {
@@ -492,43 +458,6 @@ public class PlayerMove1 : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// 다른 색상과 충돌을 체크하여 색을 합친다.
-    /// </summary>
-    private bool CheckCollideColors()
-    {
-        List<GameObject> characterList = new List<GameObject>();
-
-        collisionChecked = true;
-        characterList.Add(gameObject);
-        foreach (GameObject collide in collisionList) //중복처리 방지하도록 제일 빠르게 도달한 오브젝트가 다른 오브젝트의 이 함수 진행을 막는다.
-        {
-            collide.GetComponent<PlayerMove1>().collisionChecked = true;
-            if (GameManager.instance.IsCharacterMoving(collide.gameObject)) //아직 움직이는 캐릭터가 존재하는 경우 합성하면 안된다.
-            {
-                foreach(GameObject alreadyProcessed in characterList)
-                {
-                    collide.GetComponent<PlayerMove1>().collisionChecked = false;
-                }
-                return false;
-            }
-            characterList.Add(collide);
-        }
-        GameManager.instance.CheckMerge(characterList);
-        return true;
-    }
-
-    /// <summary>
-    /// 프리즘과의 충돌을 체크한다.
-    /// </summary>
-    /// <param name="_dir"></param>
-    /// <param name="count"></param>
-    private void CheckCollidePrism()
-    {
-        EffectManager.instance.PrismEffect(new Vector3(transform.position.x, transform.position.y, -3), "White");
-        SoundManager.instance.Play("Division");
-        GameManager.instance.CheckSplit(this);
-    }
 
     /// <summary>
     /// 벽에 충돌해서 플레이어 사망
@@ -540,34 +469,14 @@ public class PlayerMove1 : MonoBehaviour
         moveCount = -1; //위와 동일
         StartCoroutine("DisappearCharacter");
     }
-
-    private void CheckCollideObjective()
-    {
-        string characterColorName = gameObject.name.Split(' ')[0]; //이름 뒤 Clone 제거
-
-        movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
-        if (collidingObjective.CheckColor(characterColorName))
-        {
-            collidingObjective.EraseColor(characterColorName);
-            CharacterDisappear();
-        }
-        else
-            EffectDie();
-    }
-
-    private void CheckCollidePortal()
-    {
-        if(collidingPortal != null)
-        {
-            collidingPortal.TeleportCharacter(this);
-        }
-    }
+    
 
     public void EffectDie()
     {
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
         moveCount = -1; //위와 동일
         SoundManager.instance.Play("Die");
+        GameManager.instance.UpdateCharacterActive(gameObject, transform.position, false);
         GameManager.instance.CheckMoveOver(gameObject);
         gameObject.SetActive(false);
         EffectManager.instance.circleEffect(transform.position, gameObject.name);
@@ -577,7 +486,7 @@ public class PlayerMove1 : MonoBehaviour
         float delay = 1.0f;
 
         Color color = render.color;
-        for (float time = 0; time < delay; time+=0.05f* charMoveRatio)
+        for (float time = 0; time < delay; time += 0.05f * charMoveRatio)
         {
             color.a -= 0.05f* charMoveRatio;
             render.color = color;
@@ -585,6 +494,7 @@ public class PlayerMove1 : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
         }
+        GameManager.instance.UpdateCharacterActive(gameObject, transform.position, false);
         GameManager.instance.CheckMoveOver(gameObject);
         gameObject.SetActive(false);
     }
@@ -603,50 +513,4 @@ public class PlayerMove1 : MonoBehaviour
         charMoveRatio = value;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Prism"))
-        {
-            collidingPrism = collision.gameObject;
-        }
-        else if (collision.gameObject.tag.Equals("Wall"))
-        {
-            EffectDie();
-        }
-        else if (collision.gameObject.tag.Equals("Colors"))
-        {
-            collisionList.Add(collision.gameObject);
-        }
-        else if (collision.gameObject.tag.Equals("Objective"))
-        {
-            collidingObjective = collision.GetComponent<Objective>();
-        }
-        else if (collision.gameObject.tag.Equals("Portal"))
-        {
-            collidingPortal = collision.GetComponent<Portal>();
-        }
-        if (collision.gameObject.tag.Equals("Tile"))
-        {
-            collidingTile = collision.GetComponent<TileBase>(); //타일은 항상 체크
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Prism"))
-        {
-            collidingPrism = null;
-        }
-        if (collision.gameObject.tag.Equals("Colors"))
-        {
-            collisionList.Remove(collision.gameObject);
-        }
-        if (collidingTile != null && collision.gameObject.tag.Equals("Tile") && collidingTile.gameObject == collision.gameObject)
-        {
-            collidingTile = null;
-        }
-        if (collision.gameObject.tag.Equals("Portal"))
-        {
-            collidingPortal = null;
-        }
-    }
 }
