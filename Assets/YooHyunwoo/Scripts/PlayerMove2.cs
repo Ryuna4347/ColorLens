@@ -211,7 +211,7 @@ public class PlayerMove2 : MonoBehaviour
                 {
                     collisionList.Add(this.gameObject);
                 }
-                GameManager.instance.CheckMerge(collisionList);
+                //GameManager.instance.CheckMerge(collisionList);
             }
         }
         

@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
         }
 
         List<GameObject> characterMap = GameObject.Find("Characters").GetAllChilds();
-        characterMap = characterMap.OrderBy(c => c.transform.position.y).ThenBy(n => n.transform.position.x).ToList<GameObject>();
+        Debug.Log(characterMap.Count);
         for (i = 0; i < characterMap.Count; i++)
         {
             characterMap[i].name = characterMap[i].name.Split(' ')[0]+ "_" + characterMap[i].transform.GetSiblingIndex();
@@ -477,8 +477,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f/moveRatio); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
         if (moveTurnEnded != null) //한 턴 종료에 대응되는 이벤트가 있을 시 실행
             moveTurnEnded();
-        CheckCharacterPosition();
-        CheckObjectPosition();
+        CheckMerge();
+
+        //CheckCharacterPosition();
+        //CheckObjectPosition();
         canMove = true;
     }
 
@@ -529,14 +531,29 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 충돌한 색상을 체크하고 알맞는 캐릭터를 해당 위치에 소환한다.
+    /// 현재 캐릭터들의 위치를 확인해서 합성가능한 캐릭터들을 합성시킨다.
+    /// </summary>
+    private void CheckMerge()
+    {
+        for(int i = 0; i < height; i++)
+        {
+            for(int j = 0; j < width; j++)
+            {
+                if (characterArr[i, j].Count > 1)
+                    CharacterMerge(characterArr[i, j]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 색상 캐릭터를 합성하여 해당 위치에 소환한다.
     /// </summary>
     /// <param name="colors">충돌한 색상들의 리스트</param>
     /// <returns>합병 성공 여부</returns>
-    public bool CheckMerge(List<GameObject> colors)
+    public bool CharacterMerge(List<GameObject> colors)
     {
         GameObject mergeChar = null; //병합되어 생성되는 오브젝트
-
+        
         if (colors.Count==3) //흰색이 나올 수 밖에 없는 조합(3개가 충돌하는 경우는 빨/초/파 밖에 없기 때문입니다.)
         {
             Vector3 mergePos = colors[0].transform.position;
@@ -552,70 +569,70 @@ public class GameManager : MonoBehaviour
         }
         else //2가지 색상의 충돌일 경우 하드코딩으로 맞는 색을 찾는다.
         {
-            if(colors.Find(x=>x.name.Equals("Red")))
+            if(colors.Find(x=>x.name.Contains("Red")))
             {
-                if(colors.Find(x=>x.name.Equals("Green")))
+                if(colors.Find(x=>x.name.Contains("Green")))
                 {
-                    mergeChar= characters.Find(x => x.name.Equals("Yellow"));
+                    mergeChar= characters.Find(x => x.name.Contains("Yellow"));
                 }
-                else if (colors.Find(x => x.name.Equals("Blue")))
+                else if (colors.Find(x => x.name.Contains("Blue")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("Magenta"));
+                    mergeChar = characters.Find(x => x.name.Contains("Magenta"));
                 }
-                else if (colors.Find(x => x.name.Equals("Cyan")))
+                else if (colors.Find(x => x.name.Contains("Cyan")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("White"));
+                    mergeChar = characters.Find(x => x.name.Contains("White"));
                 }
             }
-            else if(colors.Find(x => x.name.Equals("Green")))
+            else if(colors.Find(x => x.name.Contains("Green")))
             {
-                if (colors.Find(x => x.name.Equals("Red")))
+                if (colors.Find(x => x.name.Contains("Red")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("Yellow"));
+                    mergeChar = characters.Find(x => x.name.Contains("Yellow"));
                 }
-                else if (colors.Find(x => x.name.Equals("Blue")))
+                else if (colors.Find(x => x.name.Contains("Blue")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("Cyan"));
+                    mergeChar = characters.Find(x => x.name.Contains("Cyan"));
                 }
-                else if (colors.Find(x => x.name.Equals("Magenta")))
+                else if (colors.Find(x => x.name.Contains("Magenta")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("White"));
+                    mergeChar = characters.Find(x => x.name.Contains("White"));
                 }
             }
-            else if (colors.Find(x => x.name.Equals("Blue")))
+            else if (colors.Find(x => x.name.Contains("Blue")))
             {
-                if (colors.Find(x => x.name.Equals("Red")))
+                if (colors.Find(x => x.name.Contains("Red")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("Magenta"));
+                    mergeChar = characters.Find(x => x.name.Contains("Magenta"));
                 }
-                else if (colors.Find(x => x.name.Equals("Green")))
+                else if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("Cyan"));
+                    mergeChar = characters.Find(x => x.name.Contains("Cyan"));
                 }
-                else if (colors.Find(x => x.name.Equals("Yellow")))
+                else if (colors.Find(x => x.name.Contains("Yellow")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("White"));
+                    mergeChar = characters.Find(x => x.name.Contains("White"));
                 }
             }
-            else if (colors.Find(x => x.name.Equals("Yellow")))
+            else if (colors.Find(x => x.name.Contains("Yellow")))
             {
-                if (colors.Find(x => x.name.Equals("Green")))
+                if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("White"));
+                    mergeChar = characters.Find(x => x.name.Contains("White"));
                 }
             }
-            else if (colors.Find(x => x.name.Equals("Cyan")))
+            else if (colors.Find(x => x.name.Contains("Cyan")))
             {
-                if (colors.Find(x => x.name.Equals("Red")))
+                if (colors.Find(x => x.name.Contains("Red")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("White"));
+                    mergeChar = characters.Find(x => x.name.Contains("White"));
                 }
             }
-            else if (colors.Find(x => x.name.Equals("Magenta")))
+            else if (colors.Find(x => x.name.Contains("Magenta")))
             {
-                if (colors.Find(x => x.name.Equals("Green")))
+                if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar = characters.Find(x => x.name.Equals("White"));
+                    mergeChar = characters.Find(x => x.name.Contains("White"));
                 }
             }
             Vector3 mergePos = colors[0].transform.position; 
@@ -648,7 +665,7 @@ public class GameManager : MonoBehaviour
             return false;
     }
 
-    public bool CheckSplit(PlayerMove1 character)
+    public bool CharacterSplit(PlayerMove1 character)
     {
         List<PlayerMove1> splitedChars = new List<PlayerMove1>(); //분리될 색상들의 리스트
         Direction dir;
@@ -730,6 +747,13 @@ public class GameManager : MonoBehaviour
         int[] arrIdx = ConvertPosToTwoDimentionIdx(position);
         GameObject selectedObj;
 
+        if ((selectedObj = tileArr[arrIdx[1], arrIdx[0]]) != null)
+        {
+            if (selectedObj.name.Contains("Wall"))
+            {
+                character.EffectDie();
+            }
+        }
         if ((selectedObj = objectArr[arrIdx[1], arrIdx[0]]) != null)
         {
             if(selectedObj.name.Contains("Objective"))
@@ -751,7 +775,7 @@ public class GameManager : MonoBehaviour
             }
             else if(selectedObj.name.Contains("Prism"))
             {
-                return !CheckSplit(character);
+                return !CharacterSplit(character);
             }
             else
             {
@@ -760,10 +784,6 @@ public class GameManager : MonoBehaviour
 #endif
                 return true;
             }
-        }
-        if (characterArr[arrIdx[1], arrIdx[0]].Count>1 && characterArr[arrIdx[1], arrIdx[0]].Contains(character.gameObject))
-        {
-            return !CheckMerge(characterArr[arrIdx[1], arrIdx[0]]);
         }
         
         return true;
