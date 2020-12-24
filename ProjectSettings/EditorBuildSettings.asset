@@ -168,6 +168,6 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/Chapter_4/4-12.unity
     guid: 6e015a3ca9fa00042b3ab70f2749cf61
   - enabled: 1
-    path: Assets/Publish/Scenes/CrackTest.unity
+    path: Assets/Publish/Scenes/MapTest.unity
     guid: 7ef580c0bd6d8e744a6a1a9cda427057
   m_configObjects: {}

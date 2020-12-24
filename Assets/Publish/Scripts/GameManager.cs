@@ -253,7 +253,6 @@ public class GameManager : MonoBehaviour
         }
 
         List<GameObject> characterMap = GameObject.Find("Characters").GetAllChilds();
-        Debug.Log(characterMap.Count);
         for (i = 0; i < characterMap.Count; i++)
         {
             characterMap[i].name = characterMap[i].name.Split(' ')[0]+ "_" + characterMap[i].transform.GetSiblingIndex();
@@ -340,9 +339,11 @@ public class GameManager : MonoBehaviour
             characterArr[arrIdx[1], arrIdx[0]].Add(character);
         else
         {
+            Debug.Log(arrIdx[1]+" "+arrIdx[0]);
             if (!characterArr[arrIdx[1], arrIdx[0]].Contains(character))
                 return false;
             characterArr[arrIdx[1], arrIdx[0]].Remove(character);
+            unusedCharacters.Add(character);
         }
         return true;
     }
@@ -561,9 +562,10 @@ public class GameManager : MonoBehaviour
             foreach (GameObject color in copy)
             {
                 color.transform.position = new Vector3(-180, 0, color.transform.position.z);
-                color.SetActive(false);
+                color.GetComponent<PlayerMove1>().CharacterDisappear();
             }
-            mergeChar = characters.Find(x => x.name.Equals("White")); //흰색 캐릭터를 켜고 충돌한 위치에 가져다 둔다.
+            mergeChar = unusedCharacters.Find(x => x.name.Contains("White")); //흰색 캐릭터를 켜고 충돌한 위치에 가져다 둔다.
+            unusedCharacters.Remove(mergeChar);
             mergeChar.SetActive(true);
             mergeChar.transform.position = mergePos;
         }
@@ -573,66 +575,66 @@ public class GameManager : MonoBehaviour
             {
                 if(colors.Find(x=>x.name.Contains("Green")))
                 {
-                    mergeChar= characters.Find(x => x.name.Contains("Yellow"));
+                    mergeChar= unusedCharacters.Find(x => x.name.Contains("Yellow"));
                 }
                 else if (colors.Find(x => x.name.Contains("Blue")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("Magenta"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("Magenta"));
                 }
                 else if (colors.Find(x => x.name.Contains("Cyan")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("White"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
             else if(colors.Find(x => x.name.Contains("Green")))
             {
                 if (colors.Find(x => x.name.Contains("Red")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("Yellow"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("Yellow"));
                 }
                 else if (colors.Find(x => x.name.Contains("Blue")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("Cyan"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("Cyan"));
                 }
                 else if (colors.Find(x => x.name.Contains("Magenta")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("White"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
             else if (colors.Find(x => x.name.Contains("Blue")))
             {
                 if (colors.Find(x => x.name.Contains("Red")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("Magenta"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("Magenta"));
                 }
                 else if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("Cyan"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("Cyan"));
                 }
                 else if (colors.Find(x => x.name.Contains("Yellow")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("White"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
             else if (colors.Find(x => x.name.Contains("Yellow")))
             {
                 if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("White"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
             else if (colors.Find(x => x.name.Contains("Cyan")))
             {
                 if (colors.Find(x => x.name.Contains("Red")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("White"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
             else if (colors.Find(x => x.name.Contains("Magenta")))
             {
                 if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar = characters.Find(x => x.name.Contains("White"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
             Vector3 mergePos = colors[0].transform.position; 
@@ -684,21 +686,21 @@ public class GameManager : MonoBehaviour
         switch (colorName)
         {
             case "Yellow":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Red") && x.activeSelf==false).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Red") && x.activeSelf==false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Cyan":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Magenta":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "White":
-                splitedChars.Add(characters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(characters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             default:
 #if UNITY_EDITOR
@@ -722,6 +724,9 @@ public class GameManager : MonoBehaviour
             AddMovingCharacter(splitedChars[0].gameObject);
             AddMovingCharacter(splitedChars[1].gameObject);
             AddMovingCharacter(splitedChars[2].gameObject);
+            unusedCharacters.Remove(splitedChars[0].gameObject);
+            unusedCharacters.Remove(splitedChars[1].gameObject);
+            unusedCharacters.Remove(splitedChars[2].gameObject);
             splitedChars[0].CalculateRoute(dir, diagonals[0]);
             splitedChars[1].CalculateRoute(dir, dir);
             splitedChars[2].CalculateRoute(dir, diagonals[1]);
@@ -730,6 +735,8 @@ public class GameManager : MonoBehaviour
         {
             AddMovingCharacter(splitedChars[0].gameObject);
             AddMovingCharacter(splitedChars[1].gameObject);
+            unusedCharacters.Remove(splitedChars[0].gameObject);
+            unusedCharacters.Remove(splitedChars[1].gameObject);
             splitedChars[0].CalculateRoute(dir, diagonals[0]);
             splitedChars[1].CalculateRoute(dir, diagonals[1]);
         }

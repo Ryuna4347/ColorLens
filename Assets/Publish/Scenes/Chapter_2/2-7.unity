@@ -10518,8 +10518,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lev: 19
   baseMoveCount: 0700000005000000
-  width: 19
-  height: 6
+  width: 16
+  height: 9
 --- !u!1001 &1625140141
 PrefabInstance:
   m_ObjectHideFlags: 0
