@@ -213,7 +213,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Prism"))
                 {
-                    if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
+                    if (GameManager.instance.GetColorCombination(gameObject.name.Split('_')[0]).Count == 1)
                     { //단색인 경우 프리즘을 통과한다.
                         i--;
                         continue;
