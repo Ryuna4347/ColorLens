@@ -339,7 +339,6 @@ public class GameManager : MonoBehaviour
             characterArr[arrIdx[1], arrIdx[0]].Add(character);
         else
         {
-            Debug.Log(arrIdx[1]+" "+arrIdx[0]);
             if (!characterArr[arrIdx[1], arrIdx[0]].Contains(character))
                 return false;
             characterArr[arrIdx[1], arrIdx[0]].Remove(character);
@@ -561,13 +560,13 @@ public class GameManager : MonoBehaviour
             List<GameObject> copy = new List<GameObject>(colors);
             foreach (GameObject color in copy)
             {
-                color.transform.position = new Vector3(-180, 0, color.transform.position.z);
                 color.GetComponent<PlayerMove1>().CharacterDisappear();
             }
             mergeChar = unusedCharacters.Find(x => x.name.Contains("White")); //흰색 캐릭터를 켜고 충돌한 위치에 가져다 둔다.
             unusedCharacters.Remove(mergeChar);
             mergeChar.SetActive(true);
             mergeChar.transform.position = mergePos;
+            UpdateCharacterActive(mergeChar, mergePos, true);
         }
         else //2가지 색상의 충돌일 경우 하드코딩으로 맞는 색을 찾는다.
         {
@@ -673,34 +672,33 @@ public class GameManager : MonoBehaviour
         Direction dir;
 
         Vector3 splitPos = character.transform.position;
-        string colorName = character.name;
+        string colorName = character.name.Split('_')[0];
 
         if(colorName.Equals("Red")|| colorName.Equals("Green")||colorName.Equals("Blue"))
         { //3원색은 불리가 불가능
             return false;
         }
         dir = character.routeList[character.routeList.Count - 1];
-        character.transform.position = new Vector3(-180, 0, character.transform.position.z);
         character.CharacterDisappear();
 
         switch (colorName)
         {
             case "Yellow":
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Red") && x.activeSelf==false).GetComponent<PlayerMove1>());
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Red") && x.activeSelf==false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Cyan":
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Magenta":
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "White":
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Equals("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Blue") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             default:
 #if UNITY_EDITOR

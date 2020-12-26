@@ -285,7 +285,7 @@ public class PlayerMove1 : MonoBehaviour
 
         try
         {
-            _dir = (Direction)CheckFirstPosition(lastPos,_dir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
+            splitDir = (Direction)CheckFirstPosition(lastPos,splitDir); //현재 캐릭터가 위치한 타일로 인해 초기 방향이 변할 수 있다.
         }
         catch (System.Exception e)
         {
@@ -314,7 +314,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
             }
 
-            List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name, lastPos, tempDir == Direction.RETURN ? _dir : tempDir);
+            List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name, lastPos, CommonFunc.GetDirectionFromVector(dir));
 
             if (hitObjList != null && hitObjList.Count > 0)
             {
@@ -334,7 +334,7 @@ public class PlayerMove1 : MonoBehaviour
                 Direction dirNow;
                 if (tempDir == Direction.RETURN)
                 {
-                    dirNow = _dir;
+                    dirNow = (i == 0) ? splitDir : _dir; //첫 이동은 대각선으로 분리
                 }
                 else //렌즈에 의한 일회성 경로변경일 경우
                 {
@@ -427,10 +427,12 @@ public class PlayerMove1 : MonoBehaviour
 
             if (hit.Count > 1) //장애물이 있는 타일은 처음부터 밟고 있을 수 없다.
             {
-                return null;
+                hitObj = hit.Find(x => x.GetComponent<TileBase>() != null).gameObject;
             }
-
-            hitObj = hit[0].gameObject;
+            else
+            {
+                hitObj = hit[0].gameObject;
+            }
 
             TileType tileType = hitObj.GetComponent<TileBase>().GetTileType;
 
@@ -494,8 +496,12 @@ public class PlayerMove1 : MonoBehaviour
 
             yield return new WaitForSeconds(0.05f);
         }
+
         GameManager.instance.UpdateCharacterActive(gameObject, transform.position, false);
         GameManager.instance.CheckMoveOver(gameObject);
+
+        transform.position = new Vector3(-180, 0, transform.position.z);
+
         gameObject.SetActive(false);
     }
 
