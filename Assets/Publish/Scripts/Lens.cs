@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lens : MonoBehaviour
+public class Lens : ObjectBase
 {
     [Tooltip("오목렌즈인가?")]public bool isConcave;
     [Tooltip("렌즈가 수평으로 되어있는가?")] public bool isHorizontal;

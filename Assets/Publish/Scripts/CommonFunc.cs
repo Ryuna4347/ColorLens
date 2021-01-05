@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public static class CommonFunc 
 {
@@ -100,4 +102,23 @@ public static class CommonFunc
         }
         return dir;
     }
+
+    public static void Copy(this DeepCopyTransform copy, Transform origin)
+    {
+        copy.localPosition = origin.localPosition;
+        copy.localRotation = origin.localRotation;
+        copy.localScale = origin.localScale;
+    }
+
+    public static void Copy<T>(this T copy, T origin)
+    {
+        using (MemoryStream stream = new MemoryStream())
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, origin);
+            stream.Position = 0;
+            copy = (T)formatter.Deserialize(stream);
+        }
+    }
+        
 }

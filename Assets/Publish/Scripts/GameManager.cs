@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
                     List<GameObject> activeChars = characters.FindAll(x => x.activeSelf == true);
                     foreach (GameObject obj in activeChars)
                     {
-                        obj.GetComponent<PlayerMove1>().CalculateRoute((Direction)dir);
+                        obj.GetComponent<PlayerMove1>().CalculateRoute((Direction)dir); //여기 확인(테스트 씬)
                         AddMovingCharacter(obj);
                     }
                     StartCoroutine("CheckCharactersMove");
@@ -214,7 +214,6 @@ public class GameManager : MonoBehaviour
         {
             if (obstacleMap[i].transform.childCount == 2) //렌즈의 경우 2칸을 차지하고 있으므로 별도 처리를 한다.
             {
-
                 Vector2 objPos = obstacleMap[i].transform.GetChild(0).position;
                 objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
                 objPos.y = objPos.y + (height / 2);
@@ -1003,5 +1002,67 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region 테스트 씬 전용
+
+#if UNITY_EDITOR
+    public UtilForMapTest utilTestManager;
+
+    private bool RefreshTilesPosition(GameObject[,] tiles)
+    {
+        List<GameObject> tileMapList = GameObject.Find("Tilemap").GetAllChilds();
+        foreach(GameObject tile in tileMapList)
+        {
+            tile.SetActive(false);
+        }
+
+        tileArr = tiles;
+        for(int i = 0; i < height; i++)
+        {
+            for(int j = 0; j<width; j++)
+            {
+                tileArr[i,j].SetActive(true);
+                tileArr[i,j].transform.position = new Vector2((j - width/2 + 1) - 0.5f, i - height / 2);
+            }
+        }
+        return true;
+    }
+    private bool RefreshObjectsPosition(GameObject[,] objects)
+    {
+        return true;
+    }
+    private bool RefreshCharactersPosition()
+    {
+        return true;
+    }
+
+
+    /// <summary>
+    /// 이전 턴의 맵 상태를 불러온다.
+    /// </summary>
+    public void LoadPrevMap()
+    {
+        if (utilTestManager == null)
+            return;
+        MapInfoPerTurn prevTurn = utilTestManager.LoadPrevMapInfo();
+
+        //if (RefreshTilesPosition())
+        //{
+
+        //}
+    }
+
+    /// <summary>
+    /// 다음 턴의 맵 상태를 불러온다.
+    /// </summary>
+    public void LoadNextMap()
+    {
+        if (utilTestManager == null)
+            return;
+        MapInfoPerTurn nextTurn = utilTestManager.LoadNextMapInfo();
+    }
+
+#endif
     #endregion
 }

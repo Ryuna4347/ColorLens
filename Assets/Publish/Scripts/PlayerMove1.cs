@@ -513,10 +513,17 @@ public class PlayerMove1 : MonoBehaviour
         }
         moveGuide.Show(moveCount);
     }
-
     private void moveRatioChanged(float value)
     {
         charMoveRatio = value;
     }
 
+    #region 테스트용
+
+    public PlayerMove1(PlayerMove1 script)
+    {
+        charMoveRatio = script.charMoveRatio;
+    }
+
+    #endregion
 }

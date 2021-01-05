@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mirror : MonoBehaviour
+public class Mirror : ObjectBase
 {
     [Tooltip("대각거울이 역슬래시처럼 되어있는가?")]public bool isReflected;
 
