@@ -15,6 +15,10 @@ public class SetMusic : MonoBehaviour
         }
         else
         {
+#if UNITY_EDITOR
+            if (SceneManager.GetActiveScene().name.Equals("MapTest"))
+                return;
+#endif
             BgmManager.instance.Set(music, SoundManager.instance.savedBGM);
         }
     }
