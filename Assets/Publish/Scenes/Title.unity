@@ -44143,16 +44143,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 945835566}
     m_Modifications:
-    - target: {fileID: 8415905475673707021, guid: c8ae4821355d1d44eadcc8dca279f479,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8415905475673707021, guid: c8ae4821355d1d44eadcc8dca279f479,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8415905475868978306, guid: c8ae4821355d1d44eadcc8dca279f479,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -44262,16 +44252,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Option
-      objectReference: {fileID: 0}
-    - target: {fileID: 8415905476357403776, guid: c8ae4821355d1d44eadcc8dca279f479,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8415905476357403776, guid: c8ae4821355d1d44eadcc8dca279f479,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8ae4821355d1d44eadcc8dca279f479, type: 3}
