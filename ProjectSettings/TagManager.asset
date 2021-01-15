@@ -19,6 +19,8 @@ TagManager:
   - Portal
   - Test
   - Test_Obj
+  - Key
+  - Door
   layers:
   - Default
   - TransparentFX

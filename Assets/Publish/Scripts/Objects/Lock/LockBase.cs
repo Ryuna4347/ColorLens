@@ -13,15 +13,10 @@ public enum LockType
 public class LockBase : MonoBehaviour
 {
     [SerializeField]protected LockType lockType;
-    [SerializeField] protected string keyObjName;
     public LockType GetLockType { get { return lockType; } }
 
     protected virtual void Awake()
     {
-#if UNITY_EDITOR
-        if (keyObjName == null)
-            Debug.LogError(gameObject.name + " : 해제 오브젝트가 등록되어있지 않습니다");
-#endif
     }
 
     /// <summary>

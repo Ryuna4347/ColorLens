@@ -8,11 +8,16 @@ public class Prison : LockBase
     [SerializeField] private GameObject holdingCharcter;
     [SerializeField] private List<string> colorCombination; //colorNow 색상 안에 들어가는 3원색 리스트
     private SpriteRenderer spriteRenderer;
+    [SerializeField] protected string keyObjName;
 
     protected override void Awake()
     {
         base.Awake();
         spriteRenderer = GetComponent<SpriteRenderer>();
+#if UNITY_EDITOR
+        if (keyObjName == null)
+            Debug.LogError(gameObject.name + " : 해제 오브젝트가 등록되어있지 않습니다");
+#endif
     }
     private void Start()
     {

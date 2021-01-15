@@ -88,6 +88,8 @@ public class PlayerMove1 : MonoBehaviour
 
     public IEnumerator Move()
     {
+        GameObject collideKey;
+
         Vector3 oldPosition = transform.position;
 
         Vector3 facePos = faceRenderer.transform.localPosition;
@@ -121,6 +123,11 @@ public class PlayerMove1 : MonoBehaviour
 
             transform.DOMove(transform.position+(Vector3)nextPos*moveValue, delay/charMoveRatio).SetEase(easeMode);
             SoundManager.instance.Play("Move");
+
+            if ((collideKey = GameManager.instance.CheckCollisionWithKey(transform.position)) != null)
+            {
+                collideKey.GetComponent<DoorKey>().GetKey();
+            }
             yield return new WaitForSeconds(delay/ charMoveRatio * 1.5f);
         }
         faceRenderer.sprite = faceList[0];
@@ -178,11 +185,11 @@ public class PlayerMove1 : MonoBehaviour
         {
             List<GameObject> hitObjList = GameManager.instance.GetObjsNextPosition(gameObject.name,lastPos, tempDir==Direction.RETURN?_dir:tempDir);
 
-            if (hitObjList != null && hitObjList.Count>0)
+            if (hitObjList != null && hitObjList.Count > 0)
             {
                 GameObject hitObj;
 
-                if(hitObjList.Count>1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
+                if (hitObjList.Count > 1) //장애물이 흰색타일 위에 있기 때문에 2개 이상 충돌이 된다. 이 경우 흰색타일은 무시하도록 한다.
                 {
                     hitObj = hitObjList.Find(x => x.gameObject.layer != LayerMask.NameToLayer("Tile")).gameObject;
                 }
@@ -229,6 +236,7 @@ public class PlayerMove1 : MonoBehaviour
 
                         break;
                     }
+                    Debug.Log(tempDir);
                     i--;
                 }
                 else if (collideObjTag.Equals("Mirror"))
@@ -242,6 +250,15 @@ public class PlayerMove1 : MonoBehaviour
                     }
                     i--; //아이템은 한칸 이동으로 치지 않으므로
                 }
+                else if (collideObjTag.Equals("Key"))
+                {
+
+                }
+                else if (collideObjTag.Equals("Door"))
+                {
+                    routeList.Add(Direction.RETURN);
+                    break;
+                }
                 else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
                     TileBase tileBase = hitObj.GetComponent<TileBase>();
@@ -254,9 +271,9 @@ public class PlayerMove1 : MonoBehaviour
                             {
                                 _dir = (Direction)tileBase.GetNextDirection(dirNow, i + 1);
                             }
-                            catch(System.Exception e)
+                            catch (System.Exception e)
                             {
-                                Debug.LogError("이동 경로 예측 오류\n" + gameObject.name + ", "+e.Message);
+                                Debug.LogError("이동 경로 예측 오류\n" + gameObject.name + ", " + e.Message);
                             }
                         }
                         i--; //아이템은 한칸 이동으로 치지 않으므로

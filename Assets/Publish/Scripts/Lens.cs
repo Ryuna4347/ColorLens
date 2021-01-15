@@ -8,6 +8,25 @@ public class Lens : ObjectBase
     [Tooltip("렌즈가 수평으로 되어있는가?")] public bool isHorizontal;
     [Tooltip("렌즈의 좌측 또는 위쪽 부분인가?")] public bool isUpLeft;
 
+    private void Awake()
+    {
+        Transform parentTransform = transform.parent;
+        if(parentTransform.localRotation.eulerAngles.z == 270)
+        {
+            isHorizontal = false;
+        }
+        else if(parentTransform.localRotation.eulerAngles.z == 0)
+        {
+            isHorizontal = true;
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.LogError(parentTransform.name+" 오브젝트의 각도는 반드시 -90(혹은 270)이나 0이어야 합니다.");
+#endif
+        }
+    }
+
     public Direction GetConcaveRefractDirection(int dir, ref Direction originDir)
     {
         if (isConcave)

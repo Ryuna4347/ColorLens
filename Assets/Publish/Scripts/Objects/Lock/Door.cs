@@ -33,7 +33,7 @@ public class Door : LockBase
         }
     }
 
-    private IEnumerator Disaapear()
+    private IEnumerator Disappear()
     {
         float disappearTime = 1.0f;
         float time = 0;
@@ -43,6 +43,7 @@ public class Door : LockBase
         while(time < disappearTime)
         {
             spriteColor.a -= 1 / disappearTime * Time.deltaTime;
+            spriteRenderer.color = spriteColor;
             time += Time.deltaTime;
             yield return null;
         }

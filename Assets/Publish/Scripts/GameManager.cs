@@ -216,12 +216,12 @@ public class GameManager : MonoBehaviour
             {
                 Vector2 objPos = obstacleMap[i].transform.GetChild(0).position;
                 objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
-                objPos.y = objPos.y + (height / 2);
+                objPos.y = (float)Math.Round(objPos.y) + (height / 2);
                 objectArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(0).gameObject;
 
                 objPos = obstacleMap[i].transform.GetChild(1).position;
                 objPos.x = Mathf.Ceil(objPos.x) + (width / 2) - 1;
-                objPos.y = objPos.y + (height / 2);
+                objPos.y = (float)Math.Round(objPos.y) + (height / 2);
                 objectArr[(int)objPos.y, (int)(objPos.x)] = obstacleMap[i].transform.GetChild(1).gameObject;
             }
             else
@@ -791,6 +791,25 @@ public class GameManager : MonoBehaviour
         }
         
         return true;
+    }
+
+    /// <summary>
+    /// 키 획득 가능 체크(키는 다른 블럭과 달리 통과하면서 습득 가능)
+    /// </summary>
+    /// <returns></returns>
+    public GameObject CheckCollisionWithKey(Vector2 position)
+    {
+        int[] arrIdx = ConvertPosToTwoDimentionIdx(position);
+        GameObject selectedObj;
+
+        if ((selectedObj = objectArr[arrIdx[1], arrIdx[0]]) != null)
+        {
+            if (selectedObj.tag.Equals("Key"))
+            {
+                return selectedObj;
+            }
+        }
+        return null;
     }
 
     /// <summary>
