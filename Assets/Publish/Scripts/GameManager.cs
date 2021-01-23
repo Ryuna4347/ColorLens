@@ -740,6 +740,29 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    public bool CharacterFilter(PlayerMove1 character, ColorFilter filter)
+    {
+        Direction dir = character.routeList[character.routeList.Count - 1];
+
+        Vector3 characterPos = character.transform.position;
+        string colorName = character.name.Split('_')[0];
+        string filteredColorName = filter.FilterCharacter(colorName);
+
+        if (colorName == filteredColorName)
+            return false;
+        character.CharacterDisappear();
+
+        if (filteredColorName != null && filteredColorName != "")
+        {
+            GameObject filteredCharacter = unusedCharacters.Find(x => x.activeSelf == false && x.name.Contains(filteredColorName));
+            filteredCharacter.SetActive(true);
+            filteredCharacter.transform.position = characterPos;
+            UpdateCharacterActive(filteredCharacter, filteredCharacter.transform.position, true);
+            filteredCharacter.GetComponent<PlayerMove1>().CalculateRoute(dir);
+        }
+        return true;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -780,6 +803,10 @@ public class GameManager : MonoBehaviour
             else if(selectedObj.name.Contains("Prism"))
             {
                 return !CharacterSplit(character);
+            }
+            else if(selectedObj.name.Contains("Filter"))
+            {
+                return !CharacterFilter(character, selectedObj.GetComponent<ColorFilter>());
             }
             else
             {
@@ -856,96 +883,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
         return diagonalVectors;
-    }
-    #endregion
-
-    #region 색상관련
-    public List<string> GetColorCombination(string color)
-    {
-        List<string> returnList=new List<string>();
-
-        switch(color)
-        {
-            case "Red":
-                returnList.Add("Red");
-                break;
-            case "Green":
-                returnList.Add("Green");
-                break;
-            case "Blue":
-                returnList.Add("Blue");
-                break;
-            case "Yellow":
-                returnList.Add("Red");
-                returnList.Add("Green");
-                break;
-            case "Cyan":
-                returnList.Add("Green");
-                returnList.Add("Blue");
-                break;
-            case "Magenta":
-                returnList.Add("Red");
-                returnList.Add("Blue");
-                break;
-            case "White":
-                returnList.Add("Red");
-                returnList.Add("Green");
-                returnList.Add("Blue");
-                break;
-        }
-
-        return returnList;
-    }
-
-    /// <summary>
-    /// 3원색 색상 리스트를 통해 현재 색상을 반환한다.
-    /// </summary>
-    /// <returns></returns>
-    public string GetColorName(List<string> combination)
-    {
-        string colorName = "";
-
-        if(combination.Count==3)
-        {
-            return "White";
-        }
-        else
-        {
-            if(combination.Contains("Red"))
-            {
-                if(colorName.Equals(""))
-                {
-                    colorName = "Red";
-                }
-            }
-            if (combination.Contains("Green"))
-            {
-                if (colorName.Equals(""))
-                {
-                    colorName = "Green";
-                }
-                else if(colorName.Equals("Red"))
-                {
-                    colorName = "Yellow";
-                }
-            }
-            if(combination.Contains("Blue"))
-            {
-                if (colorName.Equals(""))
-                {
-                    colorName = "Blue";
-                }
-                else if (colorName.Equals("Red"))
-                {
-                    colorName = "Magenta";
-                }
-                else if (colorName.Equals("Green"))
-                {
-                    colorName = "Cyan";
-                }
-            }
-            return colorName;
-        }
     }
     #endregion
 

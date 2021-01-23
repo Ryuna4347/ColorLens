@@ -19,13 +19,13 @@ public class Objective : MonoBehaviour
 
     private void Start()
     {
-        colorCombination=GameManager.instance.GetColorCombination(colorNow);
+        colorCombination=CommonFunc.GetColorCombination(colorNow);
         RefreshObjectiveColor();
     }
 
     private void RefreshObjectiveColor()
     {
-        colorNow = GameManager.instance.GetColorName(colorCombination); //현재 남아있는 색상 조합은 무슨 색인지 갱신
+        colorNow = CommonFunc.GetColorName(colorCombination); //현재 남아있는 색상 조합은 무슨 색인지 갱신
         Color newColor = new Color(0, 0, 0, 1);
         newColor.r = colorCombination.Contains("Red") ? 1 : 0;
         newColor.g = colorCombination.Contains("Green") ? 1 : 0;
@@ -40,7 +40,7 @@ public class Objective : MonoBehaviour
     /// <returns></returns>
     public bool CheckColor(string colorName)
     {
-        List<string> compareColorList = GameManager.instance.GetColorCombination(colorName);
+        List<string> compareColorList = CommonFunc.GetColorCombination(colorName);
 
         if(colorNow.Equals(colorName))
         {
@@ -68,7 +68,7 @@ public class Objective : MonoBehaviour
     /// </summary>
     public void EraseColor(string colorName)
     {
-        List<string> compareColorList = GameManager.instance.GetColorCombination(colorName);
+        List<string> compareColorList = CommonFunc.GetColorCombination(colorName);
 
         if (colorNow.Equals(colorName))
         {

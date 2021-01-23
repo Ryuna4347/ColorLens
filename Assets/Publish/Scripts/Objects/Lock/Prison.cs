@@ -21,7 +21,7 @@ public class Prison : LockBase
     }
     private void Start()
     {
-        colorCombination = GameManager.instance.GetColorCombination(keyObjName);
+        colorCombination = CommonFunc.GetColorCombination(keyObjName);
         RefreshPrisonColor();
     }
 
@@ -41,7 +41,7 @@ public class Prison : LockBase
 
     public void EraseColor(string colorName)
     {
-        List<string> compareColorList = GameManager.instance.GetColorCombination(colorName);
+        List<string> compareColorList = CommonFunc.GetColorCombination(colorName);
 
         if (keyObjName.Equals(colorName))
         {
@@ -62,7 +62,7 @@ public class Prison : LockBase
                     return;
                 }
             }
-            keyObjName = GameManager.instance.GetColorName(colorCombination); //현재 남아있는 색상 조합은 무슨 색인지 갱신
+            keyObjName = CommonFunc.GetColorName(colorCombination); //현재 남아있는 색상 조합은 무슨 색인지 갱신
             RefreshPrisonColor();
         }
     }

@@ -120,5 +120,95 @@ public static class CommonFunc
             copy = (T)formatter.Deserialize(stream);
         }
     }
-        
+
+
+    #region 색상관련
+    public static List<string> GetColorCombination(string color)
+    {
+        List<string> returnList = new List<string>();
+
+        switch (color)
+        {
+            case "Red":
+                returnList.Add("Red");
+                break;
+            case "Green":
+                returnList.Add("Green");
+                break;
+            case "Blue":
+                returnList.Add("Blue");
+                break;
+            case "Yellow":
+                returnList.Add("Red");
+                returnList.Add("Green");
+                break;
+            case "Cyan":
+                returnList.Add("Green");
+                returnList.Add("Blue");
+                break;
+            case "Magenta":
+                returnList.Add("Red");
+                returnList.Add("Blue");
+                break;
+            case "White":
+                returnList.Add("Red");
+                returnList.Add("Green");
+                returnList.Add("Blue");
+                break;
+        }
+
+        return returnList;
+    }
+
+    /// <summary>
+    /// 3원색 색상 리스트를 통해 현재 색상을 반환한다.
+    /// </summary>
+    /// <returns></returns>
+    public static string GetColorName(List<string> combination)
+    {
+        string colorName = "";
+
+        if (combination.Count == 3)
+        {
+            return "White";
+        }
+        else
+        {
+            if (combination.Contains("Red"))
+            {
+                if (colorName.Equals(""))
+                {
+                    colorName = "Red";
+                }
+            }
+            if (combination.Contains("Green"))
+            {
+                if (colorName.Equals(""))
+                {
+                    colorName = "Green";
+                }
+                else if (colorName.Equals("Red"))
+                {
+                    colorName = "Yellow";
+                }
+            }
+            if (combination.Contains("Blue"))
+            {
+                if (colorName.Equals(""))
+                {
+                    colorName = "Blue";
+                }
+                else if (colorName.Equals("Red"))
+                {
+                    colorName = "Magenta";
+                }
+                else if (colorName.Equals("Green"))
+                {
+                    colorName = "Cyan";
+                }
+            }
+            return colorName;
+        }
+    }
+    #endregion
 }

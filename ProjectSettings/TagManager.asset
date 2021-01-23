@@ -21,6 +21,7 @@ TagManager:
   - Test_Obj
   - Key
   - Door
+  - Filter
   layers:
   - Default
   - TransparentFX

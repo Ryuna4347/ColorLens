@@ -220,12 +220,21 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Prism"))
                 {
-                    if (GameManager.instance.GetColorCombination(gameObject.name.Split('_')[0]).Count == 1)
+                    if (CommonFunc.GetColorCombination(gameObject.name.Split('_')[0]).Count == 1)
                     { //단색인 경우 프리즘을 통과한다.
                         i--;
                         continue;
                     }
                     break; //프리즘까지만 이동하고 분열 시도
+                }
+                else if (collideObjTag.Equals("Filter"))
+                {
+                    if (hitObj.GetComponent<ColorFilter>().CanCharacterPenetrate(gameObject.name.Split('_')[0]))
+                    {
+                        i--;
+                        continue;
+                    }
+                    break;
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
@@ -368,11 +377,21 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Prism"))
                 {
-                    if (GameManager.instance.GetColorCombination(gameObject.name).Count == 1)
+                    if (CommonFunc.GetColorCombination(gameObject.name).Count == 1)
                     { //단색인 경우
+                        i--;
                         continue;
                     }
                     break; //혼합색일 경우 분열 시도
+                }
+                else if(collideObjTag.Equals("Filter"))
+                {
+                    if(hitObj.GetComponent<ColorFilter>().CanCharacterPenetrate(gameObject.name.Split('_')[0]))
+                    {
+                        i--;
+                        continue;
+                    }
+                    break;
                 }
                 else if (collideObjTag.Contains("Convex") || collideObjTag.Contains("Concave"))
                 {
