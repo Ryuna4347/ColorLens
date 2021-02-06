@@ -677,6 +677,9 @@ public class GameManager : MonoBehaviour
         { //3원색은 불리가 불가능
             return false;
         }
+        EffectManager.instance.PrismEffect(new Vector3(character.transform.position.x, character.transform.position.y, -3), "White");
+        SoundManager.instance.Play("Division");
+
         dir = character.routeList[character.routeList.Count - 1];
         character.CharacterDisappear();
 
@@ -714,6 +717,7 @@ public class GameManager : MonoBehaviour
         }
 
         moveRatioChanged(moveRatio);
+
        
         List<Direction> diagonals = GetRefractDirections(dir);
         if (splitedChars.Count == 3)
@@ -758,6 +762,8 @@ public class GameManager : MonoBehaviour
             filteredCharacter.SetActive(true);
             filteredCharacter.transform.position = characterPos;
             UpdateCharacterActive(filteredCharacter, filteredCharacter.transform.position, true);
+            if (moveRatioChanged != null)
+                moveRatioChanged(moveRatio);
             filteredCharacter.GetComponent<PlayerMove1>().CalculateRoute(dir);
         }
         return true;

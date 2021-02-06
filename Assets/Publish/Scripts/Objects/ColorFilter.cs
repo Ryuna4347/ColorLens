@@ -32,21 +32,12 @@ public class ColorFilter : ObjectBase
     }
 
     /// <summary>
-    /// 캐릭터와 필터의 색상이 겹치지 않아서 지나갈 수 있는가?
+    /// 캐릭터와 필터의 색상이 동일해서 그냥 지나갈 수 있는가?
     /// </summary>
     /// <returns></returns>
     public bool CanCharacterPenetrate(string characColor)
     {
-        List<string> colorCombination = CommonFunc.GetColorCombination(characColor);
-
-        foreach(string partialColor in colorCombination)
-        {
-            if (filterColorComb.Contains(partialColor))
-            {
-                return false;
-            }
-        }
-        return true;
+        return filterColor.Equals(characColor);
     }
 
     /// <summary>
@@ -60,7 +51,7 @@ public class ColorFilter : ObjectBase
 
         foreach (string partialColor in copyCombination)
         {
-            if (filterColorComb.Contains(partialColor))
+            if (!filterColorComb.Contains(partialColor))
             {
                 colorCombination.Remove(partialColor);
             }

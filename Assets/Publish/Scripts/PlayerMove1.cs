@@ -265,7 +265,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Door"))
                 {
-                    routeList.Add(Direction.RETURN);
+                    routeList.Add((Direction)((int)dirNow <= 4 ? (int)dirNow + 4 : (int)dirNow - 4));
                     break;
                 }
                 else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
@@ -414,6 +414,15 @@ public class PlayerMove1 : MonoBehaviour
                         break;
                     }
                     i--; //렌즈와 거울은 한칸 이동으로 치지 않으므로
+                }
+                else if (collideObjTag.Equals("Key"))
+                {
+
+                }
+                else if (collideObjTag.Equals("Door"))
+                {
+                    routeList.Add((Direction)((int)dirNow <= 4 ? (int)dirNow + 4 : (int)dirNow - 4));
+                    break;
                 }
                 else //타일류(흰색 타일, 깨진 타일, 방향 지정 타일)
                 {
