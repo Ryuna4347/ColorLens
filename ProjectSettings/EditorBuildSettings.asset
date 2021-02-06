@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/chap4.unity
     guid: ae60c855956dd3e4b916695827763416
   - enabled: 1
+    path: Assets/Publish/Scenes/chapTest.unity
+    guid: bee5869977bbac7499cab2bf94fc7f7a
+  - enabled: 1
     path: Assets/Publish/Scenes/Chapter_1/1-1.unity
     guid: 3156c17fabeab1d4a822eb16ebdbaf20
   - enabled: 1
