@@ -320,11 +320,11 @@ public class GameManager : MonoBehaviour
             if (objectArr[arrIdx[1], arrIdx[0]] != objectItem)
                 return false;
 
-            if (!objectArr[arrIdx[1], arrIdx[0]].CompareTag("Objective"))
-            {
-                GameObject newWall = CreateWall(position, GameObject.Find("Tilemap").transform);
-                tileArr[arrIdx[1], arrIdx[0]] = newWall;
-            }
+            //if (!objectArr[arrIdx[1], arrIdx[0]].CompareTag("Objective")) //사라지는 발판에 사용되는 부분(발판 삭제 후 벽 생성)
+            //{
+            //    GameObject newWall = CreateWall(position, GameObject.Find("Tilemap").transform);
+            //    tileArr[arrIdx[1], arrIdx[0]] = newWall;
+            //}
             objectArr[arrIdx[1], arrIdx[0]] = null;
         }
         return true;
@@ -354,7 +354,9 @@ public class GameManager : MonoBehaviour
         newIdx = ConvertPosToTwoDimentionIdx(newPosition);
 
         if (!characterArr[oldIdx[1], oldIdx[0]].Contains(character))
+        {
             return false;
+        }
         characterArr[oldIdx[1], oldIdx[0]].Remove(character);
         characterArr[newIdx[1], newIdx[0]].Add(character);
         return true;
@@ -480,6 +482,7 @@ public class GameManager : MonoBehaviour
 
         //CheckCharacterPosition();
         //CheckObjectPosition();
+        //CheckTilePosition();
         canMove = true;
     }
 
@@ -784,6 +787,8 @@ public class GameManager : MonoBehaviour
         {
             if (selectedObj.name.Contains("Wall"))
             {
+                //...???
+                Debug.Log(character.name+" "+selectedObj.name + character.transform.position + " "+selectedObj.transform.position);
                 character.EffectDie();
             }
         }
@@ -804,7 +809,7 @@ public class GameManager : MonoBehaviour
             else if(selectedObj.name.Contains("Portal"))
             {
                 selectedObj.GetComponent<Portal>().TeleportCharacter(character);
-                return true;
+                return false;
             }
             else if(selectedObj.name.Contains("Prism"))
             {
@@ -934,7 +939,7 @@ public class GameManager : MonoBehaviour
                     {
                         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         sphere.tag = "Test";
-                        sphere.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                        sphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.2f);
                         sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
                     }
                 }
@@ -960,6 +965,36 @@ public class GameManager : MonoBehaviour
                     sphere.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                     sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
 
+                }
+            }
+        }
+    }
+    private void CheckTilePosition()
+    {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Test_Tile"))
+        {
+            Destroy(obj);
+        }
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (tileArr[i, j] != null)
+                {
+                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    sphere.tag = "Test_Tile";
+                    if (tileArr[i, j].name.Contains("Wall"))
+                    {
+                        sphere.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+                        sphere.GetComponent<MeshRenderer>().material.color = Color.blue;
+                    }
+                    else
+                    {
+                        sphere.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                        sphere.GetComponent<MeshRenderer>().material.color = Color.green;
+                    }
+                    sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
                 }
             }
         }

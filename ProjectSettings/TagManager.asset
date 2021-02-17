@@ -22,6 +22,7 @@ TagManager:
   - Key
   - Door
   - Filter
+  - Test_Tile
   layers:
   - Default
   - TransparentFX

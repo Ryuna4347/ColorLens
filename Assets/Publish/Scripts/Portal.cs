@@ -22,16 +22,18 @@ public class Portal : MonoBehaviour
     private IEnumerator Teleport(PlayerMove1 character)
     {
         if (character == null || connectedPortal == null)
-            yield break; 
+            yield break;
+
+        Vector3 oldPosition = character.transform.position;
 
         yield return new WaitForSeconds(0.1f);
 
         Vector3 teleportPos = connectedPortal.transform.position;
         teleportPos.z = character.transform.position.z;
         character.transform.position = teleportPos;
+        GameManager.instance.UpdateCharacterPos(character.gameObject, oldPosition, character.transform.position);
 
         yield return new WaitForSeconds(0.1f);
-
         character.CalculateRoute(character.routeList[character.routeList.Count - 1], character.routeList.Count);
     }
 

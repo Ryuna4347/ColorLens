@@ -124,11 +124,11 @@ public class PlayerMove1 : MonoBehaviour
             transform.DOMove(transform.position+(Vector3)nextPos*moveValue, delay/charMoveRatio).SetEase(easeMode);
             SoundManager.instance.Play("Move");
 
+            yield return new WaitForSeconds(delay/ charMoveRatio * 1.5f);
             if ((collideKey = GameManager.instance.CheckCollisionWithKey(transform.position)) != null)
             {
                 collideKey.GetComponent<DoorKey>().GetKey();
             }
-            yield return new WaitForSeconds(delay/ charMoveRatio * 1.5f);
         }
         faceRenderer.sprite = faceList[0];
 
@@ -261,7 +261,7 @@ public class PlayerMove1 : MonoBehaviour
                 }
                 else if (collideObjTag.Equals("Key"))
                 {
-
+                    Debug.Log("key " + gameObject.name);
                 }
                 else if (collideObjTag.Equals("Door"))
                 {
@@ -520,6 +520,7 @@ public class PlayerMove1 : MonoBehaviour
 
     public void EffectDie()
     {
+        Debug.Log(gameObject.name + " 사망");
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
         moveCount = -1; //위와 동일
         SoundManager.instance.Play("Die");
