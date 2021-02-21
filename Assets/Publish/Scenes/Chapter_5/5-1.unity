@@ -9103,6 +9103,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1132431242}
     m_Modifications:
+    - target: {fileID: 2007572597, guid: d77f00ec9e13bd44e9b9d58a1b238b93, type: 3}
+      propertyPath: colorNow
+      value: White
+      objectReference: {fileID: 0}
     - target: {fileID: 7419352366533594891, guid: d77f00ec9e13bd44e9b9d58a1b238b93,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11592,6 +11596,7 @@ Transform:
   - {fileID: 1001324286}
   - {fileID: 1425902419}
   - {fileID: 1138453851}
+  - {fileID: 533357639}
   - {fileID: 184068639}
   - {fileID: 773640727}
   - {fileID: 779388333}
@@ -11603,25 +11608,16 @@ Transform:
   - {fileID: 2072755965}
   - {fileID: 471659579}
   - {fileID: 1203043204}
-  - {fileID: 533357639}
+  - {fileID: 320504166}
   - {fileID: 264095635}
   - {fileID: 1697712981}
+  - {fileID: 1086001294}
+  - {fileID: 353958667}
+  - {fileID: 1156945771}
+  - {fileID: 1336422372}
   - {fileID: 1019177969}
   - {fileID: 1194496063}
   - {fileID: 268121681}
-  - {fileID: 219322728}
-  - {fileID: 1842258320}
-  - {fileID: 1289130656}
-  - {fileID: 1398173800}
-  - {fileID: 1427201041}
-  - {fileID: 320504166}
-  - {fileID: 1336422372}
-  - {fileID: 1839198820}
-  - {fileID: 353958667}
-  - {fileID: 1156945771}
-  - {fileID: 1086001294}
-  - {fileID: 1928265355}
-  - {fileID: 1688368182}
   - {fileID: 1874833897}
   - {fileID: 1533521255}
   - {fileID: 232697722}
@@ -11629,21 +11625,26 @@ Transform:
   - {fileID: 1619646617}
   - {fileID: 1072244607}
   - {fileID: 874969305}
+  - {fileID: 1839198820}
   - {fileID: 572197893}
+  - {fileID: 1928265355}
   - {fileID: 705202206}
   - {fileID: 632131998}
   - {fileID: 1340382216}
-  - {fileID: 1422464767}
+  - {fileID: 1688368182}
+  - {fileID: 219322728}
   - {fileID: 149124213}
   - {fileID: 1836333962}
   - {fileID: 268329936}
   - {fileID: 1145386463}
   - {fileID: 1999891271}
+  - {fileID: 1422464767}
   - {fileID: 125611990}
   - {fileID: 191531749}
   - {fileID: 583987952}
   - {fileID: 931649589}
   - {fileID: 1745329422}
+  - {fileID: 1289130656}
   - {fileID: 695649771}
   - {fileID: 2008342944}
   - {fileID: 2008744792}
@@ -11651,6 +11652,7 @@ Transform:
   - {fileID: 1687724763}
   - {fileID: 1993422905}
   - {fileID: 459659362}
+  - {fileID: 1842258320}
   - {fileID: 113364475}
   - {fileID: 74970914}
   - {fileID: 295225096}
@@ -11660,11 +11662,13 @@ Transform:
   - {fileID: 500471196}
   - {fileID: 288328675}
   - {fileID: 282493836}
+  - {fileID: 1398173800}
   - {fileID: 1027342085}
   - {fileID: 1867456839}
-  - {fileID: 1760699033}
+  - {fileID: 1427201041}
   - {fileID: 79659955}
   - {fileID: 662855547}
+  - {fileID: 1760699033}
   - {fileID: 1412492584}
   - {fileID: 1584122573}
   - {fileID: 1354020717}
