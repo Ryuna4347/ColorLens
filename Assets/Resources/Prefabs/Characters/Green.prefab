@@ -100,7 +100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1189683522531677623
 Transform:
   m_ObjectHideFlags: 0
@@ -185,12 +185,7 @@ MonoBehaviour:
   moveValue: 1
   delay: 0.2
   charMoveRatio: 0
-  collisionChecked: 0
-  collidingPrism: {fileID: 0}
-  collidingLens: {fileID: 0}
-  collidingMirror: {fileID: 0}
-  collidingObjective: {fileID: 0}
-  collisionList: []
+  holdByPrison: 0
   faceList:
   - {fileID: 21300000, guid: 2e1f83101f53b4349b51dfc1ed708fc4, type: 3}
   - {fileID: 21300000, guid: 88d18dffc84e62a489a07c4b2c7a07bc, type: 3}

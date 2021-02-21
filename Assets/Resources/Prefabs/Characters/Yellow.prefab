@@ -185,12 +185,7 @@ MonoBehaviour:
   moveValue: 1
   delay: 0.2
   charMoveRatio: 0
-  collisionChecked: 0
-  collidingPrism: {fileID: 0}
-  collidingLens: {fileID: 0}
-  collidingMirror: {fileID: 0}
-  collidingObjective: {fileID: 0}
-  collisionList: []
+  holdByPrison: 0
   faceList:
   - {fileID: 21300000, guid: 4d0f12a33fb29a64ba6cdb3108f2f958, type: 3}
   - {fileID: 21300000, guid: 5379997fe6aea6e4aaac9116be4ee67f, type: 3}
