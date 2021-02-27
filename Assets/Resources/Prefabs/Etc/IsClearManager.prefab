@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7787d5ee86f20bc4e8c2c598f7d69e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumChapter: 4
+  maximumChapter: 6
   stagesPerChapter: 12

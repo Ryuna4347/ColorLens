@@ -27,6 +27,12 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/chap5.unity
     guid: 1a53b320ffddfa448ad3c376f4c11692
   - enabled: 1
+    path: Assets/Publish/Scenes/chap6.unity
+    guid: 138b36e0759ac61408792519c3a4315a
+  - enabled: 1
+    path: Assets/Publish/Scenes/chap7.unity
+    guid: 9506d74bd074e534aaa2dd4cdc51b155
+  - enabled: 1
     path: Assets/Publish/Scenes/chapTest.unity
     guid: bee5869977bbac7499cab2bf94fc7f7a
   - enabled: 1
@@ -209,6 +215,42 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Publish/Scenes/Chapter_5/5-12.unity
     guid: 268be391130fa1147ba8006ede925e3d
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-1.unity
+    guid: 3de3baaf597c4ac45b569ac949010681
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-2.unity
+    guid: b8772f20b1fd5ea428901e37c8094ff9
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-3.unity
+    guid: 3036fcd69e64ff84e88c1a1910ea88dc
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-4.unity
+    guid: 34d0fa34f49b0444a8527d5a497b5f99
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-5.unity
+    guid: 605f72aae4b3cdf4a9858dcd1038ffc6
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-6.unity
+    guid: acfdaba53d69a9542b950308b4a8994c
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-7.unity
+    guid: d592ce64a2e04f2449fcce2a472ce2fe
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-8.unity
+    guid: 86ce131d7c759cc43bd4d7b41028042f
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-9.unity
+    guid: f7c11859816dd084fb7f64088881b56e
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-10.unity
+    guid: 746622b7444c46e4e80636838444310e
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-11.unity
+    guid: 5c5cbef2c485d254d8cf422baf6002f5
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_6/6-12.unity
+    guid: b0bd1889a88c88046948c1c142989853
   - enabled: 1
     path: Assets/Publish/Scenes/MapTest.unity
     guid: 7ef580c0bd6d8e744a6a1a9cda427057

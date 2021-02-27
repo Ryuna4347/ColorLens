@@ -520,7 +520,6 @@ public class PlayerMove1 : MonoBehaviour
 
     public void EffectDie()
     {
-        Debug.Log(gameObject.name + " 사망");
         movePause = true; //혹시 모를 이동에 대비해서 이동하지 못하게
         moveCount = -1; //위와 동일
         SoundManager.instance.Play("Die");

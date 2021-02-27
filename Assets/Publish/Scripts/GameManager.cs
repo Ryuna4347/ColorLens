@@ -767,7 +767,7 @@ public class GameManager : MonoBehaviour
             UpdateCharacterActive(filteredCharacter, filteredCharacter.transform.position, true);
             if (moveRatioChanged != null)
                 moveRatioChanged(moveRatio);
-            filteredCharacter.GetComponent<PlayerMove1>().CalculateRoute(dir);
+            filteredCharacter.GetComponent<PlayerMove1>().CalculateRoute(dir, dir); //Split처럼 분리된 이후 필터에 나오고나서부터 카운트가 시작되서 필터를 나올 때 임시 방향이 1개 필요하다.
         }
         return true;
     }
@@ -787,8 +787,6 @@ public class GameManager : MonoBehaviour
         {
             if (selectedObj.name.Contains("Wall"))
             {
-                //...???
-                Debug.Log(character.name+" "+selectedObj.name + character.transform.position + " "+selectedObj.transform.position);
                 character.EffectDie();
             }
         }
