@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
             return;
         }
         instance = this;
+#if (UNITY_ANDROID || UNITY_IPHONE)
+        Input.multiTouchEnabled = false;
+#endif
     }
 
     private void Start()
@@ -182,7 +185,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #region 게임관리(타일 배열 관련)
+#region 게임관리(타일 배열 관련)
     private void ReadMapData()
     {
         int i, j;
@@ -410,9 +413,9 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    #endregion
+#endregion
 
-    #region 게임관리(성공/실패)
+#region 게임관리(성공/실패)
 
     /// <summary>
     ///캐릭터 생존 확인 함수
@@ -462,9 +465,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
-    #region 게임 로직관련(한턴의 움직임)
+#region 게임 로직관련(한턴의 움직임)
     /// <summary>
     /// 모든 캐릭터의 움직임이 종료되었는지 확인한다.
     /// </summary>
@@ -893,9 +896,9 @@ public class GameManager : MonoBehaviour
         }
         return diagonalVectors;
     }
-    #endregion
+#endregion
 
-    #region 타일 관련(TileBase에 속한 오브젝트)
+#region 타일 관련(TileBase에 속한 오브젝트)
 
     /// <summary>
     /// 벽 오브젝트를 생성
@@ -915,10 +918,10 @@ public class GameManager : MonoBehaviour
         instWall.transform.localPosition = position;
         return instWall;
     }
-    #endregion
+#endregion
 
 
-    #region TEST
+#region TEST
 
     private void CheckCharacterPosition()
     {
@@ -997,9 +1000,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    #endregion
+#endregion
 
-    #region 테스트 씬 전용
+#region 테스트 씬 전용
 
 #if UNITY_EDITOR
     public UtilForMapTest utilTestManager;
@@ -1059,5 +1062,5 @@ public class GameManager : MonoBehaviour
     }
 
 #endif
-    #endregion
+#endregion
 }
