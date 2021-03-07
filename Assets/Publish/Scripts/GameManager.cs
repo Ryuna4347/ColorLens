@@ -28,33 +28,30 @@ public class GameManager : MonoBehaviour
 
     private int level; //현재 레벨
     public List<GameObject> movingChars; //현재 움직이고 있는 캐릭터 수
-    public bool canMove=false;
+
     public List<int> baseMoveCount; //각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
 
-    //public Animator[] StarAnims;//인게임 별이동
-    //public Animator[] Star_bar_Anims;//인게임 별이동 바
-    //public Text[] Star_standard_Text;//인게임 별이동 기준 텍스트
-
-    //public Text MoveText;//인게임 텍스트UI
-
-    public int moveCount; //현재 맵에서 이동횟수
+    public int moveCount; //현재 맵에서 이동횟수   
+    private bool canMove = false;
     private bool isGameOver;
     public float moveRatio { get; private set; } //배속
 
     public GameObject tutorialCanvas;
     public GameObject pausePanel;
+    public GameObject touchUI;
+
+
+    public bool IsGameOver => isGameOver;
+    public bool CanMove => canMove;
 
     // Start is called before the first frame update
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             return;
         }
         instance = this;
-#if (UNITY_ANDROID || UNITY_IPHONE)
-        Input.multiTouchEnabled = false;
-#endif
     }
 
     private void Start()
@@ -75,35 +72,21 @@ public class GameManager : MonoBehaviour
         {
             CheckTutorial();
         }
+#if UNITY_ANDROID || UNITY_IOS
+        GameObject touchPrefab = Resources.Load<GameObject>("Prefabs/Etc/TouchUI");
+        GameObject touchUI = GameObject.Instantiate(touchPrefab, GameObject.Find("GameCanvas").transform);
+        touchUI.transform.GetChild(0).gameObject.SetActive(false);
+#endif
     }
 
-    public void MoveBtn(int _dir)
-    {
-    //    if (!isGameOver)
-    //    {
-    //        if (canMove)
-    //        {
-    //            int dir = _dir;
-    //            canMove = false;
-
-    //            List<GameObject> activeObj = characters.FindAll(x => x.activeSelf == true);
-    //            foreach (GameObject obj in activeObj)
-    //            {
-    //                StartCoroutine(obj.GetComponent<PlayerMove1>().Move(dir));
-    //            }
-    //            movingChars = activeObj.Count;
-    //            StartCoroutine("CheckCharactersMove");
-    //            moveCount++;
-    //        }
-    //    }
-    }
+#if UNITY_EDITOR || UNITY_STANDALONE
     private void Update()
     {
         if (!isGameOver)
         {
-            if (canMove)
+            if (CanMove)
             {
-                if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && (tutorialCanvas == null || tutorialCanvas.activeSelf==false))
+                if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && (tutorialCanvas == null || tutorialCanvas.activeSelf == false))
                 {
                     CheckPause();
                 }
@@ -117,41 +100,28 @@ public class GameManager : MonoBehaviour
                     dir = 5;
                 else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                     dir = 1;
-                if (dir != 0)
-                {
-                    canMove = false;
-
-                    List<GameObject> activeChars = characters.FindAll(x => x.activeSelf == true);
-                    foreach (GameObject obj in activeChars)
-                    {
-                        obj.GetComponent<PlayerMove1>().CalculateRoute((Direction)dir); //여기 확인(테스트 씬)
-                        AddMovingCharacter(obj);
-                    }
-                    StartCoroutine("CheckCharactersMove");
-                    moveCount++;
-                }
+                MoveCharacters(dir);
             }
         }
-        if (canMove)
+        if (CanMove)
         {
             if (Input.GetKeyDown(KeyCode.R) && pausePanel.activeSelf == false) //R키 누르면 현재 씬 재시작
             {
                 SoundManager.instance.Play("Restart", 1, 1);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
-
         }
-
     }
+#endif
 
     public void CheckTutorial()
     {
-        if(tutorialCanvas == null) //튜토리얼이 없는 스테이지는 그냥 바로 이동가능
+        if (tutorialCanvas == null) //튜토리얼이 없는 스테이지는 그냥 바로 이동가능
         {
             canMove = true;
             return;
         }
-        else if (PlayerPrefs.GetInt("Tut_" + level,0) > 0)
+        else if (PlayerPrefs.GetInt("Tut_" + level, 0) > 0)
         {
             canMove = true;
             return;
@@ -185,7 +155,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-#region 게임관리(타일 배열 관련)
+    #region 게임관리(타일 배열 관련)
     private void ReadMapData()
     {
         int i, j;
@@ -246,9 +216,9 @@ public class GameManager : MonoBehaviour
             objectArr[(int)objPos.y, (int)(objPos.x)] = objectiveMap[i];
         }
 
-        for(i=0; i<height; i++)
+        for (i = 0; i < height; i++)
         {
-            for(j=0; j<width; j++)
+            for (j = 0; j < width; j++)
             {
                 characterArr[i, j] = new List<GameObject>();
             }
@@ -257,8 +227,8 @@ public class GameManager : MonoBehaviour
         List<GameObject> characterMap = GameObject.Find("Characters").GetAllChilds();
         for (i = 0; i < characterMap.Count; i++)
         {
-            characterMap[i].name = characterMap[i].name.Split(' ')[0]+ "_" + characterMap[i].transform.GetSiblingIndex();
-            if (characterMap[i].transform.position.x < - width / 2)
+            characterMap[i].name = characterMap[i].name.Split(' ')[0] + "_" + characterMap[i].transform.GetSiblingIndex();
+            if (characterMap[i].transform.position.x < -width / 2)
             {
                 unusedCharacters.Add(characterMap[i]);
             }
@@ -288,11 +258,11 @@ public class GameManager : MonoBehaviour
             return null;
         }
         Vector2 nextDirection = CommonFunc.GetVectorFromDirection(dir);
-        int h = (int)(arrayIndex[1]+nextDirection.y), w = (int)(arrayIndex[0]+nextDirection.x);
+        int h = (int)(arrayIndex[1] + nextDirection.y), w = (int)(arrayIndex[0] + nextDirection.x);
 
         result.Add(tileArr[h, w]); //타일맵은 기본으로 존재한다.
 
-        if(objectArr[h,w] != null) //색 상자 or 아이템이 존재하는 경우 추가
+        if (objectArr[h, w] != null) //색 상자 or 아이템이 존재하는 경우 추가
         {
             result.Add(objectArr[h, w]);
         }
@@ -323,11 +293,11 @@ public class GameManager : MonoBehaviour
             if (objectArr[arrIdx[1], arrIdx[0]] != objectItem)
                 return false;
 
-            //if (!objectArr[arrIdx[1], arrIdx[0]].CompareTag("Objective")) //사라지는 발판에 사용되는 부분(발판 삭제 후 벽 생성)
-            //{
-            //    GameObject newWall = CreateWall(position, GameObject.Find("Tilemap").transform);
-            //    tileArr[arrIdx[1], arrIdx[0]] = newWall;
-            //}
+            if (!objectArr[arrIdx[1], arrIdx[0]].CompareTag("Objective"))
+            {
+                GameObject newWall = CreateWall(position, GameObject.Find("Tilemap").transform);
+                tileArr[arrIdx[1], arrIdx[0]] = newWall;
+            }
             objectArr[arrIdx[1], arrIdx[0]] = null;
         }
         return true;
@@ -357,14 +327,12 @@ public class GameManager : MonoBehaviour
         newIdx = ConvertPosToTwoDimentionIdx(newPosition);
 
         if (!characterArr[oldIdx[1], oldIdx[0]].Contains(character))
-        {
             return false;
-        }
         characterArr[oldIdx[1], oldIdx[0]].Remove(character);
         characterArr[newIdx[1], newIdx[0]].Add(character);
         return true;
     }
-    
+
 
     /// <summary>
     /// characterArr에서 캐릭터가 위치하고 있는 인덱스를 반환한다.
@@ -373,18 +341,18 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public Vector2 GetArrayIndexOfCharacter(string characterName)
     {
-        for(int i=0; i<height; i++)
+        for (int i = 0; i < height; i++)
         {
-            for(int j=0; j<width; j++)
+            for (int j = 0; j < width; j++)
             {
                 if (characterArr[i, j].Count < 1) continue;
-                if(characterArr[i,j].Find(x=>x.name.Equals(characterName)))
+                if (characterArr[i, j].Find(x => x.name.Equals(characterName)))
                 {
-                    return new Vector2(i,j);
+                    return new Vector2(i, j);
                 }
             }
         }
-        return new Vector2(-100,-100);
+        return new Vector2(-100, -100);
     }
 
     private int[] ConvertPosToTwoDimentionIdx(Vector2 pos)
@@ -413,9 +381,9 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-#endregion
+    #endregion
 
-#region 게임관리(성공/실패)
+    #region 게임관리(성공/실패)
 
     /// <summary>
     ///캐릭터 생존 확인 함수
@@ -457,35 +425,51 @@ public class GameManager : MonoBehaviour
     /// 목표 상자의 갯수를 조절
     /// </summary>
     /// <param name="amount"></param>
-    public void ControlColorBoxCount(int amount=1)
+    public void ControlColorBoxCount(int amount = 1)
     {
-        if(arrive_count<colorBox_Child_Count)
+        if (arrive_count < colorBox_Child_Count)
         {
             arrive_count += amount;
         }
     }
 
-#endregion
+    #endregion
 
-#region 게임 로직관련(한턴의 움직임)
+    #region 게임 로직관련(한턴의 움직임)
+    public void MoveCharacters(int dir)
+    {
+        if (dir != 0)
+        {
+            canMove = false;
+
+            List<GameObject> activeChars = characters.FindAll(x => x.activeSelf == true);
+            foreach (GameObject obj in activeChars)
+            {
+                obj.GetComponent<PlayerMove1>().CalculateRoute((Direction)dir); //여기 확인(테스트 씬)
+                AddMovingCharacter(obj);
+            }
+            StartCoroutine("CheckCharactersMove");
+            moveCount++;
+        }
+    }
+
     /// <summary>
     /// 모든 캐릭터의 움직임이 종료되었는지 확인한다.
     /// </summary>
     /// <returns></returns>
     private IEnumerator CheckCharactersMove()
     {
-        while(movingChars.Count>0)
+        while (movingChars.Count > 0)
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f/moveRatio); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
+        yield return new WaitForSeconds(0.1f / moveRatio); // 모든 캐릭터가 멈춰있어도 일정 시간 다음 이동에 딜레이를 준다.
         if (moveTurnEnded != null) //한 턴 종료에 대응되는 이벤트가 있을 시 실행
             moveTurnEnded();
         CheckMerge();
 
         //CheckCharacterPosition();
         //CheckObjectPosition();
-        //CheckTilePosition();
         canMove = true;
     }
 
@@ -494,7 +478,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CheckMoveOver(GameObject character)
     {
-        if(movingChars.Count > 0&&movingChars.Contains(character))
+        if (movingChars.Count > 0 && movingChars.Contains(character))
         {
             movingChars.Remove(character);
         }
@@ -520,7 +504,7 @@ public class GameManager : MonoBehaviour
 
         Transform characterParent = GameObject.Find("Characters").transform;
 
-        foreach(Transform character in characterParent)
+        foreach (Transform character in characterParent)
         {
             characters.Add(character.gameObject);
         }
@@ -529,7 +513,7 @@ public class GameManager : MonoBehaviour
     public void ChangeMoveRatio(float value)
     {
         moveRatio = value;
-        if(moveRatioChanged !=null)
+        if (moveRatioChanged != null)
         {
             moveRatioChanged(moveRatio);
         }
@@ -540,9 +524,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void CheckMerge()
     {
-        for(int i = 0; i < height; i++)
+        for (int i = 0; i < height; i++)
         {
-            for(int j = 0; j < width; j++)
+            for (int j = 0; j < width; j++)
             {
                 if (characterArr[i, j].Count > 1)
                     CharacterMerge(characterArr[i, j]);
@@ -558,8 +542,8 @@ public class GameManager : MonoBehaviour
     public bool CharacterMerge(List<GameObject> colors)
     {
         GameObject mergeChar = null; //병합되어 생성되는 오브젝트
-        
-        if (colors.Count==3) //흰색이 나올 수 밖에 없는 조합(3개가 충돌하는 경우는 빨/초/파 밖에 없기 때문입니다.)
+
+        if (colors.Count == 3) //흰색이 나올 수 밖에 없는 조합(3개가 충돌하는 경우는 빨/초/파 밖에 없기 때문입니다.)
         {
             Vector3 mergePos = colors[0].transform.position;
             List<GameObject> copy = new List<GameObject>(colors);
@@ -575,11 +559,11 @@ public class GameManager : MonoBehaviour
         }
         else //2가지 색상의 충돌일 경우 하드코딩으로 맞는 색을 찾는다.
         {
-            if(colors.Find(x=>x.name.Contains("Red")))
+            if (colors.Find(x => x.name.Contains("Red")))
             {
-                if(colors.Find(x=>x.name.Contains("Green")))
+                if (colors.Find(x => x.name.Contains("Green")))
                 {
-                    mergeChar= unusedCharacters.Find(x => x.name.Contains("Yellow"));
+                    mergeChar = unusedCharacters.Find(x => x.name.Contains("Yellow"));
                 }
                 else if (colors.Find(x => x.name.Contains("Blue")))
                 {
@@ -590,7 +574,7 @@ public class GameManager : MonoBehaviour
                     mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
-            else if(colors.Find(x => x.name.Contains("Green")))
+            else if (colors.Find(x => x.name.Contains("Green")))
             {
                 if (colors.Find(x => x.name.Contains("Red")))
                 {
@@ -641,9 +625,9 @@ public class GameManager : MonoBehaviour
                     mergeChar = unusedCharacters.Find(x => x.name.Contains("White"));
                 }
             }
-            Vector3 mergePos = colors[0].transform.position; 
-            List<GameObject> copy= new List<GameObject>(colors);
-            for (int i=0; i<copy.Count; i++)
+            Vector3 mergePos = colors[0].transform.position;
+            List<GameObject> copy = new List<GameObject>(colors);
+            for (int i = 0; i < copy.Count; i++)
             {
                 copy[i].GetComponent<PlayerMove1>().CharacterDisappear();
             }
@@ -655,12 +639,12 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        if(moveRatioChanged != null)
+        if (moveRatioChanged != null)
             moveRatioChanged(moveRatio);
 
         return true;
     }
-    
+
     public bool IsCharacterMoving(GameObject character)
     {
         if (movingChars.Contains(character))
@@ -679,20 +663,17 @@ public class GameManager : MonoBehaviour
         Vector3 splitPos = character.transform.position;
         string colorName = character.name.Split('_')[0];
 
-        if(colorName.Equals("Red")|| colorName.Equals("Green")||colorName.Equals("Blue"))
+        if (colorName.Equals("Red") || colorName.Equals("Green") || colorName.Equals("Blue"))
         { //3원색은 불리가 불가능
             return false;
         }
-        EffectManager.instance.PrismEffect(new Vector3(character.transform.position.x, character.transform.position.y, -3), "White");
-        SoundManager.instance.Play("Division");
-
         dir = character.routeList[character.routeList.Count - 1];
         character.CharacterDisappear();
 
         switch (colorName)
         {
             case "Yellow":
-                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Red") && x.activeSelf==false).GetComponent<PlayerMove1>());
+                splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Red") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 splitedChars.Add(unusedCharacters.Find(x => x.name.Contains("Green") && x.activeSelf == false).GetComponent<PlayerMove1>());
                 break;
             case "Cyan":
@@ -715,7 +696,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        for (int i = 0; i<splitedChars.Count; i++)
+        for (int i = 0; i < splitedChars.Count; i++)
         {
             splitedChars[i].gameObject.SetActive(true);
             splitedChars[i].transform.position = splitPos;
@@ -724,7 +705,6 @@ public class GameManager : MonoBehaviour
 
         moveRatioChanged(moveRatio);
 
-       
         List<Direction> diagonals = GetRefractDirections(dir);
         if (splitedChars.Count == 3)
         {
@@ -757,20 +737,19 @@ public class GameManager : MonoBehaviour
         Vector3 characterPos = character.transform.position;
         string colorName = character.name.Split('_')[0];
         string filteredColorName = filter.FilterCharacter(colorName);
-
-        if (colorName == filteredColorName)
-            return false;
         character.CharacterDisappear();
 
         if (filteredColorName != null && filteredColorName != "")
         {
             GameObject filteredCharacter = unusedCharacters.Find(x => x.activeSelf == false && x.name.Contains(filteredColorName));
+            if (!filteredCharacter)
+                return false;
             filteredCharacter.SetActive(true);
             filteredCharacter.transform.position = characterPos;
             UpdateCharacterActive(filteredCharacter, filteredCharacter.transform.position, true);
             if (moveRatioChanged != null)
                 moveRatioChanged(moveRatio);
-            filteredCharacter.GetComponent<PlayerMove1>().CalculateRoute(dir, dir); //Split처럼 분리된 이후 필터에 나오고나서부터 카운트가 시작되서 필터를 나올 때 임시 방향이 1개 필요하다.
+            filteredCharacter.GetComponent<PlayerMove1>().CalculateRoute(dir);
         }
         return true;
     }
@@ -795,7 +774,7 @@ public class GameManager : MonoBehaviour
         }
         if ((selectedObj = objectArr[arrIdx[1], arrIdx[0]]) != null)
         {
-            if(selectedObj.name.Contains("Objective"))
+            if (selectedObj.name.Contains("Objective"))
             {
                 Objective colorbox = selectedObj.GetComponent<Objective>();
                 if (colorbox.CheckColor(character.name.Split('_')[0]))
@@ -807,16 +786,16 @@ public class GameManager : MonoBehaviour
                     character.EffectDie();
                 return false;
             }
-            else if(selectedObj.name.Contains("Portal"))
+            else if (selectedObj.name.Contains("Portal"))
             {
                 selectedObj.GetComponent<Portal>().TeleportCharacter(character);
-                return false;
+                return true;
             }
-            else if(selectedObj.name.Contains("Prism"))
+            else if (selectedObj.name.Contains("Prism"))
             {
                 return !CharacterSplit(character);
             }
-            else if(selectedObj.name.Contains("Filter"))
+            else if (selectedObj.name.Contains("Filter"))
             {
                 return !CharacterFilter(character, selectedObj.GetComponent<ColorFilter>());
             }
@@ -828,7 +807,7 @@ public class GameManager : MonoBehaviour
                 return true;
             }
         }
-        
+
         return true;
     }
 
@@ -857,7 +836,7 @@ public class GameManager : MonoBehaviour
     /// <returns>진행방향을 제외한 좌/우측 대각 방향의 리스트</returns>
     private List<Direction> GetRefractDirections(Direction direction)
     {
-        List<Direction> diagonalVectors=new List<Direction>();
+        List<Direction> diagonalVectors = new List<Direction>();
 
         switch (direction)
         {
@@ -896,9 +875,10 @@ public class GameManager : MonoBehaviour
         }
         return diagonalVectors;
     }
-#endregion
+    #endregion
 
-#region 타일 관련(TileBase에 속한 오브젝트)
+
+    #region 타일 관련(TileBase에 속한 오브젝트)
 
     /// <summary>
     /// 벽 오브젝트를 생성
@@ -908,7 +888,7 @@ public class GameManager : MonoBehaviour
     public GameObject CreateWall(Vector3 position, Transform parentTransform)
     {
         GameObject instWall = movableWalls.Find(x => x.gameObject.activeSelf == false);
-        if(!instWall)
+        if (!instWall)
         {
             instWall = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Objs/Wall"), parentTransform);
             movableWalls.Add(instWall);
@@ -918,29 +898,29 @@ public class GameManager : MonoBehaviour
         instWall.transform.localPosition = position;
         return instWall;
     }
-#endregion
+    #endregion
 
 
-#region TEST
+    #region TEST
 
     private void CheckCharacterPosition()
     {
-        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Test"))
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Test"))
         {
             Destroy(obj);
         }
 
-        for(int i = 0; i<height; i++)
+        for (int i = 0; i < height; i++)
         {
-            for(int j=0; j<width; j++)
+            for (int j = 0; j < width; j++)
             {
-                if(characterArr[i,j].Count >= 1)
+                if (characterArr[i, j].Count >= 1)
                 {
                     foreach (GameObject obj in characterArr[i, j])
                     {
                         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         sphere.tag = "Test";
-                        sphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.2f);
+                        sphere.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
                     }
                 }
@@ -970,39 +950,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    private void CheckTilePosition()
-    {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Test_Tile"))
-        {
-            Destroy(obj);
-        }
+    #endregion
 
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                if (tileArr[i, j] != null)
-                {
-                    GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    sphere.tag = "Test_Tile";
-                    if (tileArr[i, j].name.Contains("Wall"))
-                    {
-                        sphere.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
-                        sphere.GetComponent<MeshRenderer>().material.color = Color.blue;
-                    }
-                    else
-                    {
-                        sphere.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                        sphere.GetComponent<MeshRenderer>().material.color = Color.green;
-                    }
-                    sphere.transform.position = new Vector3(j - (width / 2) + 0.5f, i - height / 2, -2f);
-                }
-            }
-        }
-    }
-#endregion
-
-#region 테스트 씬 전용
+    #region 테스트 씬 전용
 
 #if UNITY_EDITOR
     public UtilForMapTest utilTestManager;
@@ -1010,18 +960,18 @@ public class GameManager : MonoBehaviour
     private bool RefreshTilesPosition(GameObject[,] tiles)
     {
         List<GameObject> tileMapList = GameObject.Find("Tilemap").GetAllChilds();
-        foreach(GameObject tile in tileMapList)
+        foreach (GameObject tile in tileMapList)
         {
             tile.SetActive(false);
         }
 
         tileArr = tiles;
-        for(int i = 0; i < height; i++)
+        for (int i = 0; i < height; i++)
         {
-            for(int j = 0; j<width; j++)
+            for (int j = 0; j < width; j++)
             {
-                tileArr[i,j].SetActive(true);
-                tileArr[i,j].transform.position = new Vector2((j - width/2 + 1) - 0.5f, i - height / 2);
+                tileArr[i, j].SetActive(true);
+                tileArr[i, j].transform.position = new Vector2((j - width / 2 + 1) - 0.5f, i - height / 2);
             }
         }
         return true;
@@ -1062,5 +1012,5 @@ public class GameManager : MonoBehaviour
     }
 
 #endif
-#endregion
+    #endregion
 }

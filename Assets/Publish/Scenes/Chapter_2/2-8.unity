@@ -9741,11 +9741,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -17481,6 +17481,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: White
       objectReference: {fileID: 0}
+    - target: {fileID: 5011327206140871049, guid: 461acc715e6616a4b9ccd92f21b02d43,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5011327206140871051, guid: 461acc715e6616a4b9ccd92f21b02d43,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18364,11 +18369,12 @@ MonoBehaviour:
   arrive_count: 0
   unusedCharacters: []
   movingChars: []
-  canMove: 0
   baseMoveCount: 
   moveCount: 0
   tutorialCanvas: {fileID: 370913100}
   pausePanel: {fileID: 1508071922}
+  touchUI: {fileID: 0}
+  utilTestManager: {fileID: 0}
 --- !u!4 &1072721167
 Transform:
   m_ObjectHideFlags: 0

@@ -552,7 +552,7 @@ public class PlayerMove1 : MonoBehaviour
 
     private IEnumerator ShowMoveGuide()
     {
-        while (GameManager.instance==null||!GameManager.instance.canMove)
+        while (GameManager.instance==null||!GameManager.instance.CanMove)
         {
             yield return null;
         }

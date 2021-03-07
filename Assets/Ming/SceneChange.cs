@@ -76,8 +76,4 @@ public class SceneChange : MonoBehaviour
         SceneManager.LoadScene(nextStageName);
     }
 
-    public void Move(int dir)
-    {
-        GameManager.instance.MoveBtn(dir);
-    }
 }

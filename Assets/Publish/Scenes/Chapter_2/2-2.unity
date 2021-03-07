@@ -2677,6 +2677,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Green
       objectReference: {fileID: 0}
+    - target: {fileID: 1189683522531677619, guid: ccece2827b05a5a4b822a482aaefa3a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1189683522531677623, guid: ccece2827b05a5a4b822a482aaefa3a9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6648,11 +6653,12 @@ MonoBehaviour:
   arrive_count: 0
   unusedCharacters: []
   movingChars: []
-  canMove: 0
   baseMoveCount: 
   moveCount: 0
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 1508071922}
+  touchUI: {fileID: 0}
+  utilTestManager: {fileID: 0}
 --- !u!4 &1072721167
 Transform:
   m_ObjectHideFlags: 0
@@ -7926,6 +7932,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8088749164312094251, guid: 0798dfc162e5cb24b98e280058016c47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8088749164312094255, guid: 0798dfc162e5cb24b98e280058016c47,
         type: 3}

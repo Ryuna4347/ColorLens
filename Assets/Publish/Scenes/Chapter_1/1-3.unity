@@ -6990,6 +6990,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 8088749164312094251, guid: 0798dfc162e5cb24b98e280058016c47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8088749164312094255, guid: 0798dfc162e5cb24b98e280058016c47,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7089,11 +7094,12 @@ MonoBehaviour:
   arrive_count: 0
   unusedCharacters: []
   movingChars: []
-  canMove: 0
   baseMoveCount: 
   moveCount: 0
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 1508071922}
+  touchUI: {fileID: 0}
+  utilTestManager: {fileID: 0}
 --- !u!4 &1072721167
 Transform:
   m_ObjectHideFlags: 0
