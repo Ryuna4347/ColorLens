@@ -18,8 +18,6 @@ public class ColorFilter : ObjectBase
         }
         filterColorComb = CommonFunc.GetColorCombination(filterColor);
 #if UNITY_EDITOR
-        Debug.LogWarning("현재는 필터 이미지가 없어서 임의 색상 조정중입니다.");
-        Debug.LogWarning("이미지 처리 후 해당 코드를 삭제해 주세요.");
         Color color = new Color(0,0,0,0.7f);
         if (filterColorComb.Contains("Red"))
             color.r = 1;
