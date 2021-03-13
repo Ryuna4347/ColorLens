@@ -72,10 +72,10 @@ public class GameManager : MonoBehaviour
         {
             CheckTutorial();
         }
+        pausePanel = GameObject.Find("GameCanvas").transform.Find("PausePanel").gameObject;
 #if UNITY_ANDROID || UNITY_IOS
         GameObject touchPrefab = Resources.Load<GameObject>("Prefabs/Etc/TouchUI");
         GameObject touchUI = GameObject.Instantiate(touchPrefab, GameObject.Find("GameCanvas").transform);
-        touchUI.transform.GetChild(0).gameObject.SetActive(false);
 #endif
     }
 

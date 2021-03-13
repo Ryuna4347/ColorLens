@@ -1,21 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TouchUI : MonoBehaviour
 {
     public Transform cursor;
     private float maxDistance; //cursor의 반경
 
-    private void Awake() //Start인 경우 Instantiate된 직후 꺼지게 되어서 Start가 불려오지 않는다.
+    private void OnEnable() //Start인 경우 Instantiate된 직후 꺼지게 되어서 Start가 불려오지 않는다.
     {
-        cursor = transform.GetChild(0).GetChild(0);
-        maxDistance = ((RectTransform)transform.GetChild(0)).sizeDelta.x/2;
+        if (PlayerPrefs.GetInt("TouchType", 0) == 0)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            cursor = transform.GetChild(1).GetChild(0);
+            maxDistance = ((RectTransform)transform.GetChild(0)).sizeDelta.x / 2;
+        }
     }
 
     private void OnDisable()
     {
-        cursor.transform.position = new Vector2(0, 0);
+        if (PlayerPrefs.GetInt("TouchType", 0) == 0)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+        }
+        else
+        {
+            cursor.transform.position = new Vector2(0, 0);
+            maxDistance = 0;
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
     }
 
     #region 스마트폰 관련 기능
@@ -23,16 +40,20 @@ public class TouchUI : MonoBehaviour
     private void Update()
     {
 #if UNITY_ANDROID || UNITY_IOS
-        if (!GameManager.instance.IsGameOver && GameManager.instance.CanMove)
+        if (PlayerPrefs.GetInt("TouchType", 0) == 1 && !GameManager.instance.IsGameOver && GameManager.instance.CanMove)
         {
             if (Input.touchCount > 0)
             {
-                Touch touch = Input.GetTouch(0);
-                transform.GetChild(0).gameObject.SetActive(true);
-                if (touch.phase == TouchPhase.Began)
+                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                 {
-                    transform.position = touch.position;
-                    StartCoroutine("CheckTouchDirection");
+                    
+                    Touch touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        transform.GetChild(1).gameObject.SetActive(true);
+                        transform.position = touch.position;
+                        StartCoroutine("CheckTouchDirection");
+                    }
                 }
             }
         }
@@ -60,7 +81,7 @@ public class TouchUI : MonoBehaviour
         }
         if ((lastPos - (Vector2)transform.position).magnitude <= 50) //기능하기 위한 최소거리
         {
-            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
             yield break;
         }
 
@@ -82,7 +103,7 @@ public class TouchUI : MonoBehaviour
             dir = 5;
 
         GameManager.instance.MoveCharacters(dir);
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
     private IEnumerator CheckTouchDirectionMouse()
@@ -133,6 +154,14 @@ public class TouchUI : MonoBehaviour
             dir = 5;
         }
         GameManager.instance.MoveCharacters(dir);
+    }
+
+    public void MoveButtonClicked(int dir)
+    {
+        if(PlayerPrefs.GetInt("TouchType",0) == 0)
+        {
+            GameManager.instance.MoveCharacters(dir);
+        }
     }
 
     #endregion
