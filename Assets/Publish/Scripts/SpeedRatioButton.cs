@@ -19,10 +19,6 @@ public class SpeedRatioButton : MonoBehaviour
         buttonPressed = PlayerPrefs.GetInt("SpeedRatio", 0) == 0 ? false : true;
         float speedRatio = buttonPressed ? 1.5f : 1.0f;
         buttonImg.sprite = ratioImages[buttonPressed ? 1 : 0];
-        GameManager.instance.ChangeMoveRatio(speedRatio);
-#if UNITY_ANDROID || UNITY_IOS
-        gameObject.SetActive(false);
-#endif
     }
 
     public void ChangeMoveSpeedRatio()

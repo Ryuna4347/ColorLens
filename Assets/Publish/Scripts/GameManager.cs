@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     {
         colorBox_Child_Count = colorBox.transform.childCount;
         moveCount = 0;
-        moveRatio = 1.0f;
+        moveRatio = PlayerPrefs.GetInt("SpeedRatio", 0) == 0 ?  1.0f : 1.5f;
         ReadMapData();
         LoadCharacters();
         if (moveRatioChanged != null)
