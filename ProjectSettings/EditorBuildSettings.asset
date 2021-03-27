@@ -252,6 +252,42 @@ EditorBuildSettings:
     path: Assets/Publish/Scenes/Chapter_6/6-12.unity
     guid: b0bd1889a88c88046948c1c142989853
   - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-1.unity
+    guid: 61b7aa36a51101249b41e61187ee8083
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-2.unity
+    guid: 158a8333107e90a448970b16350d7b72
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-3.unity
+    guid: 15ea394b519c1d94883569787698e5dc
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-4.unity
+    guid: a09b3923346e5ac488e3dcbe4ffac6cf
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-5.unity
+    guid: 6489e127c1a67ba4b9f563bddbdc79db
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-6.unity
+    guid: f4f3b8cd4289b3a468f01e6b2d36d9f8
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-7.unity
+    guid: a61b16991253cc04c9be76f84b5f4afc
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-8.unity
+    guid: dd11fe5e212202f4bb9953b42388b9d0
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-9.unity
+    guid: ecf457a668a72b14e8e9a19b23bb78c0
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-10.unity
+    guid: 6cbb2087efc1bdc4ba4f803699a8c90e
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-11.unity
+    guid: 49f9dc3502c47984c931278b08cdc867
+  - enabled: 1
+    path: Assets/Publish/Scenes/Chapter_7/7-12.unity
+    guid: 4b4dafb071ea4dc43b5c72aeceb23e40
+  - enabled: 1
     path: Assets/Publish/Scenes/MapTest.unity
     guid: 7ef580c0bd6d8e744a6a1a9cda427057
   - enabled: 1
