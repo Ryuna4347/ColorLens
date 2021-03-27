@@ -45,4 +45,22 @@ public class ClearSave : MonoBehaviour
         if(PlayerPrefs.GetInt(sceneName, 0)<=starNum) 
             PlayerPrefs.SetInt(sceneName,starNum);
     }
+
+    #region 테스트 용도
+    public void DeleteAll()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
+    public void SetThreeStars()
+    {
+        for (int i = 1; i <= 7; i++)
+        {
+            for (int j = 1; j <= 12; j++)
+            {
+                PlayerPrefs.SetInt(i.ToString() + "-" + j.ToString(), 3);
+            }
+        }
+    }
+    #endregion
 }
