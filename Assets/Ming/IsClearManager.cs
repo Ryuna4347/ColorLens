@@ -8,6 +8,7 @@ public class IsClearManager : MonoBehaviour
     public Dictionary<int,int> stars; //스테이지 번호, 해당 스테이지 별 수
     [Tooltip("현재 구현된 최대 챕터")]public int maximumChapter;
     [Tooltip("한 챕터 당 스테이지 수")]public int stagesPerChapter;
+    [Tooltip("전체 완료시 최종 컷신 프리팹")] public GameObject finalCutScene;
 
     void Awake()
     {
@@ -19,6 +20,12 @@ public class IsClearManager : MonoBehaviour
             {
                 stars.Add(12 * (i - 1) + j, PlayerPrefs.GetInt(i + "-" + j, 0));
             }
+        }
+        
+        if(PlayerPrefs.GetInt("FinalCutScene", 0) == 0 && PlayerPrefs.GetInt(maximumChapter+"-"+stagesPerChapter, 0) > 0)
+        {
+            GameObject.Instantiate<GameObject>(finalCutScene, transform);
+            PlayerPrefs.SetInt("FinalCutScene", 1);
         }
     }
 

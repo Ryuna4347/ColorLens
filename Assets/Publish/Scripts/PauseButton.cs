@@ -7,8 +7,11 @@ public class PauseButton : MonoBehaviour
 #if UNITY_ANDROID || UNITY_IOS
     public void PauseUIOn()
     {
-        GameManager.instance.CheckPause();
-        gameObject.SetActive(false);
+        if (!GameManager.instance.IsGameOver && GameManager.instance.CanMove)
+        {
+            GameManager.instance.CheckPause();
+            gameObject.SetActive(false);
+        }
     }
 #endif
 }

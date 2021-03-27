@@ -77,9 +77,9 @@ public class GameManager : MonoBehaviour
             moveRatioChanged(moveRatio);
         }
 
-        StartCoroutine("CheckGameOver"); //캐릭터 로드가 완료된 이후 게임 종료여부를 체크한다.
+        StartCoroutine("CheckGameOver");
 
-        if (!SceneManager.GetActiveScene().name.Equals("1-1")) //현재 1-1스테이지만 컷신이 존재하므로 컷신이 CheckTutorial을 호출한다.
+        if (!SceneManager.GetActiveScene().name.Equals("1-1") && !SceneManager.GetActiveScene().name.Equals("2-1")) //컷신 존재시 튜토리얼 UI는 잠시 미룬다.
         {
             CheckTutorial();
         }
@@ -125,6 +125,9 @@ public class GameManager : MonoBehaviour
     }
 #endif
 
+    /// <summary>
+    /// 튜토리얼 Canvas 존재여부를 확인한다.
+    /// </summary>
     public void CheckTutorial()
     {
         if (tutorialCanvas == null) //튜토리얼이 없는 스테이지는 그냥 바로 이동가능
@@ -144,6 +147,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 튜토리얼 Canvas Off
+    /// </summary>
     public void CloseTutorial()
     {
         PlayerPrefs.SetInt("Tut_" + level, 1);
@@ -152,6 +158,9 @@ public class GameManager : MonoBehaviour
         canMove = true;
     }
 
+    /// <summary>
+    /// 게임 일시 정지
+    /// </summary>
     public void CheckPause()
     {
         if (Time.timeScale == 0) //일시정지상태일때 
@@ -167,6 +176,10 @@ public class GameManager : MonoBehaviour
     }
 
     #region 게임관리(타일 배열 관련)
+
+    /// <summary>
+    /// 게임 시작 시 오브젝트 배열화를 위해 맵을 읽어온다.
+    /// </summary>
     private void ReadMapData()
     {
         int i, j;
@@ -256,7 +269,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 다음 이동할 위치에 충돌할 물체가 있는지 체크
     /// </summary>
-    /// <param name="characterName"></param>
+    /// <param name="characterName">체크하고 싶은 캐릭터 이름</param>
     /// <returns></returns>
     public List<GameObject> GetObjsNextPosition(string characterName, Vector2 characterPos, Direction dir)
     {
@@ -284,8 +297,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 오브젝트(상자+아이템)의 activeSelf 상황을 갱신
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="active"></param>
+    /// <param name="position">아이템의 위치</param>
+    /// <param name="active">activeSelf 값</param>
     /// <returns></returns>
     public bool UpdateObjectActive(GameObject objectItem, Vector2 position, bool active = false)
     {
@@ -314,6 +327,13 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// 캐릭터 배열에 캐릭터의 생사여부를 업데이트한다.
+    /// </summary>
+    /// <param name="character">변경하고자 하는 캐릭터</param>
+    /// <param name="position">캐릭터의 위치</param>
+    /// <param name="active">activeSelf</param>
+    /// <returns></returns>
     public bool UpdateCharacterActive(GameObject character, Vector2 position, bool active)
     {
         int[] arrIdx = ConvertPosToTwoDimentionIdx(position);
@@ -330,6 +350,13 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// 캐릭터 배열에서 캐릭터의 위치를 업데이트한다.
+    /// </summary>
+    /// <param name="character">변경하고자 하는 캐릭터</param>
+    /// <param name="oldPosition">캐릭터의 기존 위치</param>
+    /// <param name="newPosition">캐릭터의 새로운 위치</param>
+    /// <returns></returns>
     public bool UpdateCharacterPos(GameObject character, Vector2 oldPosition, Vector2 newPosition)
     {
         int[] oldIdx, newIdx;
@@ -366,6 +393,10 @@ public class GameManager : MonoBehaviour
         return new Vector2(-100, -100);
     }
 
+    /// <summary>
+    /// Vector2 위치를 2차원 배열 인덱스로 변환한다.
+    /// </summary>
+    /// <returns></returns>
     private int[] ConvertPosToTwoDimentionIdx(Vector2 pos)
     {
         int[] index = new int[2];
@@ -376,6 +407,11 @@ public class GameManager : MonoBehaviour
         return index;
     }
 
+    /// <summary>
+    /// 캐릭터의 생사여부를 체크한다.
+    /// </summary>
+    /// <param name="characterName"></param>
+    /// <returns></returns>
     private bool CheckCharacterAlive(string characterName)
     {
         for (int i = 0; i < height; i++)

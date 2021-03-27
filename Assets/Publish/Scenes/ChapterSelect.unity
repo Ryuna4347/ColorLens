@@ -1031,6 +1031,7 @@ GameObject:
   - component: {fileID: 403181188}
   - component: {fileID: 403181187}
   - component: {fileID: 403181186}
+  - component: {fileID: 403181189}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1128,6 +1129,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &403181189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403181184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7787d5ee86f20bc4e8c2c598f7d69e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maximumChapter: 7
+  stagesPerChapter: 12
+  finalCutScene: {fileID: 3829832794205660806, guid: 2531827f0f3cd4249a7d7534fee6b389,
+    type: 3}
 --- !u!1 &443355374
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,80 +2096,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648587616}
   m_CullTransparentMesh: 0
---- !u!1001 &670602484
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4792443791999331828, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: maximumChapter
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331829, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_Name
-      value: IsClearManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792443791999331831, guid: 9e88c6caf5a3dee448ea46f341dbfbe6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9e88c6caf5a3dee448ea46f341dbfbe6, type: 3}
 --- !u!1 &720754108
 GameObject:
   m_ObjectHideFlags: 0
@@ -4344,7 +4287,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

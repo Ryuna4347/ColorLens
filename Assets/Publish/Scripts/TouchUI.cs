@@ -132,8 +132,6 @@ public class TouchUI : MonoBehaviour
         if (vec.magnitude <= 100f)
             yield break;
 
-        Debug.Log(vec.magnitude);
-
         //use atan2 to get the angle; Atan2 returns radians
         var angleRadians = Mathf.Atan2(vec.y, vec.x);
 
@@ -169,7 +167,10 @@ public class TouchUI : MonoBehaviour
     {
         if(PlayerPrefs.GetInt("TouchType",0) == 0)
         {
-            GameManager.instance.MoveCharacters(dir);
+            if(!GameManager.instance.IsGameOver && GameManager.instance.CanMove)
+            {
+                GameManager.instance.MoveCharacters(dir);
+            }
         }
     }
 

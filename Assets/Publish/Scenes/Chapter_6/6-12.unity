@@ -7873,11 +7873,11 @@ MonoBehaviour:
   arrive_count: 0
   unusedCharacters: []
   movingChars: []
-  canMove: 0
   baseMoveCount: 
   moveCount: 0
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 1508071922}
+  touchUI: {fileID: 0}
   utilTestManager: {fileID: 0}
 --- !u!4 &1072721167
 Transform:
@@ -11216,6 +11216,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 034cd495c6c1b414886743b60b802061,
         type: 3}
+    - target: {fileID: 1772295791269386172, guid: 3961874c6cb8379479de4f9c5ff90cb3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: ChapterSelect
+      objectReference: {fileID: 0}
     - target: {fileID: 3277344406099781724, guid: 3961874c6cb8379479de4f9c5ff90cb3,
         type: 3}
       propertyPath: m_LocalPosition.x

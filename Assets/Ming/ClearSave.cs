@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class ClearSave : MonoBehaviour
 {
     public static ClearSave instance;
-    public string[] stageKeys;
+
     private void Awake()
     {
         if (instance == null)
@@ -29,7 +29,7 @@ public class ClearSave : MonoBehaviour
         }
         else if(Input.GetKeyDown(KeyCode.F2))
         {
-            for (int i = 1; i <= 4; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 for (int j = 1; j <= 12; j++)
                 {
