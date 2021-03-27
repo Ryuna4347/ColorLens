@@ -7007,11 +7007,11 @@ MonoBehaviour:
   arrive_count: 0
   unusedCharacters: []
   movingChars: []
-  canMove: 0
   baseMoveCount: 
   moveCount: 0
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 1508071922}
+  touchUI: {fileID: 0}
   utilTestManager: {fileID: 0}
 --- !u!4 &1072721167
 Transform:
@@ -11025,7 +11025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f868ff1ff0731a443852c36855762b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lev: 37
+  lev: 58
   baseMoveCount: 0b00000009000000
   width: 16
   height: 9
@@ -11294,40 +11294,40 @@ Transform:
   - {fileID: 1019177969}
   - {fileID: 1194496063}
   - {fileID: 268121681}
-  - {fileID: 219322728}
-  - {fileID: 1842258320}
-  - {fileID: 1289130656}
-  - {fileID: 1398173800}
-  - {fileID: 1427201041}
   - {fileID: 1875737064}
   - {fileID: 345088931}
   - {fileID: 1220048863}
-  - {fileID: 2057424783}
+  - {fileID: 219322728}
   - {fileID: 1053212275}
   - {fileID: 634178454}
   - {fileID: 1850151851}
   - {fileID: 655228562}
   - {fileID: 200191377}
+  - {fileID: 2057424783}
   - {fileID: 466359856}
   - {fileID: 1904332576}
   - {fileID: 1870707272}
-  - {fileID: 1660860195}
+  - {fileID: 1289130656}
   - {fileID: 397300562}
   - {fileID: 1614575498}
   - {fileID: 969503386}
   - {fileID: 585369350}
   - {fileID: 1076513425}
+  - {fileID: 1398173800}
   - {fileID: 691019001}
   - {fileID: 1423449531}
   - {fileID: 1878891091}
+  - {fileID: 1842258320}
   - {fileID: 994987119}
   - {fileID: 1717495888}
   - {fileID: 2144318816}
   - {fileID: 1149021795}
   - {fileID: 1774065649}
+  - {fileID: 1660860195}
   - {fileID: 323697531}
   - {fileID: 1209601476}
   - {fileID: 2080387318}
+  - {fileID: 1427201041}
   - {fileID: 315953385}
   - {fileID: 2023221366}
   - {fileID: 1528802165}

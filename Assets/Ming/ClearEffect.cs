@@ -66,8 +66,10 @@ public class ClearEffect : MonoBehaviour
             if (anim != null)
                 anim.Play("TextAnim");
         }
-        
 
-        clearPanel.transform.Find("NextButton").GetComponent<Button>().enabled = false;
+        if(GameManager.instance.SceneName.Equals("7-12"))
+        {
+            clearPanel.transform.Find("NextButton").GetComponent<Button>().enabled = false;
+        }
     }
 }

@@ -18,7 +18,7 @@ public class ColorFilter : ObjectBase
         }
         filterColorComb = CommonFunc.GetColorCombination(filterColor);
 #if UNITY_EDITOR
-        Color color = new Color(0,0,0,0.7f);
+        Color color = new Color(0,0,0,0.6f);
         if (filterColorComb.Contains("Red"))
             color.r = 1;
         if (filterColorComb.Contains("Green"))

@@ -8065,11 +8065,11 @@ MonoBehaviour:
   arrive_count: 0
   unusedCharacters: []
   movingChars: []
-  canMove: 0
   baseMoveCount: 
   moveCount: 0
   tutorialCanvas: {fileID: 0}
   pausePanel: {fileID: 1508071922}
+  touchUI: {fileID: 0}
   utilTestManager: {fileID: 0}
 --- !u!4 &1072721167
 Transform:
@@ -11457,7 +11457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f868ff1ff0731a443852c36855762b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lev: 37
+  lev: 62
   baseMoveCount: 0b00000009000000
   width: 16
   height: 9
@@ -11671,6 +11671,7 @@ Transform:
   - {fileID: 800953510}
   - {fileID: 1660750142}
   - {fileID: 3971647}
+  - {fileID: 309765809}
   - {fileID: 1157348745}
   - {fileID: 1183819799}
   - {fileID: 368587839}
@@ -11685,57 +11686,54 @@ Transform:
   - {fileID: 974647948}
   - {fileID: 941451647}
   - {fileID: 1581663050}
+  - {fileID: 773640727}
   - {fileID: 462233250}
   - {fileID: 1261486212}
   - {fileID: 1001324286}
   - {fileID: 1425902419}
-  - {fileID: 1138453851}
-  - {fileID: 533357639}
-  - {fileID: 184068639}
-  - {fileID: 773640727}
-  - {fileID: 779388333}
-  - {fileID: 176709695}
-  - {fileID: 236643726}
-  - {fileID: 2041759772}
-  - {fileID: 907732591}
-  - {fileID: 309765809}
-  - {fileID: 2072755965}
-  - {fileID: 471659579}
-  - {fileID: 1203043204}
-  - {fileID: 264095635}
-  - {fileID: 1697712981}
-  - {fileID: 1398173800}
   - {fileID: 51693716}
-  - {fileID: 1510641024}
+  - {fileID: 533357639}
   - {fileID: 802735579}
+  - {fileID: 184068639}
   - {fileID: 676488316}
-  - {fileID: 1798477115}
-  - {fileID: 1889782732}
+  - {fileID: 779388333}
   - {fileID: 849603433}
+  - {fileID: 176709695}
+  - {fileID: 907732591}
+  - {fileID: 236643726}
   - {fileID: 1241239258}
+  - {fileID: 1138453851}
   - {fileID: 340293837}
   - {fileID: 94199538}
   - {fileID: 1375690186}
-  - {fileID: 1113408881}
+  - {fileID: 471659579}
   - {fileID: 354962174}
-  - {fileID: 2093421615}
+  - {fileID: 2041759772}
+  - {fileID: 264095635}
+  - {fileID: 1889782732}
   - {fileID: 573293895}
   - {fileID: 1633334854}
   - {fileID: 1874053671}
+  - {fileID: 2072755965}
   - {fileID: 375225496}
+  - {fileID: 2093421615}
   - {fileID: 814806315}
+  - {fileID: 1798477115}
   - {fileID: 140230866}
   - {fileID: 1489051838}
-  - {fileID: 2067175046}
+  - {fileID: 1398173800}
   - {fileID: 1435678642}
   - {fileID: 983176944}
   - {fileID: 174088587}
   - {fileID: 1884102739}
+  - {fileID: 1510641024}
   - {fileID: 266148195}
+  - {fileID: 1113408881}
   - {fileID: 676001696}
   - {fileID: 694571059}
   - {fileID: 992244740}
   - {fileID: 921384878}
+  - {fileID: 1203043204}
   - {fileID: 674250654}
   - {fileID: 167260031}
   - {fileID: 1369465639}
@@ -11743,6 +11741,7 @@ Transform:
   - {fileID: 2128446246}
   - {fileID: 1123187785}
   - {fileID: 1661944867}
+  - {fileID: 2067175046}
   - {fileID: 262968173}
   - {fileID: 798275845}
   - {fileID: 746050155}
@@ -11755,6 +11754,7 @@ Transform:
   - {fileID: 793905899}
   - {fileID: 1955780322}
   - {fileID: 278271365}
+  - {fileID: 1697712981}
   - {fileID: 158546234}
   - {fileID: 189040304}
   - {fileID: 1529458229}
