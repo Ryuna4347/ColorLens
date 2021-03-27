@@ -6,16 +6,19 @@ using UnityEngine.EventSystems;
 public class TouchUI : MonoBehaviour
 {
     public Transform cursor;
+    private GameObject touchTypeObj;
     private float maxDistance; //cursor의 반경
 
     private void OnEnable() //Start인 경우 Instantiate된 직후 꺼지게 되어서 Start가 불려오지 않는다.
     {
         if (PlayerPrefs.GetInt("TouchType", 0) == 0)
         {
-            transform.GetChild(0).gameObject.SetActive(true);
+            touchTypeObj = transform.GetChild(0).gameObject;
+            touchTypeObj.SetActive(true);
         }
         else
         {
+            touchTypeObj = transform.GetChild(1).gameObject;
             cursor = transform.GetChild(1).GetChild(0);
             maxDistance = ((RectTransform)transform.GetChild(0)).sizeDelta.x / 2;
         }
@@ -23,16 +26,12 @@ public class TouchUI : MonoBehaviour
 
     private void OnDisable()
     {
-        if (PlayerPrefs.GetInt("TouchType", 0) == 0)
-        {
-            transform.GetChild(0).gameObject.SetActive(false);
-        }
-        else
+        if(PlayerPrefs.GetInt("TouchType", 0) == 1)
         {
             cursor.transform.position = new Vector2(0, 0);
             maxDistance = 0;
-            transform.GetChild(1).gameObject.SetActive(false);
         }
+        touchTypeObj.SetActive(false);
     }
 
     #region 스마트폰 관련 기능
@@ -55,6 +54,17 @@ public class TouchUI : MonoBehaviour
                         StartCoroutine("CheckTouchDirection");
                     }
                 }
+            }
+        }
+        if (PlayerPrefs.GetInt("TouchType", 0) == 0)
+        {
+            if (Time.timeScale == 0 && touchTypeObj.activeSelf == true)
+            {
+                touchTypeObj.SetActive(false);
+            }
+            else if (Time.timeScale == 1 && touchTypeObj.activeSelf == false)
+            {
+                touchTypeObj.SetActive(true);
             }
         }
 #endif
