@@ -10,19 +10,22 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
 
+    private string sceneName = "";
+
     public static Action<float> moveRatioChanged;
     public static Action moveTurnEnded; //색상캐릭터의 전체 움직임 한번이 끝남에 따라 실행되는 이벤트들
 
     public List<GameObject> characters;
     public List<GameObject> movableWalls; //기존 맵 이외의 움직일 수 있는 벽(흰색 타일 파괴 메꾸기용)
 
-    public GameObject colorBox;//색상박스 부모변수
-    [SerializeField] private int colorBox_Child_Count;//색상 박스 수
-    [SerializeField] private int arrive_count;//도착한 캐릭터 수
+    /* 색상상자 관련 */
+    public GameObject colorBox; //색상상자 부모변수
+    [SerializeField] private int colorBox_Child_Count; //색상 상자 수
+    [SerializeField] private int arrive_count; //도착한 캐릭터 수
 
     private int width, height;
     public GameObject[,] tileArr;
-    public GameObject[,] objectArr; //objective+obstacle
+    public GameObject[,] objectArr; //색상상자 + 방해물을 관리하는 배열
     public List<GameObject>[,] characterArr;
     public List<GameObject> unusedCharacters = new List<GameObject>();
 
@@ -41,6 +44,8 @@ public class GameManager : MonoBehaviour
     public GameObject touchUI;
 
 
+    /* properties */
+    public string SceneName => sceneName;
     public bool IsGameOver => isGameOver;
     public bool CanMove => canMove;
 
@@ -49,16 +54,22 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null)
         {
+            Destroy(gameObject);
             return;
         }
         instance = this;
+
+        sceneName = SceneManager.GetActiveScene().name;
     }
 
     private void Start()
     {
         colorBox_Child_Count = colorBox.transform.childCount;
         moveCount = 0;
-        moveRatio = PlayerPrefs.GetInt("SpeedRatio", 0) == 0 ?  1.0f : 1.5f;
+        if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.Android))
+            moveRatio = 1.5f;
+        else
+            moveRatio = PlayerPrefs.GetInt("SpeedRatio", 0) == 0 ? 1.0f : 1.5f;
         ReadMapData();
         LoadCharacters();
         if (moveRatioChanged != null)

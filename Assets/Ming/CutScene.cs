@@ -11,15 +11,18 @@ using UnityEngine.UI;
 public class CutScene : MonoBehaviour
 {
     public GameObject cutscenePrefab;
+    private string sceneName;
     [SerializeField]private List<Sprite> sceneImages;
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name.Contains("-1"))
+        sceneName = GameManager.instance.SceneName;
+
+        if (sceneName.Contains("-1"))
         {
-            if (PlayerPrefs.GetInt("Cut_"+SceneManager.GetActiveScene().name, 0) == 0)
+            if (PlayerPrefs.GetInt("Cut_"+sceneName, 0) == 0)
             {
-                PlayerPrefs.SetInt("Cut_"+SceneManager.GetActiveScene().name, 1);
+                PlayerPrefs.SetInt("Cut_"+sceneName, 1);
                 StartCoroutine(cutSceneCor());
             }
             else //한 번 컷신을 본 경우 컷신을 더 이상 보여주지 않고 바로 플레이로 진입
@@ -36,7 +39,7 @@ public class CutScene : MonoBehaviour
     /// <returns></returns>
     IEnumerator cutSceneCor()
     {
-        sceneImages = new List<Sprite>(Resources.LoadAll<Sprite>("CutScene/Chapter_"+ SceneManager.GetActiveScene().name.Split('-')[0]));
+        sceneImages = new List<Sprite>(Resources.LoadAll<Sprite>("CutScene/Chapter_"+ sceneName.Split('-')[0]));
 
         GameObject cutsceneObj = GameObject.Instantiate<GameObject>(cutscenePrefab, transform);
         Image cutsceneImg = cutsceneObj.transform.GetChild(0).GetComponent<Image>();

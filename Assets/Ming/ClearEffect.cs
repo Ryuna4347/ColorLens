@@ -23,12 +23,6 @@ public class ClearEffect : MonoBehaviour
         instance = this;
     }
 
-    private void Update()
-    {
-        //if(Input.GetKeyDown(KeyCode.Z))
-        //    Clear(3,10);
-    }
-
     public void Clear(int Stars,int walkCount)
     {
         StartCoroutine(ClearCor(Stars,walkCount));
@@ -69,9 +63,11 @@ public class ClearEffect : MonoBehaviour
 
         foreach (Animator anim in Btns)
         {
-            if(anim!=null)
+            if (anim != null)
                 anim.Play("TextAnim");
         }
+        
 
+        clearPanel.transform.Find("NextButton").GetComponent<Button>().enabled = false;
     }
 }

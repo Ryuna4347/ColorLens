@@ -9,6 +9,7 @@ public class TouchUI : MonoBehaviour
     private GameObject touchTypeObj;
     private float maxDistance; //cursor의 반경
 
+#if UNITY_ANDROID || UNITY_IOS
     private void OnEnable() //Start인 경우 Instantiate된 직후 꺼지게 되어서 Start가 불려오지 않는다.
     {
         if (PlayerPrefs.GetInt("TouchType", 0) == 0)
@@ -38,7 +39,6 @@ public class TouchUI : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_ANDROID || UNITY_IOS
         if (PlayerPrefs.GetInt("TouchType", 0) == 1 && !GameManager.instance.IsGameOver && GameManager.instance.CanMove)
         {
             if (Input.touchCount > 0)
@@ -67,7 +67,6 @@ public class TouchUI : MonoBehaviour
                 touchTypeObj.SetActive(true);
             }
         }
-#endif
     }
 
     private IEnumerator CheckTouchDirection()
@@ -175,4 +174,6 @@ public class TouchUI : MonoBehaviour
     }
 
     #endregion
+
+#endif
 }
