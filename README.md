@@ -1,7 +1,7 @@
 # ColorLens
 - 이 게임은 2020 BIC 게임잼에 제출한 작품으로, 유니티를 기반으로 제작한 2D형식의 퍼즐 게임입니다.
 
-![ColorLens](https://www.notion.so/567d3b402d704affacc0df2c2253794e#a45be40aca354fbdab6bcf0251cd1167)
+![ColorLens](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/9e75f917-8ee3-47f3-a1d2-210a01c87e02/b2de04cb831c7e8a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210327%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210327T160324Z&X-Amz-Expires=86400&X-Amz-Signature=8cd9c39b7c1ec26451810a93f946edbc8f80ef72ed0bc03e461e25c107e1c3fe&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22b2de04cb831c7e8a.png%22)
 
 # 빌드 버전
 
