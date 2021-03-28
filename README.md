@@ -7,6 +7,10 @@
 
 2019.4.8
 
+# 빌드 파일
+
+https://drive.google.com/file/d/1OqmPAUoywo1wXx1FTcTpDnWZQdvvjizf/view
+
 # 개발 기간
 
 2020년 8월 ~ 10월 : BIC 게임잼 및 전시
