@@ -11,6 +11,9 @@ public class EffectManager : MonoBehaviour
     {
         if (instance == null)
         {
+#if UNITY_ANDROID || UNITY_IOS
+            Application.targetFrameRate = 60;
+#endif
             instance = this;
             DontDestroyOnLoad(gameObject);
         }

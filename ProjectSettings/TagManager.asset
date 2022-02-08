@@ -35,7 +35,7 @@ TagManager:
   - Tile
   - Obj
   - Colors
-  - 
+  - Background
   - 
   - 
   - 
@@ -57,6 +57,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2716238333
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

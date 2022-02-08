@@ -6,13 +6,12 @@ using UnityEngine.UI;
 public class Stage_Number : MonoBehaviour
 {
     public Text Stage_Text;
-    public Text Star_requirement;
-    List<int> baseMoveCount;//각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
+    [SerializeField]List<int> baseMoveCount;//각 맵마다 별을 획득할 수 있는 이동횟수 기준(2개)
 
     public GameObject PausePanel;
     public GameObject GameoverPanel;
     public GameObject ClearPanel;
-    public GameObject G_Star_requirement;
+    public Text G_Star_requirement;
     void Start()
     {
         baseMoveCount = GameObject.Find("Map").GetComponent<Map>().GetBaseMoveCount();
@@ -22,9 +21,10 @@ public class Stage_Number : MonoBehaviour
     private void Update()
     {
         if (PausePanel.activeSelf == true || GameoverPanel.activeSelf == true || ClearPanel.activeSelf == true)
-            G_Star_requirement.SetActive(true);
-        else
-            G_Star_requirement.SetActive(false);
-        Star_requirement.text = "별 3개: " +baseMoveCount[1] +"\n별 2개: "+ baseMoveCount[0];
+        {
+            GameObject activeParent = PausePanel.activeSelf ? PausePanel : (GameoverPanel.activeSelf ? GameoverPanel : ClearPanel);
+            G_Star_requirement = activeParent.transform.Find("Star requirement").gameObject.GetComponent<Text>();
+            G_Star_requirement.text = "별 3개: " + baseMoveCount[1] + "\n별 2개: " + baseMoveCount[0];
+        }
     }
 }

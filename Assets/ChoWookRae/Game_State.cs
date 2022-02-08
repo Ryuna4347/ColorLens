@@ -11,9 +11,15 @@ public class Game_State : MonoBehaviour
     public Text MoveText;//인게임 텍스트UI
     public Animator[] StarAnims;//인게임 별이동 
 
-    private void Update()
+    private void Start()
     {
-        InGameStates();
+        GameManager.moveTurnEnded += InGameStates;
+        Invoke("InGameStates",0.1f);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.moveTurnEnded -= InGameStates;
     }
 
     void InGameStates()

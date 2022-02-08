@@ -58,5 +58,8 @@ public class GameOverEffect : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Text.Play("TextAnim");
         SoundManager.instance.Play("ClearBtnAppear",1,1);
+
+        yield return new WaitForSeconds(0.4f);
+        AdmobManager.instance.ShowFrontAd();
     }
 }

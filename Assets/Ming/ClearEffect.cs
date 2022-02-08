@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ClearEffect : MonoBehaviour
 {
@@ -18,26 +19,31 @@ public class ClearEffect : MonoBehaviour
     public Text walkCountText;
     public Animator BG;
     public GameObject clearPanel;
+
+    public int stars;
+    public int walkCount;
+
     private void Awake()
     {
         instance = this;
     }
 
-    private void Update()
+    public void Clear()
     {
-        //if(Input.GetKeyDown(KeyCode.Z))
-        //    Clear(3,10);
+        StartCoroutine(ClearCor());
     }
 
-    public void Clear(int Stars,int walkCount)
+    public void Clear(int star, int count)
     {
-        StartCoroutine(ClearCor(Stars,walkCount));
+        stars = star;
+        walkCount = count;
+        StartCoroutine(ClearCor());
     }
-    IEnumerator ClearCor(int Stars,int walkCount)
+    IEnumerator ClearCor()
     {
         clearPanel.SetActive(true);
         SoundManager.instance.Play("Clear",1,1);
-        ClearSave.instance.Save(Stars);
+        ClearSave.instance.Save(stars);
         walkCountText.text = walkCount+"번의 이동횟수로 클리어!";
         Color color;
         while (panel.color.a<=0.5f)
@@ -52,14 +58,14 @@ public class ClearEffect : MonoBehaviour
         textAnim.Play("TextAnim");
         SoundManager.instance.Play("ClearBtnAppear",1,1);
         yield return new WaitForSeconds(0.5f);
-        for (int i = 0; i < Stars; i++)
+        for (int i = 0; i < stars; i++)
         {
             starAnims[i].Play("StarAnim");
             SoundManager.instance.Play("StarAppear",1,1f);
             yield return new WaitForSeconds(0.3f);
         }
 
-        if (Stars == 3)
+        if (stars == 3)
         {
             yield return new WaitForSeconds(0.2f);
             crownAnim.Play("CrownAnim");
@@ -69,9 +75,15 @@ public class ClearEffect : MonoBehaviour
 
         foreach (Animator anim in Btns)
         {
-            if(anim!=null)
+            if (anim != null)
                 anim.Play("TextAnim");
         }
 
+        if(GameManager.instance.SceneName.Equals("7-12"))
+        {
+            clearPanel.transform.Find("NextButton").GetComponent<Button>().enabled = false;
+        }
+        yield return new WaitForSeconds(0.4f);
+        AdmobManager.instance.ShowFrontAd();
     }
 }
